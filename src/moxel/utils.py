@@ -81,7 +81,7 @@ class Grid:
     Parameters
     ----------
     grid_size : int, default=25
-        Number of grid points along each lattice vector.
+        Number of grid points along each dimension.
     cutoff : float, default=10
         Cutoff radius for the Lennard-Jones potential.
     epsilon : float, default=50
@@ -118,7 +118,7 @@ class Grid:
         self.structure = Structure.from_file(cif_pathname)
         self.structure_name = cif_pathname.split('/')[-1].split('.')[0]
 
-    def calculate(self, cubic_box=False, center=0, length=30, potential='lj'):
+    def calculate(self, cubic_box=False, length=30, potential='lj'):
         r"""
         Iterate over the grid and return voxels.
 
@@ -128,8 +128,8 @@ class Grid:
 
         If lattice angles are different than 90°, to avoid distortions set one
         of ``cubic_box``. In this case, the grid is overlayed over a cubic box
-        of size ``length`` centered at ``center`` but periodicity is no
-        longer guaranteed.
+        of size ``length`` centered at the origin but periodicity is no longer
+        guaranteed.
 
         Parameters
         ----------
@@ -138,8 +138,6 @@ class Grid:
             the Lennard-Jones potential is supported.
         cubic_box : bool, default=False
             If ``True``, the simulation box is cubic.
-        center : float, default=0
-            The center of the cubic box (``np.array([center]*3)``).
         length : float, default=30
             The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
 
@@ -152,7 +150,7 @@ class Grid:
 
         if cubic_box:
             d = length / 2
-            probe_coords = np.linspace(center - d, center + d, self.grid_size) # Cartesian
+            probe_coords = np.linspace(0-d, 0+d, self.grid_size) # Cartesian
             self._simulation_box = self.structure
         else:
             probe_coords = np.linspace(0, 1, self.grid_size) # Fractional
@@ -209,8 +207,7 @@ class Grid:
 
 def voxels_from_file(
         cif_pathname, grid_size=25, cutoff=10,
-        epsilon=50, sigma=2.5,
-        cubic_box=False, center=0, length=30, 
+        epsilon=50, sigma=2.5, cubic_box=False, length=30, 
         only_voxels=True,
         ):
     """
@@ -221,7 +218,7 @@ def voxels_from_file(
     cif_pathname : str
        Pathname to the .cif file.
     grid_size : int, default=25
-        Number of grid points along each lattice vector.
+        Number of grid points along each dimension.
     cutoff : float, default=10
         Cutoff radius for the Lennard-Jones potential.
     epsilon : float, default=50
@@ -230,8 +227,6 @@ def voxels_from_file(
         Sigma value (σ/Å) of the probe atom.
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
-    center : float, default=0
-        Determines the centroid of the cubic box (``np.array([center]*3)``).
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     only_voxels : bool, default=True
@@ -251,7 +246,7 @@ def voxels_from_file(
     grid = Grid(grid_size, cutoff, epsilon, sigma)
     try:
         grid.load_structure(cif_pathname)
-        grid.calculate(cubic_box=cubic_box, center=center, length=length)
+        grid.calculate(cubic_box=cubic_box, length=length)
     except ValueError:
         grid.voxels = np.full(shape=(grid_size,)*3, fill_value=0, dtype=np.float32)
 
@@ -264,7 +259,7 @@ def voxels_from_file(
 def voxels_from_files(
         cif_pathnames, grid_size=25, cutoff=10,
         epsilon=50, sigma=2.5,
-        cubic_box=0, center=0, length=30,
+        cubic_box=0, length=30,
         out_name='./voxels.npy'
         ):
     """
@@ -277,7 +272,7 @@ def voxels_from_files(
     cif_pathanmes : list
        List of pathnames to the .cif files.
     grid_size : int, default=25
-        Number of grid points along each lattice vector.
+        Number of grid points along each dimension.
     cutoff : float, default=10
         Cutoff radius for the Lennard-Jones potential.
     epsilon : float, default=50
@@ -286,8 +281,6 @@ def voxels_from_files(
         Sigma value (σ/Å) of the probe atom.
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
-    center : float, default=0
-        Determines the centroid of the cubic box (``np.array([center]*3)``).
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     out_name : str, optional
@@ -313,7 +306,7 @@ def voxels_from_files(
             voxels_from_file, cif_pathnames,
             repeat(grid_size), repeat(cutoff),
             repeat(epsilon), repeat(sigma),
-            repeat(cubic_box), repeat(center), repeat(length)
+            repeat(cubic_box), repeat(length)
             )
 
     for i in range(n):
@@ -339,15 +332,13 @@ def voxels_from_dir(
     cif_dirname : str
        Pathname to the directory containing the .cif files.
     grid_size : int, default=25
-       Number of grid points along each lattice vector.
+       Number of grid points along each dimension.
     cutoff : float, default=10
         Cutoff radius for the Lennard-Jones potential.
     epsilon : float, default=50
         Epsilon value (ε/K) of the probe atom.
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
-    center : float, default=0
-        Determines the centroid of the cubic box (``np.array([center]*3)``).
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     sigma : float, default=25
@@ -375,7 +366,7 @@ def voxels_from_dir(
             voxels_from_file, cif_files,
             repeat(grid_size), repeat(cutoff),
             repeat(epsilon), repeat(sigma),
-            repeat(cubic_box), repeat(center), repeat(length)
+            repeat(cubic_box), repeat(length)
             )
 
     for i in track(range(n), description='Processing...'):
@@ -588,7 +579,7 @@ def plot_voxels_mpl(voxels, fill_pattern=None, *, colorbar=True, cmap='viridis',
     return fig
 
 
-def plot_voxels_vista():
+def plot_voxels_pv():
     pass
 
 

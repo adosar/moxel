@@ -24,7 +24,7 @@ def _transaction_summary():
         f'{num_cifs:<{gap}}', f'{args.n:<{gap}}',
         f'{f"{args.c} {angstrom}":<{gap}}', f'{f"{args.e} {kelvin}":<{gap}}',
         f'{f"{args.s} {angstrom}":<{gap}}',
-        f'{f"{args.cubic_box}/{args.centroid}/{args.length}":>{gap}}',
+        f'{f"{args.cubic_box}/{args.length} Å":>{gap}}',
         sep=''
         )
     print('\nReading from directory:')
@@ -75,12 +75,6 @@ parser.add_argument(
         action='store_true'
         )
 parser.add_argument(
-        '--centroid',
-        help='The center of the cubic box in Å. Takes effect only if\
-        flag \033[1;1m--cubic-box\033[m is set.\033[1;1m Default=0\033[m',
-        default=0, type=float
-        )
-parser.add_argument(
         '--length',
         help='The size of the cubic box in Å. Takes effect only if\
         flag \033[1;1m--cubic-box\033[m is set.\033[1;1m Default=30\033[m',
@@ -100,7 +94,6 @@ if __name__ == '__main__':
         lj_params = json.load(fhand)
 
     args = parser.parse_args()
-    print(args)
     _transaction_summary()
 
     inp = input('\nIs this ok[y/N]: ')
@@ -109,8 +102,8 @@ if __name__ == '__main__':
         voxels_from_dir(
             args.directory, args.n,
             args.c, args.e, args.s,
-            args.cubic_box, args.centroid,
-            args.length, args.o
+            args.cubic_box, args.length,
+            args.o
             )
     else:
         print('Operation aborted.')
