@@ -12,20 +12,20 @@ from moxel import *
 class TestMoxelUtils(unittest.TestCase):
     
     def test_mic_scale_factors(self):
-        # Load a structure that must be scaled
+        # Load a structure that must be scaled.
         cif_pathname = 'tests/CIFs/foo/ZnMOF-74.cif'
         structure = Structure.from_file(cif_pathname)
         scale_factors = mic_scale_factors(10, structure.lattice.matrix)
 
-        # At least one scale factor should be different than 1
+        # At least one scale factor should be different than 1.
         self.assertTrue(np.any(scale_factors != 1))
 
-        # Load a structure that must not be scaled
+        # Load a structure that must not be scaled.
         cif_pathname = 'tests/CIFs/foo/IRMOF-1.cif'
         structure = Structure.from_file(cif_pathname)
         scale_factors = mic_scale_factors(10, structure.lattice.matrix)
 
-        # At least one scale factor should be different than 1
+        # At least one scale factor should be different than 1.
         self.assertTrue(np.all(scale_factors == 1))
 
     def test_voxels_from_file(self):
@@ -35,14 +35,15 @@ class TestMoxelUtils(unittest.TestCase):
         epsilon = 49
         sigma = 2
 
-        # `out_1` -> `cubic_box=True` & `length=15`
+        # `out_1` -> `cubic_box=True` & `length=15`.
         out_1 = voxels_from_file(
                 cif_pathname, grid_size=grid_size,
                 cutoff=cutoff, epsilon=epsilon,
                 sigma=sigma, cubic_box=True,
                 length=30, only_voxels=False
                 )
-        # Check that arguments are properly passed
+
+        # Check that arguments are properly passed.
         self.assertTrue(isinstance(out_1, Grid))
         self.assertEqual(out_1.grid_size, grid_size)
         self.assertEqual(out_1.cutoff, cutoff)
@@ -51,24 +52,24 @@ class TestMoxelUtils(unittest.TestCase):
         self.assertTrue(out_1.cubic_box)
         self.assertTrue(np.all(out_1.voxels.shape ==  np.array([grid_size]*3)))
 
-        # `out_2` -> `cubic_box=False`
+        # `out_2` -> `cubic_box=False`.
         out_2 = voxels_from_file(
                 cif_pathname, grid_size=grid_size,
                 cutoff=cutoff, epsilon=epsilon,
                 sigma=sigma, cubic_box=False,
                 only_voxels=False
                 )
-        # Check that `cubic_box` works
+        # Check that `cubic_box` works.
         self.assertFalse(np.all(out_1.voxels == out_2.voxels))
 
-        # `out_3` -> `cubix_box=True` & `length=10`
+        # `out_3` -> `cubix_box=True` & `length=10`.
         out_3 = voxels_from_file(
                 cif_pathname, grid_size=grid_size,
                 cutoff=cutoff, epsilon=epsilon,
                 sigma=sigma, cubic_box=True,
                 length=10, only_voxels=False
                 )
-        # Check that `length` works
+        # Check that `length` works.
         self.assertFalse(np.all(out_1.voxels == out_3.voxels))
 
 
@@ -78,7 +79,7 @@ class TestMoxelUtils(unittest.TestCase):
         cif_dir = 'tests/CIFs/foo'
         cif_files = [f'{cif_dir}/{i}' for i in os.listdir(cif_dir)][:n_files]
 
-        # Check that output file is properly stored
+        # Check that output file is properly stored.
         with tempfile.TemporaryDirectory() as dir_path:
             out_name = f'{dir_path}/foo.npy'
             voxels_from_files(cif_files, out_name=out_name, grid_size=grid_size)
@@ -90,7 +91,7 @@ class TestMoxelUtils(unittest.TestCase):
                     )
 
     def test_voxels_from_dir(self):
-        # The `cif_dir` contains 1 corrupted .cif file
+        # The `cif_dir` contains 1 corrupted .cif file.
         cif_dir = 'tests/CIFs/foo'
         grid_size = 10
 
@@ -100,7 +101,7 @@ class TestMoxelUtils(unittest.TestCase):
 
             voxels = np.load(out_name, mmap_mode='r')
 
-            # Check that corrupted .cif files aren't processed
+            # Check that corrupted .cif files aren't processed.
             bad_cifs = [np.all(x == 0) for x in voxels]
             self.assertEqual(
                     sum(bad_cifs),
@@ -108,50 +109,100 @@ class TestMoxelUtils(unittest.TestCase):
                     )
 
     def test_batch_clean_and_merge_single(self):
-        cif_dir = 'tests/CIFs/foo'
+        cif_dir = 'tests/CIFs/bar'
         grid_size = 10
-        cif_names = os.listdir(cif_dir)
-        n_corrupted = len([i for i in cif_names if i.startswith('corrupted')])
-
+        names = sorted(os.listdir(cif_dir))
+        clean_names_init = [i for i in names if not i.startswith('corrupted')]
 
         with tempfile.TemporaryDirectory() as dir_path:
             out_name = f'{dir_path}/voxels.npy'
             voxels_from_dir(cif_dir, grid_size=grid_size, out_name=out_name)
-            voxels_shape = np.array([len(cif_names), *[grid_size]*3])
+            voxels_shape = np.array([len(names), *[grid_size]*3])
 
-            # Add the names under the batch directory
+            # Add the names under the batch directory.
             with open(f'{dir_path}/names.json', 'w') as fhand:
-                json.dump({'names': cif_names}, fhand)
+                json.dump({'names': names}, fhand)
 
             exit_status = batch_clean_and_merge([dir_path])
 
-            # Check the exit status
+            # Check the exit status.
             self.assertEqual(exit_status, 1)
 
             clean_voxels = np.load(f'{dir_path}/clean_voxels.npy', mmap_mode='r')
 
-            # Load the clean names
+            # Load the clean names.
             with open(f'{dir_path}/clean_names.json', 'r') as fhand:
-                clean_names = json.load(fhand)['names']
+                clean_names_final = json.load(fhand)['names']
 
-            # Check that corrupted voxels/names are deleted 
+            # Check that corrupted voxels/names are deleted .
             self.assertFalse(voxels_shape[0] == clean_voxels.shape[0])
             self.assertTrue(np.all(voxels_shape[1:] == clean_voxels.shape[1:]))
-            self.assertEqual(len(cif_names) - n_corrupted, len(clean_names))
+            self.assertEqual(clean_names_init, clean_names_final)
 
-            # Check that the remaining voxels are properly processed
+            # Check that the remaining voxels are properly processed.
             self.assertEqual(sum([i for i in clean_voxels if np.all(i == 0)]), 0)
 
-    def test_batch_clean_and_merge_multiple
+            # Check that no further processing is required.
+            os.remove(f'{dir_path}/names.json')
+            os.remove(f'{dir_path}/voxels.npy')
+            os.rename(f'{dir_path}/clean_voxels.npy', f'{dir_path}/voxels.npy')
+            os.rename(f'{dir_path}/clean_names.json', f'{dir_path}/names.json')
+
+            exit_status = batch_clean_and_merge([dir_path])
+
+            self.assertEqual(exit_status, 0)
+
+    def test_batch_clean_and_merge_multiple(self):
+        grid_size = 10
         cif_dir_1 = 'tests/CIFs/foo'
         cif_dir_2 = 'tests/CIFs/bar'
-        cif_names = os.listdir(cif_dir_1) + os.listdir(cif_dir_2)
-        n_corrupted = [len([i for i in cif_names if i.startswith('corrupted')]
+
+        names_1 = sorted(os.listdir(cif_dir_1))
+        names_2 = sorted(os.listdir(cif_dir_2))
+
+        names = names_1 + names_2
+        names_corrupted = [i for i in names if i.startswith('corrupted')]
+
+        # Order and repetition matters (avoid using `set`)
+        names_clean_init = [j for j in names if j not in names_corrupted]
 
         with tempfile.TemporaryDirectory() as dir_path:
-            # Creating the 1st batch
-            with tempfile.TemporaryDirectory() as dir_path_1
-                voxels_from_dir(cif_dir_1
+
+            # Creating the 1st batch.
+            tempdir_1 = tempfile.TemporaryDirectory()
+            dir_path_1 = tempdir_1.name
+            out_name_1 = f'{dir_path_1}/voxels.npy'
+            voxels_from_dir(cif_dir_1, grid_size=grid_size, out_name=out_name_1)
+
+            with open(f'{dir_path_1}/names.json', 'w') as fhand:
+                json.dump({'names': names_1}, fhand)
+
+            # Creating the 2nd batch.
+            tempdir_2 = tempfile.TemporaryDirectory()
+            dir_path_2 = tempdir_2.name
+            out_name_2 = f'{dir_path_2}/voxels.npy'
+            voxels_from_dir(cif_dir_2, grid_size=grid_size, out_name=out_name_2)
+
+            with open(f'{dir_path_2}/names.json', 'w') as fhand:
+                json.dump({'names': names_2}, fhand)
+
+            exit_status = batch_clean_and_merge([dir_path_1, dir_path_2], out_name=dir_path)
+
+            # Check that processing is required.
+            self.assertEqual(exit_status, 1)
+
+            # Check that no further processing is required.
+            os.rename(f'{dir_path}/clean_voxels.npy', f'{dir_path}/voxels.npy')
+            os.rename(f'{dir_path}/clean_names.json', f'{dir_path}/names.json')
+
+            exit_status = batch_clean_and_merge([dir_path])
+            self.assertEqual(exit_status, 0)
+
+            # Check that the correct names are stored.
+            with open(f'{dir_path}/clean_names.json', 'r') as fhand:
+                names_clean_final = json.load(fhand)['names']
+
+            self.assertEqual(names_clean_init, names_clean_final)
 
 
 if __name__ == '__main__':

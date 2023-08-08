@@ -608,6 +608,6 @@ def plot_voxels_pv():
     pass
 
 
-#Loading LJ parameters
+# Loading LJ parameters.
 with open(f'{Path(__file__).parents[0]}/lj_params.json', 'r') as fhand:
     lj_params = json.load(fhand)
