@@ -74,7 +74,7 @@ def mic_scale_factors(r, lattice_vectors):
 @dataclass
 class Grid:
     r"""
-    A grid over the unit cell of a crystal structure.
+    A 3D energy grid over a crystal structure.
 
     Parameters
     ----------
@@ -484,13 +484,20 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     batch_dirnames : list
         List of pathnames to the directories of the batches.
     out_name : str, optional
-        Pathname to directory holding the (*cleaned and merged*) voxels. Takes
-        effect only if ``len(batch_dirnames) > 1``.
+        Pathname to directory holding the (*cleaned and merged*) voxels and the
+        names of their corresponding structures. Takes effect only if
+        ``len(batch_dirnames) > 1``. If not specified, voxels and names are
+        stored under './' (current working directory).
+
+    Returns
+    -------
+    exit_status : int
+        
     """
     batch_dict = dict()
 
     for i, batch_dir in enumerate(batch_dirnames):
-        with open(f'{batch_dir}/names.json') as fhand:
+        with open(f'{batch_dir}/names.json', 'r') as fhand:
             info = json.load(fhand)
 
         names = np.array(info['names'])
@@ -505,8 +512,10 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     if missing == 0:
         os.rename(f'{batch_dirnames[0]}/names.json', f'{batch_dirnames[0]}/clean_names.json') 
         os.rename(f'{batch_dirnames[0]}/voxels.npy', f'{batch_dirnames[0]}/clean_voxels.npy') 
-        return None
+        print('No missing voxels found!!')
+        return 0
 
+    print('Missing voxels found! Cleaning...')
     if len(batch_dirnames) == 1:
         clean_dir = batch_dirnames[0]
     elif out_name == None:
@@ -539,6 +548,8 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
 
     with open(f'{clean_dir}/clean_names.json', 'w') as fhand:
         json.dump(clean_dict, fhand, indent=4)
+
+    return 1
 
 
 def plot_voxels_mpl(voxels, fill_pattern=None, *, colorbar=True, cmap='viridis', **kwargs):
