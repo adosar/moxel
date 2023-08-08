@@ -1,5 +1,4 @@
 import os
-import sys
 import json
 import warnings
 import itertools
@@ -11,8 +10,7 @@ import matplotlib.pyplot as plt
 from rich.progress import track
 from multiprocessing import Pool
 from dataclasses import dataclass
-from pymatgen.core import Structure, IStructure
-from pymatgen.transformations.advanced_transformations import CubicSupercellTransformation as CST
+from pymatgen.core import Structure
 
 
 def mic_scale_factors(r, lattice_vectors):
@@ -145,6 +143,11 @@ class Grid:
         -------
         voxels : array of shape (grid_size, grid_size, grid_size)
             The energy voxels.
+
+        Notes
+        -----
+        For structures that can not be processsed, their voxels are filled with
+        zeros.
         """
         self.cubic_box = cubic_box
 
@@ -234,14 +237,14 @@ def voxels_from_file(
         
     Returns
     -------
-        out : ``array`` or :class:`.Grid`
-            If ``only_voxels=True``, ``array`` of shape ``(grid_size,
-            grid_size, grid_size)``. Otherwise, :class:`.Grid`.
+    out : ``array`` or :class:`.Grid`
+        If ``only_voxels=True``, ``array`` of shape ``(grid_size,
+        grid_size, grid_size)``. Otherwise, :class:`.Grid`.
 
     Notes
     -----
-       For structures that can not be processsed, their voxels are filled with
-       zeros.
+    For structures that can not be processsed, their voxels are filled with
+    zeros.
     """
     grid = Grid(grid_size, cutoff, epsilon, sigma)
     try:
@@ -260,7 +263,7 @@ def voxels_from_files(
         cif_pathnames, grid_size=25, cutoff=10,
         epsilon=50, sigma=2.5,
         cubic_box=0, length=30,
-        out_name='./voxels.npy'
+        out_name=None,
         ):
     """
     Calculate voxels from a list of .cif files and save them in ``out_name`` as
@@ -284,7 +287,8 @@ def voxels_from_files(
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     out_name : str, optional
-        File name to store the voxels.
+        Pathname to store the voxels. If not specified, voxels are stored in
+        ``./voxels.npy``.
     
     Notes
     -----
@@ -295,6 +299,8 @@ def voxels_from_files(
     zeros.
     """
     n = len(cif_pathnames)
+    cif_files = [i for i in cif_pathnames if i.endswith('.cif')]
+    out_name = './voxels.npy' if not out_name else out_name
 
     fp = np.lib.format.open_memmap(
         out_name, mode='w+',
@@ -303,7 +309,7 @@ def voxels_from_files(
         )
 
     grids = map(
-            voxels_from_file, cif_pathnames,
+            voxels_from_file, cif_files,
             repeat(grid_size), repeat(cutoff),
             repeat(epsilon), repeat(sigma),
             repeat(cubic_box), repeat(length)
@@ -316,10 +322,10 @@ def voxels_from_files(
 
 
 def voxels_from_dir(
-        cif_dirname, grid_size = 25, cutoff = 10,
-        epsilon = 50, sigma = 2.5,
+        cif_dirname, grid_size=25, cutoff=10,
+        epsilon=50, sigma=2.5,
         cubic_box=False, length=30,
-        out_name = './voxels.npy'
+        out_name=None,
         ):
     """
     Calculate voxels from .cif files in ``cif_dirname`` and save them in
@@ -343,6 +349,9 @@ def voxels_from_dir(
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     sigma : float, default=25
         Sigma value (σ/Å) of the probe atom.
+    out_name : str, optional
+        Pathname to store the voxels. If not specified, voxels are stored in
+        ``./voxels.npy``.
     
     Notes
     -----
@@ -352,9 +361,10 @@ def voxels_from_dir(
     For structures that can not be processsed, their voxels are filled with
     zeros.
     """
-    files = sorted(os.listdir(cif_dir))
-    cif_files = [f'{dir_name}/{file}' for file in files if file.endswith('.cif')]
+    files = sorted(os.listdir(cif_dirname))
+    cif_files = [f'{cif_dirname}/{file}' for file in files if file.endswith('.cif')]
     n = len(cif_files)
+    out_name = './voxels.npy' if not out_name else out_name
 
     fp = np.lib.format.open_memmap(
             out_name, mode='w+',
@@ -375,87 +385,91 @@ def voxels_from_dir(
     fp.flush()
 
 
-def batch_create(cif_pathnames, n_batches, batches_dirname=None):
-    """
-    Split a number of structures into ``n_batches`` of approximately equal size.
+#def batch_create(cif_pathnames, n_batches, batches_dirname=None):
+#    """
+#    Split a number of structures into ``n_batches`` of approximately equal size.
+#
+#    The batches are created under the ``batches_dirname`` directory.
+#
+#    For example, the i-th batch corresponds to ``batches_dirname/batch_i``.
+#
+#    Note that the **structures are randomly shuffled** prior to splitting.  The
+#    new ordering for the i-th batch is stored in
+#    ``batches_dirname/batch_i/names.json``
+#
+#    Parameters
+#    ----------
+#    cif_filenames : list
+#        List of pathnames to the .cif files.
+#    n_batches : int
+#        Number of batches that will be created.
+#    batches_dirname : str, optional
+#        Pathname to the directory where batches will be created. If ``None``, the
+#        batches are created under ``./``.
+#   """
+#    cif_pathnames = np.array([i for i in cif_pathnames if i.endswith('.cif')])
+#    np.random.shuffle(cif_pathnames)
+#
+#    batches = np.array_split(cif_pathnames, n_batches)
+#
+#    if batches_dirname == None:
+#        batches_dirname = '.'
+#
+#    for i, batch in enumerate(batches):
+#        os.mkdir(f'{batches_dirname}/batch_{i}')
+#        info_dict = {'names': list(batch), 'size': len(batch)}
+#
+#        with open(f'{batches_dirname}/batch_{i}/names.json', 'w') as fhand:
+#            json.dump(info_dict, fhand, indent=4)
+#
 
-    The batches are created under the ``batches_dirname`` directory.
-
-    For example, the i-th batch corresponds to ``batches_dirname/batch_i``.
-
-    Note that the **structures are randomly shuffled** prior to splitting.  The
-    new ordering for the i-th batch is stored in
-    ``batches_dirname/batch_i/names.json``
-
-    Parameters
-    ----------
-    cif_pathnames : list
-        List of pathnames to the .cif files.
-    n_batches : int
-        Number of batches that will be created.
-    batches_dirname : str, optional
-        Pathname to the directory where batches will be created. If ``None``, the
-        batches are created under ``./``.
-   """
-    cif_pathnames = np.array(cif_pathnames)
-    np.random.shuffle(cif_pathnames)
-
-    batches = np.array_split(cif_pathnames, n_batches)
-
-    if batches_dirname == None:
-        batches_dirname = '.'
-
-    for i, batch in enumerate(batches, start=1):
-        os.mkdir(f'{batches_dirname}/batch_{i}')
-        info_dict = {'names': list(batch), 'size': len(batch)}
-
-        with open(f'{batches_dirname}/batch_{i}/names.json', 'w') as fhand:
-            json.dump(info_dict, fhand, indent=4)
-
-
-def batch_calculate(batch_dirname, cif_dirname, **kwargs):
-    """
-    Calculate voxels for the structures in ``batch_dirname/names.json``.
-
-    The voxels are saved in ``batch_dirname/voxels.npy``.
-
-    Parameters
-    ----------
-    batch_dirname : str
-        Pathname to the batch directory.
-    cif_dirname : str
-        Pathname to the directory holding the .cif files.
-    **kwargs :
-        Valid keyword arguments for :func:`voxels_from_files`.
-
-        .. warning::
-            Do not pass the arguments ``cif_pathnames`` and ``out_name`` of
-            :func:`voxels_from_files`.
-
-    Notes
-    -----
-    For structures that can not be processsed, their voxels are filled with
-    zeros.
-    """
-    with open(f'{batch_dirname}/names.json', 'r') as fhand:
-        info = json.load(fhand)
-
-    names, size = info['names'], info['size']
-    cif_names = [f'{cif_dirname}/{name}.cif' for name in names]
-
-    voxels_from_files(
-        cif_names,
-        out_name=f'{batch_dirname}/voxels.npy',
-        **kwargs
-        )
-
+#def batch_calculate(batch_dirname, cif_dirname, **kwargs):
+#    """
+#    Calculate voxels for the structures in ``batch_dirname/names.json``.
+#
+#    The voxels are saved in ``batch_dirname/voxels.npy``.
+#
+#    Parameters
+#    ----------
+#    batch_dirname : str
+#        Pathname to the batch directory.
+#    cif_dirname : str
+#        Pathname to the directory holding the .cif files.
+#    **kwargs :
+#        Valid keyword arguments for :func:`voxels_from_files`.
+#
+#        .. warning::
+#            Do not pass the arguments ``cif_pathnames`` and ``out_name`` of
+#            :func:`voxels_from_files`.
+#
+#    Notes
+#    -----
+#    For structures that can not be processsed, their voxels are filled with
+#    zeros.
+#    """
+#    with open(f'{batch_dirname}/names.json', 'r') as fhand:
+#        info = json.load(fhand)
+#
+#    names, size = info['names'], info['size']
+#    cif_names = [f'{cif_dirname}/{name}.cif' for name in names]
+#
+#    voxels_from_files(
+#        cif_names,
+#        out_name=f'{batch_dirname}/voxels.npy',
+#        **kwargs
+#        )
+#
 
 def batch_clean_and_merge(batch_dirnames, out_name=None):
     """
     Clean a single batch, or *first clean and then merge* multiple batches.
+    All batches must have the form::
+        batch
+        ├──voxels.npy
+        └──names.json
 
     Cleaning is required since the voxels for some structures might be zero,
-    see :func:`batch_calculate`.
+    see :func:`Grid.calculate`.
 
     If ``len(batch_dirnames) == 1`` the cleaned voxels for are stored under
     ``batch_dirnames[0]/clean_voxels.npy`` and the names of their corresponding
@@ -470,7 +484,7 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     batch_dirnames : list
         List of pathnames to the directories of the batches.
     out_name : str, optional
-        Pathname to directory holding the (*cleaned and merged*) voxels. Has
+        Pathname to directory holding the (*cleaned and merged*) voxels. Takes
         effect only if ``len(batch_dirnames) > 1``.
     """
     batch_dict = dict()
@@ -521,7 +535,7 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
                 clean_idx += 1
 
     clean_names = np.concatenate([np.delete(batch_dict[b][1], batch_dict[b][2]) for b in batch_dict.keys()])
-    clean_dict = {'names': list(clean_names)}#, 'size': int(clean_size)}
+    clean_dict = {'names': list(clean_names)}
 
     with open(f'{clean_dir}/clean_names.json', 'w') as fhand:
         json.dump(clean_dict, fhand, indent=4)
