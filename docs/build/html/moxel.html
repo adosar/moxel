@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>moxel package &mdash; MOXελ 0.0.1 documentation</title>
+  <title>📖 API Documentation &mdash; MOXελ 0.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Command Line Interface (CLI)" href="cli.html" /> 
+    <link rel="prev" title="⌨️ Command Line Interface (CLI)" href="cli.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,10 +43,10 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">⚙️ Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface (CLI)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">moxel package</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">⌨️ Command Line Interface (CLI)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">📖 API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moxel.utils">moxel.utils module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#moxel.utils.Grid"><code class="docutils literal notranslate"><span class="pre">Grid</span></code></a><ul>
@@ -89,7 +89,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">moxel package</li>
+      <li class="breadcrumb-item active">📖 API Documentation</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/moxel.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -100,8 +100,9 @@
            <div itemprop="articleBody">
              
   <section id="module-moxel">
-<span id="moxel-package"></span><h1>moxel package<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
-<p>MOXελ is a Python package for parallel calculation of energy voxels.</p>
+<span id="book-api-documentation"></span><h1>📖 API Documentation<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
+<p>MOXελ is a Python package for parallel calculation of energy voxels for
+crystalline materials.</p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
@@ -256,16 +257,15 @@ structures under <code class="docutils literal notranslate"><span class="pre">ou
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>batch_dirnames</strong> (<em>list</em>) – List of pathnames to the directories of the batches.</p></li>
-<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to directory holding the (<em>cleaned and merged</em>) voxels and the
-names of their corresponding structures. Takes effect only if
+<li><p><strong>batch_dirnames</strong> (<em>list</em>) – List of paths to the directories of the batches.</p></li>
+<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname of the directory holding the (<em>cleaned and merged</em>) voxels and
+the names of their corresponding structures. Takes effect only if
 <code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If not specified, voxels and names are
-stored under ‘./’ (current working directory).</p></li>
+stored under <code class="docutils literal notranslate"><span class="pre">./</span></code> (current working directory).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>exit_status</strong> – If no voxels are missing <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">0</span></code>.
-Else <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">1</span></code>.</p>
+<dd class="field-even"><p><strong>exit_status</strong> – If no voxels are missing <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">0</span></code> else <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">1</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
@@ -311,8 +311,8 @@ directory.</p>
 <li><p><strong>cubic_box</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the simulation box is cubic.</p></li>
 <li><p><strong>length</strong> (<em>float</em><em>, </em><em>default=30</em>) – The size of the cubic box in Å. Takes effect only if <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code>.</p></li>
 <li><p><strong>sigma</strong> (<em>float</em><em>, </em><em>default=25</em>) – Sigma value (σ/Å) of the probe atom.</p></li>
-<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to store the voxels. If not specified, voxels are stored in
-<code class="docutils literal notranslate"><span class="pre">./voxels.npy</span></code>.</p></li>
+<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to the file holding the voxels. If not specified, voxels are stored
+in <code class="docutils literal notranslate"><span class="pre">./voxels.npy</span></code>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -369,7 +369,7 @@ zeros.</p>
 <li><p><strong>sigma</strong> (<em>float</em><em>, </em><em>default=25</em>) – Sigma value (σ/Å) of the probe atom.</p></li>
 <li><p><strong>cubic_box</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the simulation box is cubic.</p></li>
 <li><p><strong>length</strong> (<em>float</em><em>, </em><em>default=30</em>) – The size of the cubic box in Å. Takes effect only if <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code>.</p></li>
-<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to store the voxels. If not specified, voxels are stored in
+<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to the file holding the voxels. If not specified, voxels are stored in
 <code class="docutils literal notranslate"><span class="pre">./voxels.npy</span></code>.</p></li>
 </ul>
 </dd>
@@ -428,7 +428,7 @@ generate the colors of the voxels based on the specified <code class="docutils l
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="cli.html" class="btn btn-neutral float-left" title="Command Line Interface (CLI)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="cli.html" class="btn btn-neutral float-left" title="⌨️ Command Line Interface (CLI)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

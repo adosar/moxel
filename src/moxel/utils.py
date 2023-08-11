@@ -4,8 +4,10 @@ import warnings
 import itertools
 import numpy as np
 from pathlib import Path
+import matplotlib as mpl
 from itertools import repeat
 from rich.progress import track
+import matplotlib.pyplot as plt
 from multiprocessing import Pool
 from dataclasses import dataclass
 from pymatgen.core import Structure
@@ -285,7 +287,7 @@ def voxels_from_files(
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     out_name : str, optional
-        Pathname to store the voxels. If not specified, voxels are stored in
+        Pathname to the file holding the voxels. If not specified, voxels are stored in
         ``./voxels.npy``.
     
     Notes
@@ -348,8 +350,8 @@ def voxels_from_dir(
     sigma : float, default=25
         Sigma value (σ/Å) of the probe atom.
     out_name : str, optional
-        Pathname to store the voxels. If not specified, voxels are stored in
-        ``./voxels.npy``.
+        Pathname to the file holding the voxels. If not specified, voxels are stored
+        in ``./voxels.npy``.
     
     Notes
     -----
@@ -485,12 +487,12 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     Parameters
     ----------
     batch_dirnames : list
-        List of pathnames to the directories of the batches.
+        List of paths to the directories of the batches.
     out_name : str, optional
-        Pathname to directory holding the (*cleaned and merged*) voxels and the
-        names of their corresponding structures. Takes effect only if
+        Pathname of the directory holding the (*cleaned and merged*) voxels and
+        the names of their corresponding structures. Takes effect only if
         ``len(batch_dirnames) > 1``. If not specified, voxels and names are
-        stored under './' (current working directory).
+        stored under ``./`` (current working directory).
 
     Returns
     -------
@@ -525,10 +527,7 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
         clean_dir = '.'
     else:
         clean_dir = out_name
-        try:
-            os.mkdir(clean_dir)
-        except:
-            pass
+        os.mkdir(clean_dir)
 
     clean_size = np.sum([len(batch_dict[b][0]) - len(batch_dict[b][2]) for b in batch_dict.keys()])
     clean_fp = np.lib.format.open_memmap(
@@ -555,60 +554,56 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     return 1
 
 
-#def plot_voxels_mpl(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **kwargs):
-#    r"""
-#    Visualizing voxels with `Axes3d.voxels
-#    <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
-#
-#    Parameters
-#    ----------
-#    voxels : 3D array
-#    fill_pattern : 3D array of bool, optional
-#        A 3D array of values, with truthy values indicating which voxels to
-#        fill.
-#    colorbar : bool, default=True
-#        Whether to include a colorbar.
-#    cmap : str, default='viridis'
-#        `Colormap
-#        <https://matplotlib.org/stable/tutorials/colors/colormaps.html>`_ that
-#        colorizes the voxels based on their value.
-#    **kwargs :
-#        Valid keyword arguments for `Axes3d.voxels
-#        <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
-#
-#        .. warning::
-#            Do not pass the argument ``facecolors`` of `Axes3d.voxels
-#            <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
-#            This argument is used under the hood by :func:`plot_voxels_mpl` to
-#            generate the colors of the voxels based on the specified ``cmap``.
-#
-#    Returns
-#    -------
-#    fig : `Figure <https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure>`_
-#    """
-#    if fill_pattern == None:
-#        fill_pattern = np.full(voxels.shape, True)
-#
-#    cmap = plt.get_cmap(cmap)
-#    norm = mpl.colors.Normalize()
-#    colors = cmap((voxels - voxels.min()) / (voxels.max() - voxels.min()))
-#
-#    fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
-#    _ = ax.voxels(filled=fill_pattern, facecolors=colors, **kwargs)
-#
-#    if colorbar:
-#        mappable = mpl.cm.ScalarMappable(norm=mpl.colors.Normalize(), cmap=cmap) 
-#        cbar = fig.colorbar(
-#            mappable, ax=ax, ticks=[], extend='max',
-#            shrink=0.7, pad=0.1,
-#            )
-#        cbar.ax.set_ylabel(r'$e^{-\beta \mathcal{V}}$', fontsize=12)
-#    
-#    return fig
-#
-#
-#def plot_voxels_pv():
-#    pass
+def plot_voxels(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **kwargs):
+    r"""
+    Visualizing voxels with `Axes3d.voxels
+    <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
+
+    Parameters
+    ----------
+    voxels : 3D array
+    fill_pattern : 3D array of bool, optional
+        A 3D array of values, with truthy values indicating which voxels to
+        fill.
+    colorbar : bool, default=True
+        Whether to include a colorbar.
+    cmap : str, default='viridis'
+        `Colormap
+        <https://matplotlib.org/stable/tutorials/colors/colormaps.html>`_ that
+        colorizes the voxels based on their value.
+    **kwargs :
+        Valid keyword arguments for `Axes3d.voxels
+        <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
+
+        .. warning::
+            Do not pass the argument ``facecolors`` of `Axes3d.voxels
+            <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
+            This argument is used under the hood by :func:`plot_voxels_mpl` to
+            generate the colors of the voxels based on the specified ``cmap``.
+
+    Returns
+    -------
+    fig : `Figure <https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure>`_
+    """
+    if fill_pattern == None:
+        fill_pattern = np.full(voxels.shape, True)
+
+    cmap = plt.get_cmap(cmap)
+    norm = mpl.colors.Normalize()
+    colors = cmap((voxels - voxels.min()) / (voxels.max() - voxels.min()))
+
+    fig, ax = plt.subplots(subplot_kw={'projection': '3d'})
+    _ = ax.voxels(filled=fill_pattern, facecolors=colors, **kwargs)
+
+    if colorbar:
+        mappable = mpl.cm.ScalarMappable(norm=mpl.colors.Normalize(), cmap=cmap) 
+        cbar = fig.colorbar(
+            mappable, ax=ax, ticks=[], extend='max',
+            shrink=0.7, pad=0.1,
+            )
+        cbar.ax.set_ylabel(r'$e^{-\beta \mathcal{V}}$', fontsize=12)
+    
+    return fig
 
 
 # Loading LJ parameters.

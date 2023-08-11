@@ -1,2 +1,2 @@
-Command Line Interface (CLI)
-============================
+|:keyboard:| Command Line Interface (CLI)
+=========================================

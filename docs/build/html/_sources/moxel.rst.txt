@@ -1,5 +1,5 @@
-moxel package
-=============
+|:book:| API Documentation
+==========================
 
 .. automodule:: moxel
    :members:
