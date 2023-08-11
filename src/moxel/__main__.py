@@ -36,14 +36,16 @@ def _transaction_summary():
     print(f'Calculate voxels for {num_cifs} CIFs\n')
 
 
+
 parser = argparse.ArgumentParser(
-        prog='moxel',
+        prog='MOXελ',
         description='Generate voxelized potential energy surface \
                 for a list of crystalline materials. CIF files are \
                     retrieved from <directory>.',
         epilog='For more information check: https://github.com/adosar/moxel.git'
         )
 
+parser.add_argument('--version', action='version', version='%(prog)s 0.0.1')
 parser.add_argument('directory')
 parser.add_argument(
         '-n', metavar='grid size',

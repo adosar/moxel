@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>moxel package &mdash; MOXελ 0.0.1 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Command Line Interface (CLI)" href="cli.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            MOXελ
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">Command Line Interface (CLI)</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">moxel package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moxel.utils">moxel.utils module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.utils.Grid"><code class="docutils literal notranslate"><span class="pre">Grid</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.structure"><code class="docutils literal notranslate"><span class="pre">Grid.structure</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.structure_name"><code class="docutils literal notranslate"><span class="pre">Grid.structure_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.cubic_box"><code class="docutils literal notranslate"><span class="pre">Grid.cubic_box</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.voxels"><code class="docutils literal notranslate"><span class="pre">Grid.voxels</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.calculate"><code class="docutils literal notranslate"><span class="pre">Grid.calculate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.lj_potential"><code class="docutils literal notranslate"><span class="pre">Grid.lj_potential()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.load_structure"><code class="docutils literal notranslate"><span class="pre">Grid.load_structure()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.utils.batch_clean_and_merge"><code class="docutils literal notranslate"><span class="pre">batch_clean_and_merge()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.utils.mic_scale_factors"><code class="docutils literal notranslate"><span class="pre">mic_scale_factors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.utils.voxels_from_dir"><code class="docutils literal notranslate"><span class="pre">voxels_from_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.utils.voxels_from_file"><code class="docutils literal notranslate"><span class="pre">voxels_from_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.utils.voxels_from_files"><code class="docutils literal notranslate"><span class="pre">voxels_from_files()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moxel.visualize">moxel.visualize module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.visualize.plot_voxels_mpl"><code class="docutils literal notranslate"><span class="pre">plot_voxels_mpl()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.visualize.plot_voxels_pv"><code class="docutils literal notranslate"><span class="pre">plot_voxels_pv()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">MOXελ</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">moxel package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/moxel.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-moxel">
+<span id="moxel-package"></span><h1>moxel package<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
+<p>MOXελ is a Python package for parallel calculation of energy voxels.</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-moxel.utils">
+<span id="moxel-utils-module"></span><h2>moxel.utils module<a class="headerlink" href="#module-moxel.utils" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="moxel.utils.Grid">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">Grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.Grid" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A 3D energy grid over a crystal structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>grid_size</strong> (<em>int</em><em>, </em><em>default=25</em>) – Number of grid points along each dimension.</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em><em>, </em><em>default=10</em>) – Cutoff radius for the Lennard-Jones potential.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>default=50</em>) – Epsilon value (ε/K) of the probe atom.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em><em>, </em><em>default=2.5</em>) – Sigma value (σ/Å) of the probe atom.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moxel.utils.Grid.structure">
+<span class="sig-name descname"><span class="pre">structure</span></span><a class="headerlink" href="#moxel.utils.Grid.structure" title="Permalink to this definition"></a></dt>
+<dd><p>Available only after <a class="reference internal" href="#moxel.utils.Grid.load_structure" title="moxel.utils.Grid.load_structure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Grid.load_structure()</span></code></a> has been called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://pymatgen.org/pymatgen.core.structure.html#pymatgen.core.structure.Structure">pymatgen.core.structure.Structure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moxel.utils.Grid.structure_name">
+<span class="sig-name descname"><span class="pre">structure_name</span></span><a class="headerlink" href="#moxel.utils.Grid.structure_name" title="Permalink to this definition"></a></dt>
+<dd><p>Available only after <a class="reference internal" href="#moxel.utils.Grid.load_structure" title="moxel.utils.Grid.load_structure"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Grid.load_structure()</span></code></a> has been called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moxel.utils.Grid.cubic_box">
+<span class="sig-name descname"><span class="pre">cubic_box</span></span><a class="headerlink" href="#moxel.utils.Grid.cubic_box" title="Permalink to this definition"></a></dt>
+<dd><p>Available only after <a class="reference internal" href="#moxel.utils.Grid.calculate" title="moxel.utils.Grid.calculate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Grid.calculate()</span></code></a> has been called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="moxel.utils.Grid.voxels">
+<span class="sig-name descname"><span class="pre">voxels</span></span><a class="headerlink" href="#moxel.utils.Grid.voxels" title="Permalink to this definition"></a></dt>
+<dd><p>Available only after <a class="reference internal" href="#moxel.utils.Grid.calculate" title="moxel.utils.Grid.calculate"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Grid.calculate()</span></code></a> has been called.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array of shape (grid_size, grid_size, grid_size)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moxel.utils.Grid.calculate">
+<span class="sig-name descname"><span class="pre">calculate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">potential</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lj'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.Grid.calculate" title="Permalink to this definition"></a></dt>
+<dd><p>Iterate over the grid and return voxels.</p>
+<p>For computational efficiency and to assure (approximately) the same
+spatial resolution, the grid is overlayed over a supercell scaled
+according to MIC convention.</p>
+<p>If lattice angles are different than 90°, to avoid distortions set one
+of <code class="docutils literal notranslate"><span class="pre">cubic_box</span></code>. In this case, the grid is overlayed over a cubic box
+of size <code class="docutils literal notranslate"><span class="pre">length</span></code> centered at the origin but periodicity is no longer
+guaranteed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>potential</strong> (<em>str</em><em>, </em><em>default='lj'</em>) – The potential used to calculate voxels. Currently, only the
+Lennard-Jones potential is supported.</p></li>
+<li><p><strong>cubic_box</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the simulation box is cubic.</p></li>
+<li><p><strong>length</strong> (<em>float</em><em>, </em><em>default=30</em>) – The size of the cubic box in Å. Takes effect only if <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>voxels</strong> – The energy voxels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array of shape (grid_size, grid_size, grid_size)</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For structures that can not be processsed, their voxels are filled with
+zeros.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moxel.utils.Grid.lj_potential">
+<span class="sig-name descname"><span class="pre">lj_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.Grid.lj_potential" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate Lennard-Jones potential at cartesian or fractional
+coordinates.
+cell.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinates</strong> (<em>array_like</em><em> of </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em>) – If <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code> cartesian. Else, fractional.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>energy</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="moxel.utils.Grid.load_structure">
+<span class="sig-name descname"><span class="pre">load_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_pathname</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.Grid.load_structure" title="Permalink to this definition"></a></dt>
+<dd><p>Load a crystal structure from a .cif file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cif_pathname</strong> (<em>str</em>) – Pathname to the .cif file.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.utils.batch_clean_and_merge">
+<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">batch_clean_and_merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch_dirnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.batch_clean_and_merge" title="Permalink to this definition"></a></dt>
+<dd><p>Clean a single batch, or <em>first clean and then merge</em> multiple batches.
+All batches must have the form:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>batch
+├──voxels.npy
+└──names.json
+</pre></div>
+</div>
+<p>Cleaning is required since the voxels for some structures might be zero,
+see <a class="reference internal" href="#moxel.utils.Grid.calculate" title="moxel.utils.Grid.calculate"><code class="xref py py-func docutils literal notranslate"><span class="pre">Grid.calculate()</span></code></a>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">==</span> <span class="pre">1</span></code> the cleaned voxels for are stored under
+<code class="docutils literal notranslate"><span class="pre">batch_dirnames[0]/clean_voxels.npy</span></code> and the names of their corresponding
+structures under <code class="docutils literal notranslate"><span class="pre">batch_dirnames[0]/clean_names.json</span></code>.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> the voxels (<em>cleaned and merged</em>) are stored
+under <code class="docutils literal notranslate"><span class="pre">out_name/clean_voxels.npy</span></code> and the names of their corresponding
+structures under <code class="docutils literal notranslate"><span class="pre">out_name/clean_names.json</span></code>. That is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>out_name
+├──clean_voxels.npy
+└──clean_names.json
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>batch_dirnames</strong> (<em>list</em>) – List of pathnames to the directories of the batches.</p></li>
+<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to directory holding the (<em>cleaned and merged</em>) voxels and the
+names of their corresponding structures. Takes effect only if
+<code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If not specified, voxels and names are
+stored under ‘./’ (current working directory).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>exit_status</strong> – If no voxels are missing <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">0</span></code>.
+Else <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">1</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.utils.mic_scale_factors">
+<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">mic_scale_factors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_vectors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.mic_scale_factors" title="Permalink to this definition"></a></dt>
+<dd><p>Return scale factors to satisfy minimum image convention (MIC).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>r</strong> (<em>float</em>) – The cutoff radius used in MIC convetion.</p></li>
+<li><p><strong>lattice_vectors</strong> (<em>array</em><em> of </em><em>shape</em><em> (</em><em>3</em><em>, </em><em>3</em><em>)</em>) – The lattice vectors of the unit cell.
+Each row corresponds to a lattice vector.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>scale_factors</strong> – <code class="docutils literal notranslate"><span class="pre">scale_factors[i]</span></code> scales <code class="docutils literal notranslate"><span class="pre">lattice_vectors[i]</span></code>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>array of shape (3,)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.utils.voxels_from_dir">
+<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">voxels_from_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.voxels_from_dir" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate voxels from .cif files in <code class="docutils literal notranslate"><span class="pre">cif_dirname</span></code> and save them in
+<code class="docutils literal notranslate"><span class="pre">out_name</span></code> as <code class="docutils literal notranslate"><span class="pre">array</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size,</span>
+<span class="pre">grid_size)</span></code>, where <code class="docutils literal notranslate"><span class="pre">n_samples</span></code> is the number of .cif files in the
+directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cif_dirname</strong> (<em>str</em>) – Pathname to the directory containing the .cif files.</p></li>
+<li><p><strong>grid_size</strong> (<em>int</em><em>, </em><em>default=25</em>) – Number of grid points along each dimension.</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em><em>, </em><em>default=10</em>) – Cutoff radius for the Lennard-Jones potential.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>default=50</em>) – Epsilon value (ε/K) of the probe atom.</p></li>
+<li><p><strong>cubic_box</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the simulation box is cubic.</p></li>
+<li><p><strong>length</strong> (<em>float</em><em>, </em><em>default=30</em>) – The size of the cubic box in Å. Takes effect only if <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code>.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em><em>, </em><em>default=25</em>) – Sigma value (σ/Å) of the probe atom.</p></li>
+<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to store the voxels. If not specified, voxels are stored in
+<code class="docutils literal notranslate"><span class="pre">./voxels.npy</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The index of each sample in the output array is determined by its
+corresponding index in <code class="docutils literal notranslate"><span class="pre">sorted(os.listdir(cif_dirname))</span></code>.</p>
+<p>For structures that can not be processsed, their voxels are filled with
+zeros.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.utils.voxels_from_file">
+<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">voxels_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_pathname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">only_voxels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.voxels_from_file" title="Permalink to this definition"></a></dt>
+<dd><p>Return voxels from .cif file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cif_pathname</strong> (<em>str</em>) – Pathname to the .cif file.</p></li>
+<li><p><strong>grid_size</strong> (<em>int</em><em>, </em><em>default=25</em>) – Number of grid points along each dimension.</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em><em>, </em><em>default=10</em>) – Cutoff radius for the Lennard-Jones potential.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>default=50</em>) – Epsilon value (ε/K) of the probe atom.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em><em>, </em><em>default=25</em>) – Sigma value (σ/Å) of the probe atom.</p></li>
+<li><p><strong>cubic_box</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the simulation box is cubic.</p></li>
+<li><p><strong>length</strong> (<em>float</em><em>, </em><em>default=30</em>) – The size of the cubic box in Å. Takes effect only if <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code>.</p></li>
+<li><p><strong>only_voxels</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Determines <code class="docutils literal notranslate"><span class="pre">out</span></code> type.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>out</strong> – If <code class="docutils literal notranslate"><span class="pre">only_voxels=True</span></code>, array of shape <code class="docutils literal notranslate"><span class="pre">(grid_size,</span> <span class="pre">grid_size,</span>
+<span class="pre">grid_size)</span></code>. Otherwise, <a class="reference internal" href="#moxel.utils.Grid" title="moxel.utils.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a>.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">array</span></code> or <a class="reference internal" href="#moxel.utils.Grid" title="moxel.utils.Grid"><code class="xref py py-class docutils literal notranslate"><span class="pre">Grid</span></code></a></p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>For structures that can not be processsed, their voxels are filled with
+zeros.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.utils.voxels_from_files">
+<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">voxels_from_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_pathnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.voxels_from_files" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate voxels from a list of .cif files and save them in <code class="docutils literal notranslate"><span class="pre">out_name</span></code> as
+<code class="docutils literal notranslate"><span class="pre">array</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size)</span></code>, where
+<code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">==</span> <span class="pre">len(cif_pathnames)</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cif_pathanmes</strong> (<em>list</em>) – List of pathnames to the .cif files.</p></li>
+<li><p><strong>grid_size</strong> (<em>int</em><em>, </em><em>default=25</em>) – Number of grid points along each dimension.</p></li>
+<li><p><strong>cutoff</strong> (<em>float</em><em>, </em><em>default=10</em>) – Cutoff radius for the Lennard-Jones potential.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em><em>, </em><em>default=50</em>) – Epsilon value (ε/K) of the probe atom.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em><em>, </em><em>default=25</em>) – Sigma value (σ/Å) of the probe atom.</p></li>
+<li><p><strong>cubic_box</strong> (<em>bool</em><em>, </em><em>default=False</em>) – If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the simulation box is cubic.</p></li>
+<li><p><strong>length</strong> (<em>float</em><em>, </em><em>default=30</em>) – The size of the cubic box in Å. Takes effect only if <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code>.</p></li>
+<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to store the voxels. If not specified, voxels are stored in
+<code class="docutils literal notranslate"><span class="pre">./voxels.npy</span></code>.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<p>The index of  each sample in the output array is determined by its
+corresponding index in <code class="docutils literal notranslate"><span class="pre">cif_pathnames</span></code>.</p>
+<p>For structures that can not be processsed, their voxels are filled with
+zeros.</p>
+</dd></dl>
+
+</section>
+<section id="module-moxel.visualize">
+<span id="moxel-visualize-module"></span><h2>moxel.visualize module<a class="headerlink" href="#module-moxel.visualize" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.visualize.plot_voxels_mpl">
+<span class="sig-prename descclassname"><span class="pre">moxel.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_voxels_mpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voxels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.visualize.plot_voxels_mpl" title="Permalink to this definition"></a></dt>
+<dd><p>Visualizing voxels with <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>voxels</strong> (<em>3D array</em>) – </p></li>
+<li><p><strong>fill_pattern</strong> (<em>3D array</em><em> of </em><em>bool</em><em>, </em><em>optional</em>) – A 3D array of values, with truthy values indicating which voxels to
+fill.</p></li>
+<li><p><strong>colorbar</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to include a colorbar.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>default='viridis'</em>) – <a class="reference external" href="https://matplotlib.org/stable/tutorials/colors/colormaps.html">Colormap</a> that
+colorizes the voxels based on their value.</p></li>
+<li><p><strong>**kwargs</strong> – <p>Valid keyword arguments for <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not pass the argument <code class="docutils literal notranslate"><span class="pre">facecolors</span></code> of <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.
+This argument is used under the hood by <a class="reference internal" href="#moxel.visualize.plot_voxels_mpl" title="moxel.visualize.plot_voxels_mpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_voxels_mpl()</span></code></a> to
+generate the colors of the voxels based on the specified <code class="docutils literal notranslate"><span class="pre">cmap</span></code>.</p>
+</div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>fig</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure">Figure</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.visualize.plot_voxels_pv">
+<span class="sig-prename descclassname"><span class="pre">moxel.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_voxels_pv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#moxel.visualize.plot_voxels_pv" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="cli.html" class="btn btn-neutral float-left" title="Command Line Interface (CLI)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Antonios P. Sarikas.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
