@@ -132,8 +132,8 @@ class Grid:
         Parameters
         ----------
         potential : str, default='lj'
-            The potential used to calculate voxels. Currently, only
-            the Lennard-Jones potential is supported.
+            The potential used to calculate voxels. Currently, only the
+            Lennard-Jones potential is supported.
         cubic_box : bool, default=False
             If ``True``, the simulation box is cubic.
         length : float, default=30
@@ -477,7 +477,10 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
 
     If ``len(batch_dirnames) > 1`` the voxels (*cleaned and merged*) are stored
     under ``out_name/clean_voxels.npy`` and the names of their corresponding
-    structures under ``out_name/clean_names.json``.
+    structures under ``out_name/clean_names.json``. That is::
+        out_name
+        ├──clean_voxels.npy
+        └──clean_names.json
 
     Parameters
     ----------
