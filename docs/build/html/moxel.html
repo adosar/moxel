@@ -7,6 +7,7 @@
   <title>📖 API Documentation &mdash; MOXελ 0.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -16,6 +17,8 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/clipboard.min.js"></script>
+        <script src="_static/copybutton.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -33,6 +36,9 @@
           <a href="index.html" class="icon icon-home">
             MOXελ
           </a>
+              <div class="version">
+                0.0.1
+              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -44,7 +50,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">⚙️ Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">🚀 Usage</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">⌨️ Command Line Interface (CLI)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">📖 API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -61,14 +67,10 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#moxel.utils.batch_clean_and_merge"><code class="docutils literal notranslate"><span class="pre">batch_clean_and_merge()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#moxel.utils.mic_scale_factors"><code class="docutils literal notranslate"><span class="pre">mic_scale_factors()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#moxel.utils.plot_voxels"><code class="docutils literal notranslate"><span class="pre">plot_voxels()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#moxel.utils.voxels_from_dir"><code class="docutils literal notranslate"><span class="pre">voxels_from_dir()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#moxel.utils.voxels_from_file"><code class="docutils literal notranslate"><span class="pre">voxels_from_file()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#moxel.utils.voxels_from_files"><code class="docutils literal notranslate"><span class="pre">voxels_from_files()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#module-moxel.visualize">moxel.visualize module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#moxel.visualize.plot_voxels_mpl"><code class="docutils literal notranslate"><span class="pre">plot_voxels_mpl()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#moxel.visualize.plot_voxels_pv"><code class="docutils literal notranslate"><span class="pre">plot_voxels_pv()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -101,8 +103,8 @@
              
   <section id="module-moxel">
 <span id="book-api-documentation"></span><h1>📖 API Documentation<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
-<p>MOXελ is a Python package for parallel calculation of energy voxels for
-crystalline materials.</p>
+<p>MOXελ is a Python package for parallel calculation of energy voxels, with
+emphasis on reticular chemistry.</p>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
@@ -173,11 +175,11 @@ crystalline materials.</p>
 <dd><p>Iterate over the grid and return voxels.</p>
 <p>For computational efficiency and to assure (approximately) the same
 spatial resolution, the grid is overlayed over a supercell scaled
-according to MIC convention.</p>
-<p>If lattice angles are different than 90°, to avoid distortions set one
-of <code class="docutils literal notranslate"><span class="pre">cubic_box</span></code>. In this case, the grid is overlayed over a cubic box
-of size <code class="docutils literal notranslate"><span class="pre">length</span></code> centered at the origin but periodicity is no longer
-guaranteed.</p>
+according to MIC, see <a class="reference internal" href="#moxel.utils.mic_scale_factors" title="moxel.utils.mic_scale_factors"><code class="xref py py-func docutils literal notranslate"><span class="pre">mic_scale_factors()</span></code></a>.</p>
+<p>If lattice angles are significantly different than 90°, to avoid
+distortions set <code class="docutils literal notranslate"><span class="pre">cubic_box</span></code> to <code class="docutils literal notranslate"><span class="pre">True</span></code>. In this case, the grid is
+overlayed over a cubic box of size <code class="docutils literal notranslate"><span class="pre">length</span></code> centered at the origin but
+periodicity is no longer guaranteed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -203,8 +205,7 @@ zeros.</p>
 <dt class="sig sig-object py" id="moxel.utils.Grid.lj_potential">
 <span class="sig-name descname"><span class="pre">lj_potential</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coords</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.Grid.lj_potential" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate Lennard-Jones potential at cartesian or fractional
-coordinates.
-cell.</p>
+coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>coordinates</strong> (<em>array_like</em><em> of </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em>) – If <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code> cartesian. Else, fractional.</p>
@@ -259,9 +260,10 @@ structures under <code class="docutils literal notranslate"><span class="pre">ou
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>batch_dirnames</strong> (<em>list</em>) – List of paths to the directories of the batches.</p></li>
 <li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname of the directory holding the (<em>cleaned and merged</em>) voxels and
-the names of their corresponding structures. Takes effect only if
-<code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If not specified, voxels and names are
-stored under <code class="docutils literal notranslate"><span class="pre">./</span></code> (current working directory).</p></li>
+the names of their corresponding structures. The directory is created if
+it doesn’t exist. Takes effect only if <code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If
+not specified, voxels and names are stored under <code class="docutils literal notranslate"><span class="pre">./</span></code> (current working
+directory).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -276,7 +278,7 @@ stored under <code class="docutils literal notranslate"><span class="pre">./</sp
 <dl class="py function">
 <dt class="sig sig-object py" id="moxel.utils.mic_scale_factors">
 <span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">mic_scale_factors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lattice_vectors</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.mic_scale_factors" title="Permalink to this definition"></a></dt>
-<dd><p>Return scale factors to satisfy minimum image convention (MIC).</p>
+<dd><p>Return scale factors to satisfy minimum image convention (MIC) <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> .</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -290,6 +292,47 @@ Each row corresponds to a lattice vector.</p></li>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array of shape (3,)</p>
+</dd>
+</dl>
+<p class="rubric">References</p>
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="note">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<ol class="upperalpha simple" start="23">
+<li><p>Smith, “The Minimum Image Convention in Non-Cubic MD Cells”, 1989.</p></li>
+</ol>
+</aside>
+</aside>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="moxel.utils.plot_voxels">
+<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">plot_voxels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voxels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.plot_voxels" title="Permalink to this definition"></a></dt>
+<dd><p>Visualizing voxels with <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>voxels</strong> (<em>3D array</em>) – </p></li>
+<li><p><strong>fill_pattern</strong> (<em>3D array</em><em> of </em><em>bool</em><em>, </em><em>optional</em>) – A 3D array of values, with truthy values indicating which voxels to
+fill.</p></li>
+<li><p><strong>colorbar</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to include a colorbar.</p></li>
+<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>default='viridis'</em>) – <a class="reference external" href="https://matplotlib.org/stable/tutorials/colors/colormaps.html">Colormap</a> that
+colorizes the voxels based on their value.</p></li>
+<li><p><strong>**kwargs</strong> – <p>Valid keyword arguments for <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Do not pass the argument <code class="docutils literal notranslate"><span class="pre">facecolors</span></code> of <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.
+This argument is used under the hood by <code class="xref py py-func docutils literal notranslate"><span class="pre">plot_voxels_mpl()</span></code> to
+generate the colors of the voxels based on the specified <code class="docutils literal notranslate"><span class="pre">cmap</span></code>.</p>
+</div>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>fig</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure">Figure</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -380,46 +423,6 @@ corresponding index in <code class="docutils literal notranslate"><span class="p
 <p>For structures that can not be processsed, their voxels are filled with
 zeros.</p>
 </dd></dl>
-
-</section>
-<section id="module-moxel.visualize">
-<span id="moxel-visualize-module"></span><h2>moxel.visualize module<a class="headerlink" href="#module-moxel.visualize" title="Permalink to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="moxel.visualize.plot_voxels_mpl">
-<span class="sig-prename descclassname"><span class="pre">moxel.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_voxels_mpl</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">voxels</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_pattern</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'viridis'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.visualize.plot_voxels_mpl" title="Permalink to this definition"></a></dt>
-<dd><p>Visualizing voxels with <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>voxels</strong> (<em>3D array</em>) – </p></li>
-<li><p><strong>fill_pattern</strong> (<em>3D array</em><em> of </em><em>bool</em><em>, </em><em>optional</em>) – A 3D array of values, with truthy values indicating which voxels to
-fill.</p></li>
-<li><p><strong>colorbar</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to include a colorbar.</p></li>
-<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>default='viridis'</em>) – <a class="reference external" href="https://matplotlib.org/stable/tutorials/colors/colormaps.html">Colormap</a> that
-colorizes the voxels based on their value.</p></li>
-<li><p><strong>**kwargs</strong> – <p>Valid keyword arguments for <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Do not pass the argument <code class="docutils literal notranslate"><span class="pre">facecolors</span></code> of <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels">Axes3d.voxels</a>.
-This argument is used under the hood by <a class="reference internal" href="#moxel.visualize.plot_voxels_mpl" title="moxel.visualize.plot_voxels_mpl"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot_voxels_mpl()</span></code></a> to
-generate the colors of the voxels based on the specified <code class="docutils literal notranslate"><span class="pre">cmap</span></code>.</p>
-</div>
-</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>fig</strong></p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure">Figure</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="moxel.visualize.plot_voxels_pv">
-<span class="sig-prename descclassname"><span class="pre">moxel.visualize.</span></span><span class="sig-name descname"><span class="pre">plot_voxels_pv</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#moxel.visualize.plot_voxels_pv" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </section>
 </section>

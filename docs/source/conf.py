@@ -1,5 +1,6 @@
 import sys, os
 sys.path.insert(0, os.path.abspath('../../src'))
+from moxel import __version__ as version
 
 # Configuration file for the Sphinx documentation builder.
 #
@@ -12,7 +13,7 @@ sys.path.insert(0, os.path.abspath('../../src'))
 project = 'MOXελ'
 copyright = '2023, Antonios P. Sarikas'
 author = 'Antonios P. Sarikas'
-release = '0.0.1'
+release = version
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -21,12 +22,15 @@ extensions = [
         'sphinx.ext.autodoc',
         'sphinx.ext.napoleon',
         'sphinxemoji.sphinxemoji',
+        'sphinx_copybutton',
         ]
 
 templates_path = ['_templates']
 exclude_patterns = []
 
 
+# Exclude input prompts from copybutton
+copybutton_exclude = '.linenos, .gp'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

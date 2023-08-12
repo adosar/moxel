@@ -15,7 +15,7 @@ from pymatgen.core import Structure
 
 def mic_scale_factors(r, lattice_vectors):
     r"""
-    Return scale factors to satisfy minimum image convention (MIC).
+    Return scale factors to satisfy minimum image convention (MIC) [1]_ .
 
     Parameters
     ----------
@@ -29,6 +29,10 @@ def mic_scale_factors(r, lattice_vectors):
     -------
     scale_factors : array of shape (3,)
         ``scale_factors[i]`` scales ``lattice_vectors[i]``.
+
+    References
+    ----------
+    .. [1] W. Smith, "The Minimum Image Convention in Non-Cubic MD Cells", 1989.
     """
     a, b, c = lattice_vectors
     volume = np.linalg.norm(np.dot(a, np.cross(b, c)))
@@ -122,12 +126,12 @@ class Grid:
 
         For computational efficiency and to assure (approximately) the same
         spatial resolution, the grid is overlayed over a supercell scaled
-        according to MIC convention.
+        according to MIC, see :func:`mic_scale_factors`.
 
-        If lattice angles are different than 90°, to avoid distortions set one
-        of ``cubic_box``. In this case, the grid is overlayed over a cubic box
-        of size ``length`` centered at the origin but periodicity is no longer
-        guaranteed.
+        If lattice angles are significantly different than 90°, to avoid
+        distortions set ``cubic_box`` to ``True``. In this case, the grid is
+        overlayed over a cubic box of size ``length`` centered at the origin but
+        periodicity is no longer guaranteed.
 
         Parameters
         ----------
@@ -176,7 +180,6 @@ class Grid:
         r"""
         Calculate Lennard-Jones potential at cartesian or fractional
         coordinates.
-        cell.
 
         Parameters
         ----------
@@ -490,9 +493,10 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
         List of paths to the directories of the batches.
     out_name : str, optional
         Pathname of the directory holding the (*cleaned and merged*) voxels and
-        the names of their corresponding structures. Takes effect only if
-        ``len(batch_dirnames) > 1``. If not specified, voxels and names are
-        stored under ``./`` (current working directory).
+        the names of their corresponding structures. The directory is created if
+        it doesn't exist. Takes effect only if ``len(batch_dirnames) > 1``. If
+        not specified, voxels and names are stored under ``./`` (current working
+        directory).
 
     Returns
     -------

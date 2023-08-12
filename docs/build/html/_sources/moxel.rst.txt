@@ -16,11 +16,3 @@ moxel.utils module
    :members:
    :undoc-members:
    :show-inheritance:
-
-moxel.visualize module
-----------------------
-
-.. automodule:: moxel.visualize
-   :members:
-   :undoc-members:
-   :show-inheritance:
