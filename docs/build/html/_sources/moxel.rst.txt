@@ -1,3 +1,5 @@
+.. _documentation:
+
 |:book:| API Documentation
 ==========================
 

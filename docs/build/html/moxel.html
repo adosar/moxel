@@ -50,7 +50,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">⚙️ Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">🚀 Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">🚀 Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">⌨️ Command Line Interface (CLI)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">📖 API Documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
@@ -102,7 +102,7 @@
            <div itemprop="articleBody">
              
   <section id="module-moxel">
-<span id="book-api-documentation"></span><h1>📖 API Documentation<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
+<span id="book-api-documentation"></span><span id="documentation"></span><h1>📖 API Documentation<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
 <p>MOXελ is a Python package for parallel calculation of energy voxels, with
 emphasis on reticular chemistry.</p>
 <section id="submodules">
@@ -259,11 +259,10 @@ structures under <code class="docutils literal notranslate"><span class="pre">ou
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>batch_dirnames</strong> (<em>list</em>) – List of paths to the directories of the batches.</p></li>
-<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname of the directory holding the (<em>cleaned and merged</em>) voxels and
-the names of their corresponding structures. The directory is created if
-it doesn’t exist. Takes effect only if <code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If
-not specified, voxels and names are stored under <code class="docutils literal notranslate"><span class="pre">./</span></code> (current working
-directory).</p></li>
+<li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to the directory holding the clean voxels and names.  The
+directory is created if it doesn’t exist. Takes effect only if
+<code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If not specified, voxels and names are
+stored under <code class="docutils literal notranslate"><span class="pre">./</span></code> (current working directory).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -360,10 +359,11 @@ in <code class="docutils literal notranslate"><span class="pre">./voxels.npy</sp
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The index of each sample in the output array is determined by its
-corresponding index in <code class="docutils literal notranslate"><span class="pre">sorted(os.listdir(cif_dirname))</span></code>.</p>
-<p>For structures that can not be processsed, their voxels are filled with
-zeros.</p>
+<ul class="simple">
+<li><p>Samples in output array follow the order in <code class="docutils literal notranslate"><span class="pre">sorted(os.listdir(cif_dirname))</span></code>.</p></li>
+<li><p>For structures that can not be processsed, their voxels are filled with zeros.</p></li>
+<li><p>Currently, all interactions are modelled with the LJ potential.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
@@ -392,13 +392,15 @@ zeros.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>For structures that can not be processsed, their voxels are filled with
-zeros.</p>
+<ul class="simple">
+<li><p>For structures that can not be processsed, their voxels are filled with zeros.</p></li>
+<li><p>Currently, all interactions are modelled with the LJ potential.</p></li>
+</ul>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="moxel.utils.voxels_from_files">
-<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">voxels_from_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_pathnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.voxels_from_files" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">voxels_from_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_pathnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.voxels_from_files" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate voxels from a list of .cif files and save them in <code class="docutils literal notranslate"><span class="pre">out_name</span></code> as
 <code class="docutils literal notranslate"><span class="pre">array</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size)</span></code>, where
 <code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">==</span> <span class="pre">len(cif_pathnames)</span></code>.</p>
@@ -418,10 +420,11 @@ zeros.</p>
 </dd>
 </dl>
 <p class="rubric">Notes</p>
-<p>The index of  each sample in the output array is determined by its
-corresponding index in <code class="docutils literal notranslate"><span class="pre">cif_pathnames</span></code>.</p>
-<p>For structures that can not be processsed, their voxels are filled with
-zeros.</p>
+<ul class="simple">
+<li><p>Samples in output array follow the order in <code class="docutils literal notranslate"><span class="pre">cif_pathnames</span></code>.</p></li>
+<li><p>For structures that can not be processsed, their voxels are filled with zeros.</p></li>
+<li><p>Currently, all interactions are modelled with the LJ potential.</p></li>
+</ul>
 </dd></dl>
 
 </section>

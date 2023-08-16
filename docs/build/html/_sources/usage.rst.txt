@@ -1,2 +1,5 @@
 |:rocket:| Usage
 ================
+
+We will use IRMOF-1 as an example. Download
+:download:`foo<down/IRMOF-1.cif>`.

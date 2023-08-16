@@ -8,6 +8,8 @@
    :align: center
 
 
+.. _introduction:
+
 Introduction
 ============
 
@@ -17,6 +19,8 @@ with emphasis on reticular chemistry.
 
 These energy voxels can then be used as a raw input for Machine Learning (ML)
 algorithms or for manual feature extraction.
+
+.. _advantages:
 
 Why ΜΟΧελ?
 ----------
@@ -63,7 +67,7 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
    :caption: Contents:
 
    installation
-   usage
+   tutorial
    cli
    moxel
 

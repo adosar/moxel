@@ -246,8 +246,11 @@ def voxels_from_file(
 
     Notes
     -----
-    For structures that can not be processsed, their voxels are filled with
-    zeros.
+
+    * For structures that can not be processsed, their voxels are filled with zeros.
+
+    * Currently, all interactions are modelled with the LJ potential.
+
     """
     grid = Grid(grid_size, cutoff, epsilon, sigma)
     try:
@@ -265,7 +268,7 @@ def voxels_from_file(
 def voxels_from_files(
         cif_pathnames, grid_size=25, cutoff=10,
         epsilon=50, sigma=2.5,
-        cubic_box=0, length=30,
+        cubic_box=False, length=30,
         out_name=None,
         ):
     """
@@ -295,11 +298,13 @@ def voxels_from_files(
     
     Notes
     -----
-    The index of  each sample in the output array is determined by its
-    corresponding index in ``cif_pathnames``.
 
-    For structures that can not be processsed, their voxels are filled with
-    zeros.
+    * Samples in output array follow the order in ``cif_pathnames``.
+
+    * For structures that can not be processsed, their voxels are filled with zeros.
+
+    * Currently, all interactions are modelled with the LJ potential.
+
     """
     n = len(cif_pathnames)
     cif_files = [i for i in cif_pathnames if i.endswith('.cif')]
@@ -358,11 +363,12 @@ def voxels_from_dir(
     
     Notes
     -----
-    The index of each sample in the output array is determined by its
-    corresponding index in ``sorted(os.listdir(cif_dirname))``.
 
-    For structures that can not be processsed, their voxels are filled with
-    zeros.
+    * Samples in output array follow the order in ``sorted(os.listdir(cif_dirname))``.
+
+    * For structures that can not be processsed, their voxels are filled with zeros.
+
+    * Currently, all interactions are modelled with the LJ potential.
     """
     files = sorted(os.listdir(cif_dirname))
     cif_files = [f'{cif_dirname}/{file}' for file in files if file.endswith('.cif')]
@@ -492,11 +498,10 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     batch_dirnames : list
         List of paths to the directories of the batches.
     out_name : str, optional
-        Pathname of the directory holding the (*cleaned and merged*) voxels and
-        the names of their corresponding structures. The directory is created if
-        it doesn't exist. Takes effect only if ``len(batch_dirnames) > 1``. If
-        not specified, voxels and names are stored under ``./`` (current working
-        directory).
+        Pathname to the directory holding the clean voxels and names.  The
+        directory is created if it doesn't exist. Takes effect only if
+        ``len(batch_dirnames) > 1``. If not specified, voxels and names are
+        stored under ``./`` (current working directory).
 
     Returns
     -------
