@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>📖 API Documentation &mdash; MOXελ 0.0.1 documentation</title>
+  <title>moxel package &mdash; MOXελ 0.0.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
@@ -53,8 +53,9 @@
 <li class="toctree-l1"><a class="reference internal" href="installation.html">⚙️ Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">🚀 Tutorial</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">⌨️ Command Line Interface (CLI)</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">📖 API Documentation</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">moxel package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-moxel.cli">moxel.cli module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-moxel.utils">moxel.utils module</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#moxel.utils.Grid"><code class="docutils literal notranslate"><span class="pre">Grid</span></code></a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#moxel.utils.Grid.structure"><code class="docutils literal notranslate"><span class="pre">Grid.structure</span></code></a></li>
@@ -92,7 +93,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">📖 API Documentation</li>
+      <li class="breadcrumb-item active">moxel package</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/moxel.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -103,11 +104,18 @@
            <div itemprop="articleBody">
              
   <section id="module-moxel">
-<span id="book-api-documentation"></span><span id="documentation"></span><h1>📖 API Documentation<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
+<span id="moxel-package"></span><h1>moxel package<a class="headerlink" href="#module-moxel" title="Permalink to this heading"></a></h1>
 <p>MOXελ is a Python package for parallel calculation of energy voxels, with
 emphasis on reticular chemistry.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, interactions are modelled with Lennard-Jones potential.</p>
+</div>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-moxel.cli">
+<span id="moxel-cli-module"></span><h2>moxel.cli module<a class="headerlink" href="#module-moxel.cli" title="Permalink to this heading"></a></h2>
 </section>
 <section id="module-moxel.utils">
 <span id="moxel-utils-module"></span><h2>moxel.utils module<a class="headerlink" href="#module-moxel.utils" title="Permalink to this heading"></a></h2>
@@ -363,7 +371,6 @@ in <code class="docutils literal notranslate"><span class="pre">./voxels.npy</sp
 <ul class="simple">
 <li><p>Samples in output array follow the order in <code class="docutils literal notranslate"><span class="pre">sorted(os.listdir(cif_dirname))</span></code>.</p></li>
 <li><p>For structures that can not be processsed, their voxels are filled with zeros.</p></li>
-<li><p>Currently, all interactions are modelled with the LJ potential.</p></li>
 </ul>
 </dd></dl>
 
@@ -395,7 +402,6 @@ in <code class="docutils literal notranslate"><span class="pre">./voxels.npy</sp
 <p class="rubric">Notes</p>
 <ul class="simple">
 <li><p>For structures that can not be processsed, their voxels are filled with zeros.</p></li>
-<li><p>Currently, all interactions are modelled with the LJ potential.</p></li>
 </ul>
 </dd></dl>
 
@@ -425,7 +431,6 @@ in <code class="docutils literal notranslate"><span class="pre">./voxels.npy</sp
 <ul class="simple">
 <li><p>Samples in output array follow the order in <code class="docutils literal notranslate"><span class="pre">cif_pathnames</span></code>.</p></li>
 <li><p>For structures that can not be processsed, their voxels are filled with zeros.</p></li>
-<li><p>Currently, all interactions are modelled with the LJ potential.</p></li>
 </ul>
 </dd></dl>
 

@@ -249,9 +249,6 @@ def voxels_from_file(
     -----
 
     * For structures that can not be processsed, their voxels are filled with zeros.
-
-    * Currently, all interactions are modelled with the LJ potential.
-
     """
     grid = Grid(grid_size, cutoff, epsilon, sigma)
     try:
@@ -305,9 +302,6 @@ def voxels_from_files(
     * Samples in output array follow the order in ``cif_pathnames``.
 
     * For structures that can not be processsed, their voxels are filled with zeros.
-
-    * Currently, all interactions are modelled with the LJ potential.
-
     """
     n = len(cif_pathnames)
     cif_files = [i for i in cif_pathnames if i.endswith('.cif')]
@@ -326,7 +320,7 @@ def voxels_from_files(
             repeat(cubic_box), repeat(length)
             )
 
-    for i in range(n):
+    for i in track(range(n), description='Processing...'):
         fp[i] = next(grids)
 
     fp.flush()
@@ -370,8 +364,6 @@ def voxels_from_dir(
     * Samples in output array follow the order in ``sorted(os.listdir(cif_dirname))``.
 
     * For structures that can not be processsed, their voxels are filled with zeros.
-
-    * Currently, all interactions are modelled with the LJ potential.
     """
     files = sorted(os.listdir(cif_dirname))
     cif_files = [f'{cif_dirname}/{file}' for file in files if file.endswith('.cif')]

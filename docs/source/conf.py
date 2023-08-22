@@ -23,6 +23,7 @@ extensions = [
         'sphinx.ext.napoleon',
         'sphinxemoji.sphinxemoji',
         'sphinx_copybutton',
+        'sphinxarg.ext',
         ]
 
 templates_path = ['_templates']
