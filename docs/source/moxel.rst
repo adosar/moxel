@@ -1,3 +1,8 @@
+.. _documentation:
+
+|:book:| API Documentation
+--------------------------
+
 moxel package
 =============
 
@@ -7,18 +12,10 @@ moxel package
    :show-inheritance:
 
 Submodules
-----------
-
-moxel.cli module
-----------------
-
-.. automodule:: moxel.cli
-   :members:
-   :undoc-members:
-   :show-inheritance:
+==========
 
 moxel.utils module
-------------------
+==================
 
 .. automodule:: moxel.utils
    :members:

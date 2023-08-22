@@ -63,7 +63,7 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
     Currently N/A.
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Contents:
 
    installation
