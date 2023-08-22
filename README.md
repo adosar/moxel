@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/source/images/moxel_logo.svg"/>
+  <img src="docs/source/images/moxel_logo.png"/>
 </p>
 
 MOXελ is a Python package for **parallel calculation of energy voxels**, with
