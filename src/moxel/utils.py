@@ -146,8 +146,8 @@ class Grid:
         Returns
         -------
         voxels : array of shape (grid_size, grid_size, grid_size)
-            The energy voxels.
-
+            The energy voxels as :math:`e^{-\beta \mathcal{V}}`, to ensure
+            numerical stability.
         Notes
         -----
         For structures that can not be processsed, their voxels are filled with
@@ -189,6 +189,7 @@ class Grid:
         Returns
         -------
         energy : float
+            Energy as :math:`e^{-\beta \mathcal{V}}`, to ensure numerical stability.
         """
         if self.cubic_box:
             cartesian_coords = coords
@@ -208,7 +209,7 @@ class Grid:
                     x = (0.5 * (s_j + self.sigma)) / r_ij
                     energy += 4 * np.sqrt(e_j * self.epsilon) * (x**12 - x**6)
 
-        return np.exp(-(1 / 298) * energy)
+        return np.exp(-(1 / 298) * energy) # For numerical stability.
 
 
 def voxels_from_file(
@@ -274,7 +275,9 @@ def voxels_from_files(
     """
     Calculate voxels from a list of .cif files and save them in ``out_name`` as
     ``array`` of shape ``(n_samples, grid_size, grid_size, grid_size)``, where
-    ``n_samples == len(cif_pathnames)``.
+    ``n_samples`` is the number of is the number of .cif files in
+    ``cif_pathnames``.
+
 
     Parameters
     ----------
@@ -338,8 +341,8 @@ def voxels_from_dir(
     """
     Calculate voxels from .cif files in ``cif_dirname`` and save them in
     ``out_name`` as ``array`` of shape ``(n_samples, grid_size, grid_size,
-    grid_size)``, where ``n_samples`` is the number of .cif files in the
-    directory.
+    grid_size)``, where ``n_samples`` is the number of .cif files in
+    ``cif_dirname``.
 
     Parameters
     ----------
@@ -500,13 +503,13 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     out_name : str, optional
         Pathname to the directory holding the clean voxels and names.  The
         directory is created if it doesn't exist. Takes effect only if
-        ``len(batch_dirnames) > 1``. If not specified, voxels and names are
-        stored under ``./`` (current working directory).
+        ``len(batch_dirnames) > 1``. If ``None`` voxels and names are
+        stored under ``./clean_voxels.npy`` and ``./clean_names.json``.
 
     Returns
     -------
     exit_status : int
-        If no voxels are missing ``exit_status == 0`` else ``exit_status == 1``.
+        If no voxels are missing ``0`` else ``1``.
     """
     batch_dict = dict()
 
@@ -572,8 +575,7 @@ def plot_voxels(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **k
     ----------
     voxels : 3D array
     fill_pattern : 3D array of bool, optional
-        A 3D array of values, with truthy values indicating which voxels to
-        fill.
+        A 3D array of truthy values, indicating which voxels to fill.
     colorbar : bool, default=True
         Whether to include a colorbar.
     cmap : str, default='viridis'
@@ -594,7 +596,7 @@ def plot_voxels(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **k
     -------
     fig : `Figure <https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure>`_
     """
-    if fill_pattern == None:
+    if np.all(fill_pattern) == None:
         fill_pattern = np.full(voxels.shape, True)
 
     cmap = plt.get_cmap(cmap)

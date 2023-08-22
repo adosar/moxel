@@ -19,6 +19,7 @@
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
         <script src="_static/copybutton.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -190,7 +191,8 @@ Lennard-Jones potential is supported.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>voxels</strong> – The energy voxels.</p>
+<dd class="field-even"><p><strong>voxels</strong> – The energy voxels as <span class="math notranslate nohighlight">\(e^{-\beta \mathcal{V}}\)</span>, to ensure
+numerical stability.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>array of shape (grid_size, grid_size, grid_size)</p>
@@ -211,7 +213,7 @@ coordinates.</p>
 <dd class="field-odd"><p><strong>coordinates</strong> (<em>array_like</em><em> of </em><em>shape</em><em> (</em><em>3</em><em>,</em><em>)</em>) – If <code class="docutils literal notranslate"><span class="pre">cubic_box=True</span></code> cartesian. Else, fractional.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>energy</strong></p>
+<dd class="field-even"><p><strong>energy</strong> – Energy as <span class="math notranslate nohighlight">\(e^{-\beta \mathcal{V}}\)</span>, to ensure numerical stability.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
@@ -261,12 +263,12 @@ structures under <code class="docutils literal notranslate"><span class="pre">ou
 <li><p><strong>batch_dirnames</strong> (<em>list</em>) – List of paths to the directories of the batches.</p></li>
 <li><p><strong>out_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Pathname to the directory holding the clean voxels and names.  The
 directory is created if it doesn’t exist. Takes effect only if
-<code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If not specified, voxels and names are
-stored under <code class="docutils literal notranslate"><span class="pre">./</span></code> (current working directory).</p></li>
+<code class="docutils literal notranslate"><span class="pre">len(batch_dirnames)</span> <span class="pre">&gt;</span> <span class="pre">1</span></code>. If <code class="docutils literal notranslate"><span class="pre">None</span></code> voxels and names are
+stored under <code class="docutils literal notranslate"><span class="pre">./clean_voxels.npy</span></code> and <code class="docutils literal notranslate"><span class="pre">./clean_names.json</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>exit_status</strong> – If no voxels are missing <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">0</span></code> else <code class="docutils literal notranslate"><span class="pre">exit_status</span> <span class="pre">==</span> <span class="pre">1</span></code>.</p>
+<dd class="field-even"><p><strong>exit_status</strong> – If no voxels are missing <code class="docutils literal notranslate"><span class="pre">0</span></code> else <code class="docutils literal notranslate"><span class="pre">1</span></code>.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
@@ -312,8 +314,7 @@ Each row corresponds to a lattice vector.</p></li>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>voxels</strong> (<em>3D array</em>) – </p></li>
-<li><p><strong>fill_pattern</strong> (<em>3D array</em><em> of </em><em>bool</em><em>, </em><em>optional</em>) – A 3D array of values, with truthy values indicating which voxels to
-fill.</p></li>
+<li><p><strong>fill_pattern</strong> (<em>3D array</em><em> of </em><em>bool</em><em>, </em><em>optional</em>) – A 3D array of truthy values, indicating which voxels to fill.</p></li>
 <li><p><strong>colorbar</strong> (<em>bool</em><em>, </em><em>default=True</em>) – Whether to include a colorbar.</p></li>
 <li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>default='viridis'</em>) – <a class="reference external" href="https://matplotlib.org/stable/tutorials/colors/colormaps.html">Colormap</a> that
 colorizes the voxels based on their value.</p></li>
@@ -341,8 +342,8 @@ generate the colors of the voxels based on the specified <code class="docutils l
 <span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">voxels_from_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_dirname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.voxels_from_dir" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate voxels from .cif files in <code class="docutils literal notranslate"><span class="pre">cif_dirname</span></code> and save them in
 <code class="docutils literal notranslate"><span class="pre">out_name</span></code> as <code class="docutils literal notranslate"><span class="pre">array</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size,</span>
-<span class="pre">grid_size)</span></code>, where <code class="docutils literal notranslate"><span class="pre">n_samples</span></code> is the number of .cif files in the
-directory.</p>
+<span class="pre">grid_size)</span></code>, where <code class="docutils literal notranslate"><span class="pre">n_samples</span></code> is the number of .cif files in
+<code class="docutils literal notranslate"><span class="pre">cif_dirname</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -403,7 +404,8 @@ in <code class="docutils literal notranslate"><span class="pre">./voxels.npy</sp
 <span class="sig-prename descclassname"><span class="pre">moxel.utils.</span></span><span class="sig-name descname"><span class="pre">voxels_from_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cif_pathnames</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">25</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cutoff</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubic_box</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#moxel.utils.voxels_from_files" title="Permalink to this definition"></a></dt>
 <dd><p>Calculate voxels from a list of .cif files and save them in <code class="docutils literal notranslate"><span class="pre">out_name</span></code> as
 <code class="docutils literal notranslate"><span class="pre">array</span></code> of shape <code class="docutils literal notranslate"><span class="pre">(n_samples,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size,</span> <span class="pre">grid_size)</span></code>, where
-<code class="docutils literal notranslate"><span class="pre">n_samples</span> <span class="pre">==</span> <span class="pre">len(cif_pathnames)</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">n_samples</span></code> is the number of is the number of .cif files in
+<code class="docutils literal notranslate"><span class="pre">cif_pathnames</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

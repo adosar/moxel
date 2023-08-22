@@ -30,7 +30,7 @@ exclude_patterns = []
 
 
 # Exclude input prompts from copybutton
-copybutton_exclude = '.linenos, .gp'
+copybutton_exclude = '.linenos, .gp, .go'
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
