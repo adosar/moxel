@@ -108,7 +108,7 @@ processed.
 
         >>> import os, json
         >>> with open('path/to/batch/names.json', 'w') as fhand:
-        ...     json.dump({'names': sorted(os.listdir('CIFs'))}, fhand, indent=4)
+        ...     json.dump({'names': sorted(os.listdir('path/to/CIFs'))}, fhand, indent=4)
 
 
     .. warning::

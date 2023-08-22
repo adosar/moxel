@@ -1,7 +1,7 @@
 .. _cli:
 
-|:keyboard:| Command Line Interface (CLI)
-=========================================
+|:keyboard:| Command Line Interface
+===================================
 
 .. argparse::
    :module: moxel.cli

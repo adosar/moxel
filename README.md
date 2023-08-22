@@ -1,8 +1,10 @@
-# MOXελ
-Python package for **parallel calculation of voxelized potential energy surfaces (PES)**.
+![](docs/source/images/moxel_logo.svg)
 
-## Installation
-The package will be soon released in PyPi.
+MOXελ is a Python package for **parallel calculation of energy voxels**, with
+emphasis on reticular chemistry.
 
-## Usage
+## :gear: Installation
+Package will be soon released in PyPi.
+
+## :book: Usage
 Documentaiton will be soon available. 

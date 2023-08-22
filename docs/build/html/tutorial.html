@@ -62,7 +62,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cli.html">⌨️ Command Line Interface (CLI)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="moxel.html">📖 API Documentation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="moxel.html#moxel-package">moxel package</a></li>
 </ul>
 
         </div>
@@ -181,7 +180,7 @@ Under the hood, <code class="xref py py-func docutils literal notranslate"><span
 keep track of the indexing:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">json</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;path/to/batch/names.json&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fhand</span><span class="p">:</span>
-<span class="gp">... </span>    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;CIFs&#39;</span><span class="p">))},</span> <span class="n">fhand</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">... </span>    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">({</span><span class="s1">&#39;names&#39;</span><span class="p">:</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;path/to/CIFs&#39;</span><span class="p">))},</span> <span class="n">fhand</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="admonition warning">
