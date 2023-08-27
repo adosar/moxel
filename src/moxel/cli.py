@@ -2,11 +2,11 @@ import os
 import json
 import argparse
 from pathlib import Path
-from moxel.utils import voxels_from_dir
-from moxel.__init__ import __version__ as version
+from . utils import voxels_from_dir
+from . __init__ import __version__ as version
 
 
-def _transaction_summary(parser_args):
+def _transaction_summary(args):
     col_size, _ = os.get_terminal_size()
     gap = col_size // 6
     num_cifs = len([i for i in os.listdir(args.directory) if i.endswith('.cif')])
@@ -85,25 +85,3 @@ def _return_cli_parser():
             )
 
     return parser
-
-
-with open(f'{Path(__file__).parents[0]}/lj_params.json', 'r') as fhand:
-    lj_params = json.load(fhand)
-
-#if __name__ == '__main__':
-#    #Loading LJ parameters
-#
-#    args = parser.parse_args()
-#    _transaction_summary()
-#
-#    inp = input('\nIs this ok[y/N]: ')
-#
-#    if inp == 'y':
-#        voxels_from_dir(
-#            parser.args.directory, parser.args.n,
-#            parser.args.c, parser.args.e, parser.args.s,
-#            parser.args.cubic_box, parser.args.length,
-#            parser.args.o
-#            )
-#    else:
-#        print('Operation aborted.')

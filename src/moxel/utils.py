@@ -118,7 +118,8 @@ class Grid:
            Pathname to the .cif file.
         """
         self.structure = Structure.from_file(cif_pathname)
-        self.structure_name = cif_pathname.split('/')[-1].split('.')[0]
+        #self.structure_name = cif_pathname.split('/')[-1].split('.')[0]
+        self.structure_name = cif_pathname.split('/')[-1].removesuffix('.cif')
 
     def calculate(self, cubic_box=False, length=30, potential='lj'):
         r"""
@@ -531,7 +532,10 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
         clean_dir = '.'
     else:
         clean_dir = out_name
-        os.mkdir(clean_dir)
+        try:
+            os.mkdir(clean_dir)
+        except:
+            pass
 
     clean_size = np.sum([len(batch_dict[b][0]) - len(batch_dict[b][2]) for b in batch_dict.keys()])
     clean_fp = np.lib.format.open_memmap(

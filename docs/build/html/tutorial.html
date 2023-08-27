@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="_static/code-tabs.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -19,10 +20,11 @@
         <script src="_static/sphinx_highlight.js"></script>
         <script src="_static/clipboard.min.js"></script>
         <script src="_static/copybutton.js"></script>
+        <script src="_static/code-tabs.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="⌨️ Command Line Interface (CLI)" href="cli.html" />
+    <link rel="next" title="⌨️ Command Line Interface" href="cli.html" />
     <link rel="prev" title="⚙️ Installation" href="installation.html" /> 
 </head>
 
@@ -60,7 +62,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#preparing-voxels-for-a-ml-pipeline">Preparing voxels for a ML pipeline</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="cli.html">⌨️ Command Line Interface (CLI)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cli.html">⌨️ Command Line Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="moxel.html">📖 API Documentation</a></li>
 </ul>
 
@@ -114,13 +116,13 @@
 <span class="gp">&gt;&gt;&gt; </span><span class="n">grid</span><span class="o">.</span><span class="n">calculate</span><span class="p">()</span>
 </pre></div>
 </div>
+</div></blockquote>
+</li>
+</ol>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">voxels</span> <span class="o">==</span> <span class="n">grid</span><span class="o">.</span><span class="n">voxels</span><span class="p">)</span> <span class="c1"># A sanity check.</span>
 <span class="go">True</span>
 </pre></div>
 </div>
-</div></blockquote>
-</li>
-</ol>
 <p>Of course, we are interested in calculating voxels from multiple files.
 In this case, check:</p>
 <ul class="simple">
@@ -157,7 +159,7 @@ later used to train a ML algorithm (e.g. a CNN).</p>
 </pre></div>
 </div>
 <p>Ideally, all <code class="docutils literal notranslate"><span class="pre">.cif</span></code> files should be processable. In this example, we cover the
-general case where some <code class="docutils literal notranslate"><span class="pre">.cif</span></code> files (named as <code class="docutils literal notranslate"><span class="pre">corrupted</span></code>) can not be
+general case where some <code class="docutils literal notranslate"><span class="pre">.cif</span></code> files (named as <code class="docutils literal notranslate"><span class="pre">corrupted*.cif</span></code>) can not be
 processed.</p>
 <ol class="arabic">
 <li><p>Create a directory to store voxels:</p>
@@ -168,13 +170,22 @@ processed.</p>
 </div></blockquote>
 </li>
 <li><p>Calculate voxels and store them:</p>
-<p>For this step you can also use the <a class="reference internal" href="cli.html#cli"><span class="std std-ref">⌨️ Command Line Interface (CLI)</span></a>.</p>
+<p>For this step you can also use the <a class="reference internal" href="cli.html#cli"><span class="std std-ref">⌨️ Command Line Interface</span></a>.</p>
 <blockquote>
-<div><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moxel.utils</span> <span class="kn">import</span> <span class="n">voxels_from_dir</span> <span class="c1"># Omitting .utils also works.</span>
+<div><div class="tabs docutils container" data-tabgroup="">
+<ul class="tabbar">
+<li class="tabbutton selected" data-id="0" onclick="sphinx_code_tabs_onclick(this)">
+python</li><li class="tabbutton" data-id="1" onclick="sphinx_code_tabs_onclick(this)">
+CLI</li></ul><div class="tab codetab selected" data-id="0">
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moxel.utils</span> <span class="kn">import</span> <span class="n">voxels_from_dir</span> <span class="c1"># Omitting .utils also works.</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">voxels_from_dir</span><span class="p">(</span><span class="s1">&#39;path/to/CIFs/&#39;</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">out_name</span><span class="o">=</span><span class="s1">&#39;path/to/batch/voxels.npy&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Of course, it is necessary to know the indexing of the generated voxels.
+</div><div class="tab codetab" data-id="1">
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>python<span class="w"> </span>-m<span class="w"> </span>moxel<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span><span class="w"> </span>path/to/CIFs<span class="w"> </span>-o<span class="w"> </span>path/to/batch/voxels.npy
+</pre></div>
+</div>
+</div></div><p>Of course, it is necessary to know the indexing of the generated voxels.
 Under the hood, <code class="xref py py-func docutils literal notranslate"><span class="pre">voxels_from_dir()</span></code> uses
 <code class="docutils literal notranslate"><span class="pre">sorted(os.listdir('path/to/CIFs/'))</span></code>, so we can just use a dictionary to
 keep track of the indexing:</p>
@@ -246,7 +257,7 @@ materials:</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="installation.html" class="btn btn-neutral float-left" title="⚙️ Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="cli.html" class="btn btn-neutral float-right" title="⌨️ Command Line Interface (CLI)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cli.html" class="btn btn-neutral float-right" title="⌨️ Command Line Interface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

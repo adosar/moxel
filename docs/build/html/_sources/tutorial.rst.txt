@@ -31,10 +31,10 @@ Calculation
         >>> grid.load_structure('path/to/IRMOF-1.cif')
         >>> grid.calculate()
 
-    .. code-block::
+.. code-block::
 
-        >>> np.all(voxels == grid.voxels) # A sanity check.
-        True
+    >>> np.all(voxels == grid.voxels) # A sanity check.
+    True
 
 Of course, we are interested in calculating voxels from multiple files.
 In this case, check:
@@ -83,7 +83,7 @@ If you don't have a database |:point_right:| :download:`CIFs.zip<down/CIFs.zip>`
    corrupted_1.cif  corrupted_2.cif  IRMOF-1.cif  ZnHBDC.cif  ZnMOF-74.cif
 
 Ideally, all ``.cif`` files should be processable. In this example, we cover the
-general case where some ``.cif`` files (named as ``corrupted``) can not be
+general case where some ``.cif`` files (named as ``corrupted*.cif``) can not be
 processed.
 
 1. Create a directory to store voxels: 
@@ -96,10 +96,17 @@ processed.
 
    For this step you can also use the :ref:`cli`.
 
-    .. code-block::
+    .. tabs::
 
-        >>> from moxel.utils import voxels_from_dir # Omitting .utils also works.
-        >>> voxels_from_dir('path/to/CIFs/', grid_size=10, out_name='path/to/batch/voxels.npy')
+        .. code-tab:: python
+
+            >>> from moxel.utils import voxels_from_dir # Omitting .utils also works.
+            >>> voxels_from_dir('path/to/CIFs/', grid_size=10, out_name='path/to/batch/voxels.npy')
+
+        .. code-tab:: console
+            :caption: CLI
+
+            $ python -m moxel -n 10 path/to/CIFs -o path/to/batch/voxels.npy
 
     Of course, it is necessary to know the indexing of the generated voxels.
     Under the hood, :func:`voxels_from_dir` uses

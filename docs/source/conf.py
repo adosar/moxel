@@ -24,11 +24,11 @@ extensions = [
         'sphinxemoji.sphinxemoji',
         'sphinx_copybutton',
         'sphinxarg.ext',
+        'sphinx_code_tabs',
         ]
 
 templates_path = ['_templates']
-exclude_patterns = []
-
+exclude_patterns = ['modules.rst']
 
 # Exclude input prompts from copybutton
 copybutton_exclude = '.linenos, .gp, .go'

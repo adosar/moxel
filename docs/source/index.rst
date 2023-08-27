@@ -34,10 +34,9 @@ First of all, why energy voxels?
     continuous function, *voxelization is necessary to convert the PES into a
     machine understandable format*.
 
-Remember, *there is no free lunch*! Getting the most informative input, i.e.
-calculating a voxelized PES, is computationally expensive. Fortunately, since
-**all calculations in MOXελ are parallelized**, the **computational cost is
-significantly decreased**.
+Remember, *there is no free lunch*! Getting the most informative input is
+computationally expensive. Fortunately, since **all calculations in MOXελ are
+parallelized**, the **computational cost is significantly decreased**.
 
 **All you need is a** ``.cif`` **!**
 

@@ -2,7 +2,6 @@ import os
 import unittest
 import tempfile
 
-
 class TestMoxelCLI(unittest.TestCase):
 
     def test_help(self):
@@ -13,8 +12,8 @@ class TestMoxelCLI(unittest.TestCase):
         with tempfile.TemporaryDirectory() as dir_path:
             file_name = 'voxels.npy'
             exit_status = os.system(
-                    f'python -m src.moxel tests/cif_directory\
-                            -o {dir_path}/{file_name}'
+                    f'python -m src.moxel tests/CIFs/foo\
+                            -n 5 -o {dir_path}/{file_name}'
                     )
             self.assertEqual(exit_status, 0)
 
