@@ -571,7 +571,8 @@ def plot_voxels(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **k
     ----------
     voxels : 3D array
     fill_pattern : 3D array of bool, optional
-        A 3D array of truthy values, indicating which voxels to fill.
+        A 3D array of truthy values, indicating which voxels to fill. If not
+        specified, all voxels are filled.
     colorbar : bool, default=True
         Whether to include a colorbar.
     cmap : str, default='viridis'

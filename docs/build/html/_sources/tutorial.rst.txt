@@ -83,7 +83,7 @@ If you don't have a database |:point_right:| :download:`CIFs.zip<down/CIFs.zip>`
    corrupted_1.cif  corrupted_2.cif  IRMOF-1.cif  ZnHBDC.cif  ZnMOF-74.cif
 
 Ideally, all ``.cif`` files should be processable. In this example, we cover the
-general case where some ``.cif`` files (named as ``corrupted*.cif``) can not be
+general case where some ``.cif`` files (named as ``corrupted*``) can not be
 processed.
 
 1. Create a directory to store voxels: 

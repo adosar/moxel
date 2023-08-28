@@ -3,7 +3,7 @@ MOXελ is a Python package for parallel calculation of energy voxels, with
 emphasis on reticular chemistry.
 
 .. note::
-    Currently, interactions are modelled with Lennard-Jones potential.
+    Currently, interactions are modelled with the Lennard-Jones potential.
 """
 
 __author__ = 'Antonios P. Sarikas'

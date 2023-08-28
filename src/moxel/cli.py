@@ -80,8 +80,9 @@ def _return_cli_parser():
             )
     parser.add_argument(
             '-o', metavar='output',
-            help='Ouput file name to store the generated voxels.',
-            default='./voxels.npy'
+            help='Pathname to the file holding the voxels. If not specified,\
+            voxels are stored in ``./voxels.npy``.',
+            default=None
             )
 
     return parser

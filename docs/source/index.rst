@@ -61,6 +61,16 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
     
     Currently N/A.
 
+TODO
+----
+
+* Improve modeling of interactions
+* Improve voxelization scheme
+* Improve performance
+
+License
+-------
+
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
@@ -69,6 +79,7 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
    tutorial
    cli
    moxel
+
 
 
 Indices and tables
