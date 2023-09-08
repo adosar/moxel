@@ -64,9 +64,14 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
 TODO
 ----
 
-* Improve the modeling of interactions
+* Improve modeling of interactions
 * Improve voxelization scheme
 * Improve performance
+
+License
+-------
+MOXελ is released under the `GNU General Public License v3.0 only <https://spdx.org/licenses/GPL-3.0-only.html>`_.
+
 
 .. toctree::
    :maxdepth: 1

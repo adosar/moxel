@@ -1,0 +1,10 @@
+# Byte-compiled
+__pycache__/
+
+# Distribution / packaging
+build/
+dist/
+MANIFEST
+
+# Temporary files
+*.swp

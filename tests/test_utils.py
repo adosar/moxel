@@ -1,3 +1,9 @@
+"""
+Run tests from the project's root.
+
+python -m unittest tests.<test_module>
+"""
+
 import os
 import sys
 import json
@@ -5,12 +11,36 @@ import unittest
 import tempfile
 import numpy as np
 from pymatgen.core import Structure
-sys.path.insert(0, '/home/asar/projects/moxel_pypi/src')
+sys.path.insert(0, './src')
 from moxel import *
 
 
 class TestMoxelUtils(unittest.TestCase):
     
+    def test_Grid(self):
+        cif_pathname = 'tests/CIFs/foo/IRMOF-1.cif'
+        grid_size = 5
+        epsilon = 40
+        sigma = 5
+        cutoff = 12
+
+        grid = Grid(grid_size=grid_size, epsilon=epsilon, cutoff=cutoff, sigma=sigma)
+        grid.load_structure(cif_pathname)
+        grid.calculate(cubic_box=True)
+
+        # Check that the name of the structure is correct.
+        self.assertEqual(grid.structure_name, 'IRMOF-1')
+
+        # Check that the voxels have the correct shape.
+        self.assertEqual(grid.voxels.shape, (grid_size,)*3)
+
+        # Check that attributes are correctly set.
+        self.assertEqual(grid.grid_size, grid_size)
+        self.assertEqual(grid.epsilon, epsilon)
+        self.assertEqual(grid.sigma, sigma)
+        self.assertEqual(grid.cutoff, cutoff)
+        self.assertTrue(grid.cubic_box)
+
     def test_mic_scale_factors(self):
         # Load a structure that must be scaled.
         cif_pathname = 'tests/CIFs/foo/ZnMOF-74.cif'
@@ -81,10 +111,10 @@ class TestMoxelUtils(unittest.TestCase):
 
         # Check that output file is properly stored.
         with tempfile.TemporaryDirectory() as dir_path:
-            out_name = f'{dir_path}/foo.npy'
-            voxels_from_files(cif_files, out_name=out_name, grid_size=grid_size)
+            out_pathname = f'{dir_path}/foo.npy'
+            voxels_from_files(cif_files, out_pathname=out_pathname, grid_size=grid_size)
 
-            voxels = np.load(out_name, mmap_mode='r')
+            voxels = np.load(out_pathname, mmap_mode='r')
 
             self.assertTrue(
                     np.all(voxels.shape == np.array([n_files, *[grid_size]*3]))
@@ -96,10 +126,10 @@ class TestMoxelUtils(unittest.TestCase):
         grid_size = 10
 
         with tempfile.TemporaryDirectory() as dir_path:
-            out_name = f'{dir_path}/foo.npy'
-            voxels_from_dir(cif_dir, grid_size=grid_size, out_name=out_name)
+            out_pathname = f'{dir_path}/foo.npy'
+            voxels_from_dir(cif_dir, grid_size=grid_size, out_pathname=out_pathname)
 
-            voxels = np.load(out_name, mmap_mode='r')
+            voxels = np.load(out_pathname, mmap_mode='r')
 
             # Check that corrupted .cif files aren't processed.
             bad_cifs = [np.all(x == 0) for x in voxels]
@@ -115,8 +145,8 @@ class TestMoxelUtils(unittest.TestCase):
         clean_names_init = [i for i in names if not i.startswith('corrupted')]
 
         with tempfile.TemporaryDirectory() as dir_path:
-            out_name = f'{dir_path}/voxels.npy'
-            voxels_from_dir(cif_dir, grid_size=grid_size, out_name=out_name)
+            out_pathname = f'{dir_path}/voxels.npy'
+            voxels_from_dir(cif_dir, grid_size=grid_size, out_pathname=out_pathname)
             voxels_shape = np.array([len(names), *[grid_size]*3])
 
             # Add the names under the batch directory.
@@ -171,8 +201,8 @@ class TestMoxelUtils(unittest.TestCase):
             # Creating the 1st batch.
             tempdir_1 = tempfile.TemporaryDirectory()
             dir_path_1 = tempdir_1.name
-            out_name_1 = f'{dir_path_1}/voxels.npy'
-            voxels_from_dir(cif_dir_1, grid_size=grid_size, out_name=out_name_1)
+            out_pathname_1 = f'{dir_path_1}/voxels.npy'
+            voxels_from_dir(cif_dir_1, grid_size=grid_size, out_pathname=out_pathname_1)
 
             with open(f'{dir_path_1}/names.json', 'w') as fhand:
                 json.dump({'names': names_1}, fhand)
@@ -180,13 +210,13 @@ class TestMoxelUtils(unittest.TestCase):
             # Creating the 2nd batch.
             tempdir_2 = tempfile.TemporaryDirectory()
             dir_path_2 = tempdir_2.name
-            out_name_2 = f'{dir_path_2}/voxels.npy'
-            voxels_from_dir(cif_dir_2, grid_size=grid_size, out_name=out_name_2)
+            out_pathname_2 = f'{dir_path_2}/voxels.npy'
+            voxels_from_dir(cif_dir_2, grid_size=grid_size, out_pathname=out_pathname_2)
 
             with open(f'{dir_path_2}/names.json', 'w') as fhand:
                 json.dump({'names': names_2}, fhand)
 
-            exit_status = batch_clean_and_merge([dir_path_1, dir_path_2], out_name=dir_path)
+            exit_status = batch_clean_and_merge([dir_path_1, dir_path_2], out_pathname=dir_path)
 
             # Check that processing is required.
             self.assertEqual(exit_status, 1)

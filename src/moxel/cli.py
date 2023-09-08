@@ -54,7 +54,7 @@ def _return_cli_parser():
             )
     parser.add_argument(
             '-c', metavar='cutoff',
-            help='Cutoff radius for the Lennard-Jones potential.',
+            help='Cutoff radius (Å) for the LJ potential.',
             default=10, type=float
             )
     parser.add_argument(

@@ -145,7 +145,7 @@ functions check: <a class="reference internal" href="moxel.html#documentation"><
 </pre></div>
 </div>
 <a class="reference internal image-reference" href="_images/plot_voxels.png"><img alt="_images/plot_voxels.png" class="align-center" src="_images/plot_voxels.png" style="width: 408.9px; height: 340.8px;" /></a>
-<p>Since <code class="docutils literal notranslate"><span class="pre">voxels</span></code> is just a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> check also <a class="reference external" href="https://plotly.com/python/3d-volume-plots/">plotly</a> and <a class="reference external" href="https://docs.pyvista.org/version/stable/examples/02-plot/volume.html">pyvista</a>.</p>
+<p>Since <code class="docutils literal notranslate"><span class="pre">voxels</span></code> is just a <code class="docutils literal notranslate"><span class="pre">np.array</span></code> check also <a class="reference external" href="https://plotly.com/python/3d-volume-plots/">Plotly</a> and <a class="reference external" href="https://docs.pyvista.org/version/stable/examples/02-plot/volume.html">PyVista</a>.</p>
 </section>
 </section>
 <section id="preparing-voxels-for-a-ml-pipeline">
@@ -178,7 +178,7 @@ processed.</p>
 python</li><li class="tabbutton" data-id="1" onclick="sphinx_code_tabs_onclick(this)">
 CLI</li></ul><div class="tab codetab selected" data-id="0">
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">moxel.utils</span> <span class="kn">import</span> <span class="n">voxels_from_dir</span> <span class="c1"># Omitting .utils also works.</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">voxels_from_dir</span><span class="p">(</span><span class="s1">&#39;path/to/CIFs/&#39;</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">out_name</span><span class="o">=</span><span class="s1">&#39;path/to/batch/voxels.npy&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">voxels_from_dir</span><span class="p">(</span><span class="s1">&#39;path/to/CIFs/&#39;</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">out_pathname</span><span class="o">=</span><span class="s1">&#39;path/to/batch/voxels.npy&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div><div class="tab codetab" data-id="1">

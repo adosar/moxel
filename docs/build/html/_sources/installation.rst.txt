@@ -21,4 +21,4 @@ It is recommended to install MOXελ inside a virtual environment.
 
     .. code-block::
 
-        (<venvir_name>) $ pip install moxel
+        (<venvir_name>) $ pip install pymoxel

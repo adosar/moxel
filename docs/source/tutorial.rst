@@ -63,8 +63,8 @@ Visualization
     :align: center
     :scale: 30%
 
-Since ``voxels`` is just a ``np.array`` check also `plotly
-<https://plotly.com/python/3d-volume-plots/>`_ and `pyvista
+Since ``voxels`` is just a ``np.array`` check also `Plotly
+<https://plotly.com/python/3d-volume-plots/>`_ and `PyVista
 <https://docs.pyvista.org/version/stable/examples/02-plot/volume.html>`_.
 
 
@@ -101,7 +101,7 @@ processed.
         .. code-tab:: python
 
             >>> from moxel.utils import voxels_from_dir # Omitting .utils also works.
-            >>> voxels_from_dir('path/to/CIFs/', grid_size=10, out_name='path/to/batch/voxels.npy')
+            >>> voxels_from_dir('path/to/CIFs/', grid_size=10, out_pathname='path/to/batch/voxels.npy')
 
         .. code-tab:: console
             :caption: CLI

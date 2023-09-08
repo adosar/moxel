@@ -85,7 +85,7 @@ class Grid:
     grid_size : int, default=25
         Number of grid points along each dimension.
     cutoff : float, default=10
-        Cutoff radius for the Lennard-Jones potential.
+        Cutoff radius (Å) for the LJ potential.
     epsilon : float, default=50
         Epsilon value (ε/K) of the probe atom.
     sigma : float, default=2.5
@@ -110,12 +110,12 @@ class Grid:
 
     def load_structure(self, cif_pathname):
         r"""
-        Load a crystal structure from a .cif file.
+        Load a crystal structure from a ``.cif`` file.
 
         Parameters
         ----------
         cif_pathname : str
-           Pathname to the .cif file.
+           Pathname to the ``.cif`` file.
         """
         self.structure = Structure.from_file(cif_pathname)
         #self.structure_name = cif_pathname.split('/')[-1].split('.')[0]
@@ -138,7 +138,7 @@ class Grid:
         ----------
         potential : str, default='lj'
             The potential used to calculate voxels. Currently, only the
-            Lennard-Jones potential is supported.
+            LJ potential is supported.
         cubic_box : bool, default=False
             If ``True``, the simulation box is cubic.
         length : float, default=30
@@ -179,7 +179,7 @@ class Grid:
 
     def lj_potential(self, coords):
         r"""
-        Calculate Lennard-Jones potential at cartesian or fractional
+        Calculate LJ potential at cartesian or fractional
         coordinates.
 
         Parameters
@@ -219,16 +219,16 @@ def voxels_from_file(
         only_voxels=True,
         ):
     """
-    Return voxels from .cif file.
+    Return voxels from ``.cif`` file.
 
     Parameters
     ----------
     cif_pathname : str
-       Pathname to the .cif file.
+       Pathname to the ``.cif`` file.
     grid_size : int, default=25
         Number of grid points along each dimension.
     cutoff : float, default=10
-        Cutoff radius for the Lennard-Jones potential.
+        Cutoff radius (Å) for the LJ potential.
     epsilon : float, default=50
         Epsilon value (ε/K) of the probe atom.
     sigma : float, default=25
@@ -268,23 +268,23 @@ def voxels_from_files(
         cif_pathnames, grid_size=25, cutoff=10,
         epsilon=50, sigma=2.5,
         cubic_box=False, length=30,
-        out_name=None,
+        out_pathname=None,
         ):
     """
-    Calculate voxels from a list of .cif files and save them in ``out_name`` as
+    Calculate voxels from a list of ``.cif`` files and save them in ``out_pathname`` as
     ``array`` of shape ``(n_samples, grid_size, grid_size, grid_size)``, where
-    ``n_samples`` is the number of is the number of .cif files in
+    ``n_samples`` is the number of is the number of ``.cif`` files in
     ``cif_pathnames``.
 
 
     Parameters
     ----------
     cif_pathanmes : list
-       List of pathnames to the .cif files.
+       List of pathnames to the ``.cif`` files.
     grid_size : int, default=25
         Number of grid points along each dimension.
     cutoff : float, default=10
-        Cutoff radius for the Lennard-Jones potential.
+        Cutoff radius (Å) for the LJ potential.
     epsilon : float, default=50
         Epsilon value (ε/K) of the probe atom.
     sigma : float, default=25
@@ -293,7 +293,7 @@ def voxels_from_files(
         If ``True``, the simulation box is cubic.
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
-    out_name : str, optional
+    out_pathname : str, optional
         Pathname to the file holding the voxels. If not specified, voxels are stored in
         ``./voxels.npy``.
     
@@ -306,10 +306,10 @@ def voxels_from_files(
     """
     n = len(cif_pathnames)
     cif_files = [i for i in cif_pathnames if i.endswith('.cif')]
-    out_name = './voxels.npy' if not out_name else out_name
+    out_pathname = './voxels.npy' if not out_pathname else out_pathname
 
     fp = np.lib.format.open_memmap(
-        out_name, mode='w+',
+        out_pathname, mode='w+',
         shape=(n, *(grid_size,)*3),
         dtype=np.float32
         )
@@ -331,22 +331,22 @@ def voxels_from_dir(
         cif_dirname, grid_size=25, cutoff=10,
         epsilon=50, sigma=2.5,
         cubic_box=False, length=30,
-        out_name=None,
+        out_pathname=None,
         ):
     """
-    Calculate voxels from .cif files in ``cif_dirname`` and save them in
-    ``out_name`` as ``array`` of shape ``(n_samples, grid_size, grid_size,
-    grid_size)``, where ``n_samples`` is the number of .cif files in
+    Calculate voxels from ``.cif`` files in ``cif_dirname`` and save them in
+    ``out_pathname`` as ``array`` of shape ``(n_samples, grid_size, grid_size,
+    grid_size)``, where ``n_samples`` is the number of ``.cif`` files in
     ``cif_dirname``.
 
     Parameters
     ----------
     cif_dirname : str
-       Pathname to the directory containing the .cif files.
+       Pathname to the directory containing the ``.cif`` files.
     grid_size : int, default=25
        Number of grid points along each dimension.
     cutoff : float, default=10
-        Cutoff radius for the Lennard-Jones potential.
+        Cutoff radius (Å) for the LJ potential.
     epsilon : float, default=50
         Epsilon value (ε/K) of the probe atom.
     cubic_box : bool, default=False
@@ -355,7 +355,7 @@ def voxels_from_dir(
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     sigma : float, default=25
         Sigma value (σ/Å) of the probe atom.
-    out_name : str, optional
+    out_pathname : str, optional
         Pathname to the file holding the voxels. If not specified, voxels are stored
         in ``./voxels.npy``.
     
@@ -369,10 +369,10 @@ def voxels_from_dir(
     files = sorted(os.listdir(cif_dirname))
     cif_files = [f'{cif_dirname}/{file}' for file in files if file.endswith('.cif')]
     n = len(cif_files)
-    out_name = './voxels.npy' if not out_name else out_name
+    out_pathname = './voxels.npy' if not out_pathname else out_pathname
 
     fp = np.lib.format.open_memmap(
-            out_name, mode='w+',
+            out_pathname, mode='w+',
             shape=(n, *(grid_size,)*3),
             dtype=np.float32
             )
@@ -405,7 +405,7 @@ def voxels_from_dir(
 #    Parameters
 #    ----------
 #    cif_filenames : list
-#        List of pathnames to the .cif files.
+#        List of pathnames to the ``.cif`` files.
 #    n_batches : int
 #        Number of batches that will be created.
 #    batches_dirname : str, optional
@@ -439,12 +439,12 @@ def voxels_from_dir(
 #    batch_dirname : str
 #        Pathname to the batch directory.
 #    cif_dirname : str
-#        Pathname to the directory holding the .cif files.
+#        Pathname to the directory holding the ``.cif`` files.
 #    **kwargs :
 #        Valid keyword arguments for :func:`voxels_from_files`.
 #
 #        .. warning::
-#            Do not pass the arguments ``cif_pathnames`` and ``out_name`` of
+#            Do not pass the arguments ``cif_pathnames`` and ``out_pathname`` of
 #            :func:`voxels_from_files`.
 #
 #    Notes
@@ -460,12 +460,12 @@ def voxels_from_dir(
 #
 #    voxels_from_files(
 #        cif_names,
-#        out_name=f'{batch_dirname}/voxels.npy',
+#        out_pathname=f'{batch_dirname}/voxels.npy',
 #        **kwargs
 #        )
 #
 
-def batch_clean_and_merge(batch_dirnames, out_name=None):
+def batch_clean_and_merge(batch_dirnames, out_pathname=None):
     """
     Clean a single batch, or *first clean and then merge* multiple batches.
     All batches must have the form::
@@ -482,18 +482,18 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     structures under ``batch_dirnames[0]/clean_names.json``.
 
     If ``len(batch_dirnames) > 1`` the voxels (*cleaned and merged*) are stored
-    under ``out_name/clean_voxels.npy`` and the names of their corresponding
-    structures under ``out_name/clean_names.json``. That is::
+    under ``out_pathname/clean_voxels.npy`` and the names of their corresponding
+    structures under ``out_pathname/clean_names.json``. That is::
 
-        out_name
+        out_pathname
         ├──clean_voxels.npy
         └──clean_names.json
 
     Parameters
     ----------
     batch_dirnames : list
-        List of paths to the directories of the batches.
-    out_name : str, optional
+        List of pathnames to the directories of the batches.
+    out_pathname : str, optional
         Pathname to the directory holding the clean voxels and names.  The
         directory is created if it doesn't exist. Takes effect only if
         ``len(batch_dirnames) > 1``. If ``None`` voxels and names are
@@ -528,10 +528,10 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
     print('Missing voxels found! Cleaning...')
     if len(batch_dirnames) == 1:
         clean_dir = batch_dirnames[0]
-    elif out_name == None:
+    elif out_pathname == None:
         clean_dir = '.'
     else:
-        clean_dir = out_name
+        clean_dir = out_pathname
         try:
             os.mkdir(clean_dir)
         except:
@@ -564,8 +564,9 @@ def batch_clean_and_merge(batch_dirnames, out_name=None):
 
 def plot_voxels(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **kwargs):
     r"""
-    Visualizing voxels with `Axes3d.voxels
-    <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
+    Visualizing voxels with `Axes3d.voxels`_.
+
+    .. _Axes3d.voxels: https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels
 
     Parameters
     ----------
@@ -580,12 +581,10 @@ def plot_voxels(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **k
         <https://matplotlib.org/stable/tutorials/colors/colormaps.html>`_ that
         colorizes the voxels based on their value.
     **kwargs :
-        Valid keyword arguments for `Axes3d.voxels
-        <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
+        Valid keyword arguments for `Axes3d.voxels`_.
 
         .. warning::
-            Do not pass the argument ``facecolors`` of `Axes3d.voxels
-            <https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels>`_.
+            Do not pass the argument ``facecolors`` of `Axes3d.voxels`_.
             This argument is used under the hood by :func:`plot_voxels_mpl` to
             generate the colors of the voxels based on the specified ``cmap``.
 
@@ -593,6 +592,7 @@ def plot_voxels(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **k
     -------
     fig : `Figure <https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure>`_
     """
+
     if np.all(fill_pattern) == None:
         fill_pattern = np.full(voxels.shape, True)
 

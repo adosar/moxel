@@ -1,6 +1,13 @@
+"""
+Run tests from the project's root.
+
+python -m unittest tests.<test_module>
+"""
+
 import os
 import unittest
 import tempfile
+
 
 class TestMoxelCLI(unittest.TestCase):
 
