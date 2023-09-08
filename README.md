@@ -4,10 +4,8 @@
 
 <h4 align="center">
   
-![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=yellow&label=Python&labelColor=black&color=blue&link=https%3A%2F%2Fwww.python.org%2Fdownloads%2F)
-![GPL-3.0-only](https://img.shields.io/badge/GPL--3.0--only-gold?label=License&labelColor=black)
-![Tests passing](https://img.shields.io/badge/passing-green?logo=github&label=Tests&labelColor=black)
-![Documentation](https://img.shields.io/badge/latest-green?logo=readthedocs&logoColor=white&label=Docs&labelColor=black)
+[![Requires Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=yellow&label=Python&labelColor=black&color=blue](https://www.python.org/downloads/)
+[![Licensed under GPL-3.0-only](https://img.shields.io/badge/GPL--3.0--only-gold?label=License&labelColor=black)](https://spdx.org/licenses/GPL-3.0-only.html)
 
 </h4>
 
@@ -29,6 +27,10 @@ It is recommended to perform the installation inside a virtual environment.
 ## 📖 Usage
 Documentaiton will be soon available. 
 
+<p width="30%" align="center">
+  <img src="https://github.com/adosar/moxel/blob/master/docs/source/images/voxels.gif"/>
+</p>
+
 ## 📰 Citing MOXελ
 If you use ΜΟΧελ in your research, please consider citing the following work:
 > Currently N/A.
@@ -40,8 +42,3 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
 
 ## 📑 License
 MOXελ is released under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).
-
-<p width="50%" align="center">
-  <img src="https://github.com/adosar/moxel/blob/master/docs/source/images/voxels.gif"/>
-</p>
-
