@@ -6,5 +6,5 @@ build/
 dist/
 MANIFEST
 
-# Temporary files
+# Temporary files / documentation
 *.swp
