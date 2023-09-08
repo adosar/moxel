@@ -27,8 +27,8 @@ It is recommended to perform the installation inside a virtual environment.
 ## 📖 Usage
 Documentaiton will be soon available. 
 
-<p width="30%" align="center">
-  <img src="https://github.com/adosar/moxel/blob/master/docs/source/images/voxels.gif"/>
+<p align="center">
+  <img src="https://github.com/adosar/moxel/blob/master/docs/source/images/voxels.gif" width="25%"/>
 </p>
 
 ## 📰 Citing MOXελ
