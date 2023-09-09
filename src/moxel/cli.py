@@ -1,3 +1,19 @@
+# This file is part of MOXελ.
+# Copyright (C) 2023 Antonios P. Sarikas
+
+# MOXελ is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+
 import os
 import json
 import argparse
@@ -12,6 +28,7 @@ def _transaction_summary(args):
     num_cifs = len([i for i in os.listdir(args.directory) if i.endswith('.cif')])
     kelvin = 'K'
     angstrom = 'Å'
+    out_info = args.o if args.o != None else './voxels.npy'
 
     print(col_size*"=")
     print(
@@ -31,7 +48,7 @@ def _transaction_summary(args):
     print('\nReading from directory:')
     print(f'  \033[1;31m{args.directory}\033[m')
     print('\n(Over)writing to file:')
-    print(f'  \033[1;31m{args.o}\033[m')
+    print(f'  \033[1;31m{out_info}\033[m')
     print('\nTransaction Summary')
     print(col_size*"=")
     print(f'Calculate voxels for {num_cifs} CIFs\n')

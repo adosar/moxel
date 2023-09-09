@@ -7,7 +7,6 @@
    :width: 600
    :align: center
 
-
 .. _introduction:
 
 Introduction

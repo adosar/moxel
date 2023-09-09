@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/adosar/moxel/blob/master/docs/source/images/moxel_logo.svg"/>
+  <img alt="Logo" src="https://raw.githubusercontent.com/adosar/moxel/master/docs/source/images/moxel_logo.svg"/>
 </h1>
 
 <h4 align="center">
@@ -20,16 +20,17 @@ a ML-ready format**, minimizing as much as possible the time spent on these
 preprocessing steps.
 
 ## ⚙️  Installation
+
+It is recommended to **perform the installation inside a virtual environment**.
 ```sh
 pip install pymoxel
 ```
-It is recommended to perform the installation inside a virtual environment.
 
 ## 📖 Usage
 Documentaiton will be soon available. 
 
 <p align="center">
-  <img src="https://github.com/adosar/moxel/blob/master/docs/source/images/voxels.gif" width="25%"/>
+  <img alt="Voxels" src="https://raw.githubusercontent.com/adosar/moxel/master/docs/source/images/voxels.gif" width="25%"/>
 </p>
 
 ## 📰 Citing MOXελ
