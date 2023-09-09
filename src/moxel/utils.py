@@ -16,7 +16,6 @@
 
 import os
 import json
-import warnings
 import itertools
 import numpy as np
 from pathlib import Path
