@@ -23,7 +23,7 @@ emphasis on reticular chemistry.
 """
 
 __author__ = 'Antonios P. Sarikas'
-__version__ = '0.0.1'
+__version__ = '0.0.1rc0'
 __copyright__ = "Copyright (c) 2023 Antonios P. Sarikas"
 __license__ = 'GPL-3.0-only'
 
