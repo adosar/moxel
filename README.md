@@ -8,6 +8,7 @@
 [![Licensed under GPL-3.0-only](https://img.shields.io/badge/GPL--3.0--only-gold?label=License&labelColor=black)](https://spdx.org/licenses/GPL-3.0-only.html)
 [![Read The Docs](https://img.shields.io/badge/stable-green?logo=readthedocs&logoColor=blue&label=Read%20The%20Docs&labelColor=black)](https://moxel.readthedocs.io)
 [![Documentation Status](https://readthedocs.org/projects/moxel/badge/?version=stable)](https://moxel.readthedocs.io/en/stable/?badge=stable)
+[![pip install pymoxel](https://img.shields.io/badge/install-blue?logo=pypi&logoColor=yellow&label=PyPI&labelColor=black)](https://pypi.org/project/pymoxel/)
 
 </h4>
 

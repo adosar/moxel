@@ -36,4 +36,4 @@ dependencies = [
 
 [project.urls]
 Homepage = "https://github.com/adosar/moxel"
-Documentation = "https://github.com/pypa/sampleproject/issues"
+Documentation = "https://moxel.readthedocs.io"
