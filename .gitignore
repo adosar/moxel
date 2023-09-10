@@ -1,12 +1,11 @@
 # Byte-compiled
 __pycache__/
 
-# Distribution / packaging
+# Distribution / packaging / documentation
 build/
 dist/
 MANIFEST*
 *.egg-info/
 
-# Temporary files / documentation
-requirements.txt
+# Temporary files
 *.swp
