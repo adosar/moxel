@@ -133,7 +133,7 @@ processed.
     .. code-block::
 
         >>> from moxel.utils import batch_clean_and_merge # Omitting .utils also works.
-        >>> exit_status = batch_clean_and_merge(['batch']) # You must pass a list!
+        >>> exit_status = batch_clean_and_merge(['path/to/batch']) # You must pass a list!
         Missing voxels found! Cleaning...
         >>> exit_status
         1

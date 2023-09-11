@@ -233,7 +233,7 @@ def voxels_from_file(
         epsilon=50, sigma=2.5, cubic_box=False, length=30, 
         only_voxels=True,
         ):
-    """
+    r"""
     Return voxels from ``.cif`` file.
 
     Parameters
@@ -285,7 +285,7 @@ def voxels_from_files(
         cubic_box=False, length=30,
         out_pathname=None,
         ):
-    """
+    r"""
     Calculate voxels from a list of ``.cif`` files and save them in ``out_pathname`` as
     ``array`` of shape ``(n_samples, grid_size, grid_size, grid_size)``, where
     ``n_samples`` is the number of is the number of ``.cif`` files in
@@ -348,7 +348,7 @@ def voxels_from_dir(
         cubic_box=False, length=30,
         out_pathname=None,
         ):
-    """
+    r"""
     Calculate voxels from ``.cif`` files in ``cif_dirname`` and save them in
     ``out_pathname`` as ``array`` of shape ``(n_samples, grid_size, grid_size,
     grid_size)``, where ``n_samples`` is the number of ``.cif`` files in
@@ -537,7 +537,7 @@ def batch_clean_and_merge(batch_dirnames, out_pathname=None):
     if missing == 0:
         os.rename(f'{batch_dirnames[0]}/names.json', f'{batch_dirnames[0]}/clean_names.json') 
         os.rename(f'{batch_dirnames[0]}/voxels.npy', f'{batch_dirnames[0]}/clean_voxels.npy') 
-        print('No missing voxels found!!')
+        print('No missing voxels found!')
         return 0
 
     print('Missing voxels found! Cleaning...')
