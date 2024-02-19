@@ -55,7 +55,7 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
     author = {Sarikas,  Antonios P. and Gkagkas,  Konstantinos and Froudakis,  George E.},
     year = {2024},
     month = jan 
-  }
+    }
 
 ## 📇 TODO
 * Improve modeling of interactions
