@@ -212,14 +212,15 @@ class Grid:
 
         energy = 0
         if len(neighbors) != 0:
-            for atom in neighbors:
-                r_ij = np.linalg.norm(cartesian_coords - atom.coords)
-                if r_ij <= 1e-3:
-                    energy += 1000
-                else:
-                    e_j, s_j = lj_params[atom.species_string]
-                    x = (0.5 * (s_j + self.sigma)) / r_ij
-                    energy += 4 * np.sqrt(e_j * self.epsilon) * (x**12 - x**6)
+            neigh_coords = np.stack([atom.coords for atom in neighbors])
+            r_ij = np.linalg.norm(cartesian_coords - neigh_coords, axis=1)
+            if np.any(r_ij < 1e-3):
+                return 0.
+
+            es_j = np.array([lj_params[atom.species_string] for atom in neighbors])
+            x = (0.5 * (es_j[:,1] + self.sigma)) / r_ij
+            e = 4 * np.sqrt(es_j[:,0] * self.epsilon)
+            energy = sum(e * (x**12 - x**6))
 
         # This should be changed with clipping in future versions.
         return np.exp(-(1 / 298) * energy)  # For numerical stability.
