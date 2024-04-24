@@ -212,8 +212,7 @@ class Grid:
 
         energy = 0
         if len(neighbors) != 0:
-            neigh_coords = np.stack([atom.coords for atom in neighbors])
-            r_ij = np.linalg.norm(cartesian_coords - neigh_coords, axis=1)
+            r_ij = np.stack([atom.nn_distance for atom in neighbors])
             if np.any(r_ij < 1e-3):
                 return 0.
 
