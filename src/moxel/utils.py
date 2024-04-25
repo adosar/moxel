@@ -180,6 +180,9 @@ class Grid:
         if potential == 'lj':
             # Cache LJ parameters for all atoms in the simulation box
             self._lj_params = np.array([lj_params[atom.species_string] for atom in self._simulation_box])
+            # Cache fractional coordinates, since this is a slow function in pymatgen
+            self._frac_coords = self._simulation_box.frac_coords
+
             # Embarrassingly parallel.
             with Pool(processes=n_jobs) as p:
                 energies = p.map(
@@ -210,7 +213,7 @@ class Grid:
         else:
             cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
 
-        _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(self._simulation_box.frac_coords, cartesian_coords, self.cutoff, zip_results=False)
+        _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(self._frac_coords, cartesian_coords, self.cutoff, zip_results=False)
         if np.any(r_ij < 1e-3):
             return 0.
 
