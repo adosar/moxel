@@ -178,6 +178,8 @@ class Grid:
             self._simulation_box = self.structure * scale
         
         if potential == 'lj':
+            # Cache LJ parameters for all atoms in the simulation box
+            self._lj_params = np.array([lj_params[atom.species_string] for atom in self._simulation_box])
             # Embarrassingly parallel.
             with Pool(processes=n_jobs) as p:
                 energies = p.map(
@@ -205,21 +207,17 @@ class Grid:
         """
         if self.cubic_box:
             cartesian_coords = coords
-            neighbors = self._simulation_box.get_sites_in_sphere(cartesian_coords, self.cutoff)
         else:
             cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
-            neighbors = self._simulation_box.get_sites_in_sphere(cartesian_coords, self.cutoff)
 
-        energy = 0
-        if len(neighbors) != 0:
-            r_ij = np.stack([atom.nn_distance for atom in neighbors])
-            if np.any(r_ij < 1e-3):
-                return 0.
+        _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(self._simulation_box.frac_coords, cartesian_coords, self.cutoff, zip_results=False)
+        if np.any(r_ij < 1e-3):
+            return 0.
 
-            es_j = np.array([lj_params[atom.species_string] for atom in neighbors])
-            x = (0.5 * (es_j[:,1] + self.sigma)) / r_ij
-            e = 4 * np.sqrt(es_j[:,0] * self.epsilon)
-            energy = sum(e * (x**12 - x**6))
+        es_j = self._lj_params[indices]
+        x = (0.5 * (es_j[:,1] + self.sigma)) / r_ij
+        e = 4 * np.sqrt(es_j[:,0] * self.epsilon)
+        energy = sum(e * (x**12 - x**6))
 
         # This should be changed with clipping in future versions.
         return np.exp(-(1 / 298) * energy)  # For numerical stability.
