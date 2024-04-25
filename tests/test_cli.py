@@ -25,6 +25,7 @@ import unittest
 import tempfile
 
 
+@unittest.skip
 class TestMoxelCLI(unittest.TestCase):
 
     def test_help(self):

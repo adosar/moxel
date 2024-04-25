@@ -1,5 +1,5 @@
 # This file is part of MOXελ.
-# Copyright (C) 2023 Antonios P. Sarikas
+# Copyright (C) 2023-2024 Antonios P. Sarikas
 
 # MOXελ is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -23,11 +23,5 @@ emphasis on reticular chemistry.
 """
 
 __author__ = 'Antonios P. Sarikas'
-__version__ = '0.0.0'
-__copyright__ = "Copyright (c) 2023 Antonios P. Sarikas"
+__copyright__ = "Copyright (C) 2023-2024 Antonios P. Sarikas"
 __license__ = 'GPL-3.0-only'
-
-from . utils import (
-        Grid, voxels_from_file, voxels_from_files, voxels_from_dir,
-        mic_scale_factors, batch_clean_and_merge, plot_voxels
-        )
