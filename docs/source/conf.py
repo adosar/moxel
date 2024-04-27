@@ -1,7 +1,3 @@
-import sys, os
-sys.path.insert(0, os.path.abspath('../../src'))
-from moxel import __version__ as version
-
 # Configuration file for the Sphinx documentation builder.
 #
 # For the full list of built-in configuration values, see the documentation:
@@ -10,10 +6,12 @@ from moxel import __version__ as version
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import subprocess
+
 project = 'MOXελ'
-copyright = '2023, Antonios P. Sarikas'
+copyright = '2023-2024, Antonios P. Sarikas'
 author = 'Antonios P. Sarikas'
-release = version
+release = f'{subprocess.run(["git", "describe"])}'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -37,4 +35,4 @@ copybutton_exclude = '.linenos, .gp, .go'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+#html_static_path = ['_static']

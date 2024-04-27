@@ -1,7 +1,7 @@
 .. _documentation:
 
-|:book:| API Documentation
---------------------------
+|:books:| API Documentation
+---------------------------
 
 moxel package
 =============
@@ -14,10 +14,18 @@ moxel package
 Submodules
 ==========
 
-moxel.utils module
-==================
+moxel.utils
+===========
 
 .. automodule:: moxel.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+moxel.visualize
+===============
+
+.. automodule:: moxel.visualize
    :members:
    :undoc-members:
    :show-inheritance:

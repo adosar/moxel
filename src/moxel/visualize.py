@@ -15,7 +15,10 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 r"""
-Add docstring of the module.
+This module provides helper functions for visualizing voxels.
+
+.. tip::
+    For faster rendering you should prefer :func:`plot_voxels_pv`.
 """
 
 import numpy as np
@@ -26,6 +29,8 @@ import matplotlib as mpl
 def plot_voxels_mpl(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **kwargs):
     r"""
     Visualize voxels with `Axes3d.voxels`_.
+
+    .. _Axes3d.voxels: https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels
 
     Parameters
     ----------
@@ -51,7 +56,9 @@ def plot_voxels_mpl(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis',
     -------
     fig : `Figure <https://matplotlib.org/stable/api/figure_api.html#matplotlib.figure.Figure>`_
 
-    .. _Axes3d.voxels: https://matplotlib.org/stable/api/_as_gen/mpl_toolkits.mplot3d.axes3d.Axes3D.voxels.html#mpl_toolkits.mplot3d.axes3d.Axes3D.voxels
+    Examples
+    --------
+    >>> fig = plot_voxels_mpl(voxels, cmap='coolwarm')
     """
 
     if np.all(fill_pattern) == None:
@@ -79,13 +86,20 @@ def plot_voxels_pv(voxels, **kwargs):
     r"""
     Visualize voxels with `Plotter.add_volume`_
 
+    .. note::
+        For interactive plots in Jupyter: ``pip install "pyvista[jupyter]"``
+
+    .. _Plotter.add_volume: https://docs.pyvista.org/version/stable/api/plotting/_autosummary/pyvista.plotter.add_volume#pyvista-plotter-add-volume
+
     Parameters
     ----------
     voxels : 3D array
     **kwargs : dict, optional
         Valid keyword arguments for `Plotter.add_volume`_.
 
-    .. _Plotter.add_volume: https://docs.pyvista.org/version/stable/api/plotting/_autosummary/pyvista.plotter.add_volume#pyvista-plotter-add-volume
+    Examples
+    --------
+    >>> plot_voxels_pv(voxels, cmap='coolwarm')
     """
     pl = pv.Plotter()
     pl.add_volume(voxels, **kwargs)

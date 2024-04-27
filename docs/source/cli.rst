@@ -3,7 +3,8 @@
 |:keyboard:| Command Line Interface
 ===================================
 
-.. argparse::
-   :module: moxel.cli
-   :func: _return_cli_parser
-   :prog: python -m moxel
+There are two available commands: ``[create, clean]``
+
+.. code-block:: console
+
+       $ moxel <command> --help

@@ -16,7 +16,7 @@ authors = [
 license = {text = "GPL-3.0-only"}
 description = "Package for parallel calculation of energy voxels."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.12"
 
 classifiers = [
     "Programming Language :: Python :: 3",

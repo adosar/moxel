@@ -14,16 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+r"""
+This module provides helper functions for creating voxels.
+
+.. note::
+    Currently, interactions are modelled with the Lennard-Jones (LJ) potential.
+"""
+
 import os
 import json
 import itertools
 from pathlib import Path
 from multiprocessing import Pool
 from itertools import repeat
+import warnings
 import numpy as np
 from tqdm import tqdm
 from pymatgen.core import Structure
 from . _params import lj_params
+warnings.filterwarnings('ignore')
 
 
 def get_names(fname):
@@ -47,7 +56,7 @@ def get_names(fname):
 
 def mic_scale_factors(r, lattice_vectors):
     r"""
-    Return scale factors to satisfy minimum image convention (MIC) [1]_ .
+    Return scale factors to satisfy minimum image convention [MIC]_.
 
     Parameters
     ----------
@@ -64,7 +73,7 @@ def mic_scale_factors(r, lattice_vectors):
 
     References
     ----------
-    .. [1] W. Smith, "The Minimum Image Convention in Non-Cubic MD Cells", 1989.
+    .. [MIC] W. Smith, "The Minimum Image Convention in Non-Cubic MD Cells", 1989.
     """
     a, b, c = lattice_vectors
     volume = np.linalg.norm(np.dot(a, np.cross(b, c)))
@@ -187,7 +196,7 @@ class Grid:
         Parameters
         ----------
         coordinates : array_like of shape (3,)
-            If ``cubic_box=True`` cartesian. Else, fractional.
+            If ``cubic_box == True`` cartesian. Else, fractional.
 
         Returns
         -------
@@ -212,6 +221,7 @@ class Grid:
                     x = (0.5 * (s_j + self.sigma)) / r_ij
                     energy += 4 * np.sqrt(e_j * self.epsilon) * (x**12 - x**6)
 
+        # This should be changed with clipping in future versions.
         return np.exp(-(1 / 298) * energy)  # For numerical stability.
 
 
@@ -279,6 +289,7 @@ def voxels_from_files(
     where ``n_samples == len(cif_pathnames)``.
 
     After processing the following files are created::
+
         out_pathname
             ├──voxels.npy
             └──names.json
@@ -351,6 +362,7 @@ def voxels_from_dir(
     where ``n_samples == len(cif_pathnames)``.
 
     After processing the following files are created::
+
         out_pathname
             ├──voxels.npy
             └──names.json
@@ -410,7 +422,7 @@ def batch_clean(batch_dirname):
 
         batch
         ├──voxels.npy
-        └──names.json
+        ├──names.json
         ├──clean_voxels.npy
         └──clean_names.json
 
