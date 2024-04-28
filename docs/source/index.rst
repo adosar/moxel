@@ -96,7 +96,6 @@ MOXελ is released under the `GNU General Public License v3.0 only <https://spd
    changes
 
 
-
 Indices and tables
 ------------------
 

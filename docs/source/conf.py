@@ -6,7 +6,10 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import sys, os
 import subprocess
+
+sys.path.insert(0, os.path.abspath('../../src'))
 
 project = 'MOXελ'
 copyright = '2023-2024, Antonios P. Sarikas'
@@ -18,6 +21,7 @@ release = f'{subprocess.run(["git", "describe"])}'
 
 extensions = [
         'sphinx.ext.autodoc',
+        'sphinx.ext.viewcode',
         'sphinx.ext.napoleon',
         'sphinxemoji.sphinxemoji',
         'sphinx_copybutton',
