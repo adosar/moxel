@@ -284,7 +284,7 @@ def voxels_from_files(
         ):
     r"""
     Calculate voxels from a list of ``.cif`` files and store them under
-    ``out_pathname`` as class:`numpy.array` of shape
+    ``out_pathname`` as :class:`numpy.array` of shape
     ``(n_samples, grid_size, grid_size, grid_size)``,
     where ``n_samples == len(cif_pathnames)``.
 
@@ -357,7 +357,7 @@ def voxels_from_dir(
         ):
     r"""
     Calculate voxels from a directory of ``.cif`` files and save them under
-    ``out_pathname`` as class:`numpy.array` of shape
+    ``out_pathname`` as :class:`numpy.array` of shape
     ``(n_samples, grid_size, grid_size, grid_size)``,
     where ``n_samples == len(cif_pathnames)``.
 
