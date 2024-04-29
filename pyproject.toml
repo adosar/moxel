@@ -16,7 +16,7 @@ authors = [
 license = {text = "GPL-3.0-only"}
 description = "Package for parallel calculation of energy voxels."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.10"
 
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -36,6 +36,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/adosar/moxel"
 Documentation = "https://moxel.readthedocs.io"
+Changelog = "https://moxel.readthedocs.io/en/stable/changes.html"
 
 [project.scripts]
 moxel = "moxel.cli:moxel_fire"
