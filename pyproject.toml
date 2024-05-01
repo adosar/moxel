@@ -13,6 +13,9 @@ authors = [
   {name="Antonios P. Sarikas", email="antonios.sarikas@gmail.com"},
 ]
 
+[tool.setuptools_scm]
+# can be empty if no extra settings are needed, presence enables setuptools_scm
+
 license = {text = "GPL-3.0-only"}
 description = "Package for parallel calculation of energy voxels."
 readme = "README.md"
