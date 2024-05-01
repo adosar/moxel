@@ -214,6 +214,13 @@ class Grid:
             cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
 
         _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(self._frac_coords, cartesian_coords, self.cutoff, zip_results=False)
+
+        # No neighbor, zero energy
+        # Need to check for length of r_ij because of https://github.com/materialsproject/pymatgen/issues/3794
+        if len(r_ij) == 0:
+            return 1.
+
+        # Close contact, infinite energy
         if np.any(r_ij < 1e-3):
             return 0.
 
