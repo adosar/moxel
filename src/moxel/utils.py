@@ -292,7 +292,8 @@ class Grid:
         q_j = self._charges[indices]
         sum_q = np.sum(q_j)
         pot = q_j * erfc(self.wolf_alpha * r_ij) / r_ij
-        return np.sum(pot) - sum_q * erfc(self.wolf_alpha * self.cutoff) / self.cutoff
+        z = erfc(self.wolf_alpha * self.cutoff) / self.cutoff
+        return np.sum(pot) - sum_q * z + (z / 2 + self.wolf_alpha / np.sqrt(np.pi))
 
     def elec_field_vect(self, coords):
         r"""
