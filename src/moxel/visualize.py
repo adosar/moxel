@@ -24,6 +24,7 @@ This module provides helper functions for visualizing voxels.
 import numpy as np
 import pyvista as pv
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 
 
 def plot_voxels_mpl(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis', **kwargs):
@@ -58,7 +59,9 @@ def plot_voxels_mpl(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis',
 
     Examples
     --------
+    >>> voxels = np.random.randn(5, 5, 5)
     >>> fig = plot_voxels_mpl(voxels, cmap='coolwarm')
+    >>> plt.show()  # Not needed for Jupyter.
     """
 
     if np.all(fill_pattern) == None:
@@ -72,7 +75,7 @@ def plot_voxels_mpl(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis',
     _ = ax.voxels(filled=fill_pattern, facecolors=colors, **kwargs)
 
     if colorbar:
-        mappable = mpl.cm.ScalarMappable(norm=mpl.colors.Normalize(), cmap=cmap) 
+        mappable = mpl.cm.ScalarMappable(norm=norm, cmap=cmap)
         cbar = fig.colorbar(
             mappable, ax=ax, ticks=[], extend='max',
             shrink=0.7, pad=0.1,
@@ -99,6 +102,7 @@ def plot_voxels_pv(voxels, **kwargs):
 
     Examples
     --------
+    >>> voxels = np.random.randn(5, 5, 5)
     >>> plot_voxels_pv(voxels, cmap='coolwarm')
     """
     pl = pv.Plotter()

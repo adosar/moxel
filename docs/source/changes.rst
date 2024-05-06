@@ -8,8 +8,12 @@ Version 0.1.0
 
     * :func:`moxel.utils.voxels_from_files` and :func:`moxel.utils.voxels_from_dir`
       
-        1. Now they store the names of the materials, so users don't need to do it.
+        1. Now they store the names of the materials as a :class:`list`,
+           so users don't need to do it.
         2. Parameter ``out_pathname`` now must be specified (no longer optional).
+
+    * The usage of the CLI is now ``moxel <command>`` instead of ``python -m
+      moxel``.
 
 .. versionremoved:: 0.1.0
 

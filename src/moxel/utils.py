@@ -119,8 +119,8 @@ class Grid:
 
     def load_structure(self, pathname):
         r"""
-        Load a crystal structure from a file in a format supported by pymatgen
-        (CIF, JSON, etc.)
+        Load a crystal structure from a file in a format supported by
+        :meth:`pymatgen.core.Structure.from_file`.
 
         Parameters
         ----------
@@ -179,9 +179,10 @@ class Grid:
             self._simulation_box = self.structure * scale
         
         if potential == 'lj':
-            # Cache LJ parameters for all atoms in the simulation box
+            # Cache LJ parameters for all atoms in the simulation box.
             self._lj_params = np.array([lj_params[atom.species_string] for atom in self._simulation_box])
-            # Cache fractional coordinates, since this is a slow function in pymatgen
+
+            # Cache fractional coordinates since this is a slow function in pymatgen.
             self._frac_coords = self._simulation_box.frac_coords
 
             # Embarrassingly parallel.
@@ -214,20 +215,24 @@ class Grid:
         else:
             cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
 
-        _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(self._frac_coords, cartesian_coords, self.cutoff, zip_results=False)
+        _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(
+                self._frac_coords, cartesian_coords,
+                self.cutoff, zip_results=False,
+                )
 
-        # No neighbor, zero energy
-        # Need to check for length of r_ij because of https://github.com/materialsproject/pymatgen/issues/3794
-        if len(r_ij) == 0:
+        '''
+        Need to check for length of r_ij because of
+        https://github.com/materialsproject/pymatgen/issues/3794
+        '''
+        if len(r_ij) == 0:  # No neighbor, zero energy.
             return 1.
 
-        # Close contact, infinite energy
-        if np.any(r_ij < 1e-3):
+        if np.any(r_ij < 1e-3):  # Close contact, infinite energy.
             return 0.
 
         es_j = self._lj_params[indices]
-        x = (0.5 * (es_j[:,1] + self.sigma)) / r_ij
-        e = 4 * np.sqrt(es_j[:,0] * self.epsilon)
+        x = (0.5 * (es_j[:, 1] + self.sigma)) / r_ij
+        e = 4 * np.sqrt(es_j[:, 0] * self.epsilon)
         energy = sum(e * (x**12 - x**6))
 
         # This should be changed with clipping in future versions.
@@ -303,8 +308,8 @@ def voxels_from_files(
             ├──voxels.npy
             └──names.json
 
-    The file ``names.json`` stores the names of the materials, which might be
-    useful for later indexing.
+    The file ``names.json`` stores the names of the materials as a
+    :class:`list`, which might be useful for later indexing.
 
     Parameters
     ----------
@@ -325,8 +330,9 @@ def voxels_from_files(
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
     n_jobs : int, optional
-        Number of jobs to run in parallel. If ``None``, all processors are used.
-    
+        Number of jobs to run in parallel. If ``None``, then the number returned
+        by ``os.cpu_count()`` is used.
+
     Notes
     -----
     * Samples in output array follow the order in ``cif_pathnames``.
@@ -376,8 +382,8 @@ def voxels_from_dir(
             ├──voxels.npy
             └──names.json
 
-    The file ``names.json`` stores the names of the materials, which might be
-    useful for later indexing.
+    The file ``names.json`` stores the names of the materials as a
+    :class:`list`, which might be useful for later indexing.
 
     Parameters
     ----------
@@ -398,7 +404,8 @@ def voxels_from_dir(
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
     n_jobs : int, optional
-        Number of jobs to run in parallel. If ``None``, all processors are used.
+        Number of jobs to run in parallel. If ``None``, then the number returned
+        by ``os.cpu_count()`` is used.
 
     Notes
     -----
