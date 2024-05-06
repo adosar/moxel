@@ -29,6 +29,7 @@ from multiprocessing import Pool
 from itertools import repeat
 import warnings
 import numpy as np
+from scipy.special import erfc
 from tqdm import tqdm
 from pymatgen.core import Structure
 from . _params import lj_params
@@ -111,11 +112,13 @@ class Grid:
     voxels : array of shape (grid_size,)*3
        Available only after :meth:`Grid.calculate` has been called.
     """
-    def __init__(self, grid_size=25, cutoff=10, epsilon=50, sigma=2.5):
+    def __init__(self, grid_size=25, cutoff=10, epsilon=50, sigma=2.5, wolf_alpha=0.2, charge_prop="charge"):
         self.grid_size = grid_size
         self.cutoff = cutoff
         self.epsilon = epsilon
         self.sigma = sigma
+        self.wolf_alpha = wolf_alpha
+        self.charge_prop = charge_prop
 
     def load_structure(self, pathname):
         r"""
@@ -171,27 +174,44 @@ class Grid:
 
         if cubic_box:
             d = length / 2
-            probe_coords = np.linspace(0-d, 0+d, self.grid_size)  # Cartesian.
+            probe_coords = np.linspace(0-d, 0+d, self.grid_size, endpoint=False)  # Cartesian.
             self._simulation_box = self.structure
         else:
-            probe_coords = np.linspace(0, 1, self.grid_size)  # Fractional.
+            probe_coords = np.linspace(0, 1, self.grid_size, endpoint=False)  # Fractional.
             scale = mic_scale_factors(self.cutoff, self.structure.lattice.matrix)
             self._simulation_box = self.structure * scale
-        
+
+        func = None
         if potential == 'lj':
+            func = self.lj_potential
             # Cache LJ parameters for all atoms in the simulation box.
             self._lj_params = np.array([lj_params[atom.species_string] for atom in self._simulation_box])
+        else:
+            if potential == 'elecpot':
+                func = self.elec_potential
+            elif potential == 'elecfield':
+                func = self.elec_field
+            elif potential == 'elecfield_vect':
+                func = self.elec_field_vect
+            try:
+                # Cache charges for all atoms in the simulation box
+                self._charges = np.array(self._simulation_box.site_properties[self.charge_prop])
+            except KeyError as e:
+                raise ValueError("atomic charges could not be found") from e
 
-            # Cache fractional coordinates since this is a slow function in pymatgen.
-            self._frac_coords = self._simulation_box.frac_coords
+        if func is None:
+            raise ValueError(f"invalid potential type: '{potential}'")
 
-            # Embarrassingly parallel.
-            with Pool(processes=n_jobs) as p:
-                energies = p.map(
-                        self.lj_potential, itertools.product(*(probe_coords,)*3)
-                        )
+        # Cache fractional coordinates, since this is a slow function in pymatgen.
+        self._frac_coords = self._simulation_box.frac_coords
+        # Embarrassingly parallel.
+        with Pool(processes=n_jobs) as p:
+            energies = p.map(func, itertools.product(*(probe_coords,)*3))
 
-        self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
+        if potential == 'elecfield_vect':
+            self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size, self.grid_size, self.grid_size, 3))
+        else:
+            self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
 
         return self.voxels
 
@@ -238,6 +258,112 @@ class Grid:
         # This should be changed with clipping in future versions.
         return np.exp(-(1 / 298) * energy)  # For numerical stability.
 
+    def elec_potential(self, coords):
+        r"""
+        Calculate electrostatic potential at cartesian or fractional
+        coordinates, in the Wolf summation approximation, in its
+        damped shifted potential (DSP) formulation. For details, see
+        the PhD thesis from Guillaume Fraux, section 6.3.3, at
+        https://theses.fr/2019PSLEC004
+
+        Parameters
+        ----------
+        coordinates : array_like of shape (3,)
+            If ``cubic_box == True`` cartesian. Else, fractional.
+
+        Returns
+        -------
+        potential: float
+            Electric potential.
+        """
+        if self.cubic_box:
+            cartesian_coords = coords
+        else:
+            cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
+
+        _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(self._frac_coords, cartesian_coords, self.cutoff, zip_results=False)
+
+        # No neighbor, zero potential
+        # Need to check for length of r_ij because of https://github.com/materialsproject/pymatgen/issues/3794
+        if len(r_ij) == 0:
+            return 0.
+
+        # Implement Eq. (6.31) from https://theses.fr/2019PSLEC004
+        q_j = self._charges[indices]
+        sum_q = np.sum(q_j)
+        pot = q_j * erfc(self.wolf_alpha * r_ij) / r_ij
+        return np.sum(pot) - sum_q * erfc(self.wolf_alpha * self.cutoff) / self.cutoff
+
+    def elec_field_vect(self, coords):
+        r"""
+        Calculate electrostatic field at cartesian or fractional
+        coordinates, in the Wolf summation approximation, in its
+        damped shifted force (DSF) formulation. For details, see
+        the PhD thesis from Guillaume Fraux, section 6.3.3, at
+        https://theses.fr/2019PSLEC004
+
+        Parameters
+        ----------
+        coordinates : array_like of shape (3,)
+            If ``cubic_box == True`` cartesian. Else, fractional.
+
+        Returns
+        -------
+        field: numpy.ndarray of shape (3,)
+            Electric field vector.
+        """
+        if self.cubic_box:
+            cartesian_coords = coords
+        else:
+            cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
+
+        frac_j, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(self._frac_coords, cartesian_coords, self.cutoff, zip_results=False)
+
+        # No neighbor, zero field
+        # Need to check for length of r_ij because of https://github.com/materialsproject/pymatgen/issues/3794
+        if len(r_ij) == 0:
+            return 0.
+
+        # We implement Eq. (6.35) from https://theses.fr/2019PSLEC004
+        # fac = the term the term inside the brackets
+        q_j = self._charges[indices]
+        r2_ij = r_ij**2
+        fac = erfc(self.wolf_alpha * r_ij) / r2_ij + 2 * self.wolf_alpha/np.sqrt(np.pi) * np.exp(-self.wolf_alpha**2 * r2_ij) / r_ij
+        fac -= erfc(self.wolf_alpha * self.cutoff) / self.cutoff**2 + 2 * self.wolf_alpha/np.sqrt(np.pi) * np.exp(-self.wolf_alpha**2 * self.cutoff**2) / self.cutoff
+
+        # Calculate the r_ij vectors, and normalize them.
+        frac_j -= coords
+        vec_ij = self._simulation_box._lattice.get_cartesian_coords(frac_j)
+        vec_ij /= r_ij[:, np.newaxis]
+
+        # Make sure the round-tripping of PBC is consistent between
+        # get_points_in_sphere() and the handwritten code above.
+        assert np.max(np.fabs(np.sum(vec_ij**2, axis=1) - 1)) < 1.e-12
+
+        # Put everthing together.
+        field = np.sum(q_j[:, np.newaxis] * fac[:, np.newaxis] * vec_ij, axis=0)
+        return field
+
+    def elec_field(self, coords):
+        r"""
+        Calculate electrostatic field strength at cartesian or fractional
+        coordinates, in the Wolf summation approximation. Same as
+        ``elec_field_vect``, but returns the norm of the field as a
+        scalar.
+
+        Parameters
+        ----------
+        coordinates : array_like of shape (3,)
+            If ``cubic_box == True`` cartesian. Else, fractional.
+
+        Returns
+        -------
+        field: scalar
+            Electric field norm.
+        """
+        field = self.elec_field_vect(coords)
+        return np.sqrt(np.sum(field**2))
+
 
 def voxels_from_file(
         cif_pathname, grid_size=25, cutoff=10,
@@ -278,10 +404,10 @@ def voxels_from_file(
     -----
     For structures that can not be processsed, their voxels are filled with zeros.
     """
-    grid = Grid(grid_size, cutoff, epsilon, sigma)
+    grid = Grid(grid_size, cutoff, epsilon, sigma, charge_prop="pbe_ddec_charge")
     try:
         grid.load_structure(cif_pathname)
-        grid.calculate(cubic_box=cubic_box, length=length, n_jobs=n_jobs)
+        grid.calculate(cubic_box=cubic_box, length=length, n_jobs=n_jobs, potential="elecpot")
     except:
         grid.voxels = np.full(shape=(grid_size,)*3, fill_value=0, dtype=np.float32)
 
