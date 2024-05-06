@@ -117,17 +117,18 @@ class Grid:
         self.epsilon = epsilon
         self.sigma = sigma
 
-    def load_structure(self, cif_pathname):
+    def load_structure(self, pathname):
         r"""
-        Load a crystal structure from a ``.cif`` file.
+        Load a crystal structure from a file in a format supported by pymatgen
+        (CIF, JSON, etc.)
 
         Parameters
         ----------
-        cif_pathname : str
-           Pathname to the ``.cif`` file.
+        pathname : str
+           Pathname to the file.
         """
-        self.structure = Structure.from_file(cif_pathname)
-        self.structure_name = Path(cif_pathname).stem
+        self.structure = Structure.from_file(pathname)
+        self.structure_name = Path(pathname).stem
 
     def calculate(self, cubic_box=False, length=30, potential='lj', n_jobs=None):
         r"""

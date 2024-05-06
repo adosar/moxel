@@ -159,6 +159,15 @@ class TestUtils(unittest.TestCase):
             # Check that the names have been correctly stored.
             self.assertEqual([names[i] for i in filled_idx], clean_names)
 
+    def test_load_file(self):
+        cif_dir = 'tests/CIFs'
+
+        grid = Grid()
+        grid.load_structure(f'{cif_dir}/IRMOF-1.cif')
+
+        grid = Grid()
+        grid.load_structure(f'{cif_dir}/MnH28C26(N2Cl)2.json')
+
 
 if __name__ == '__main__':
     unittest.main()
