@@ -1,6 +1,12 @@
 |:pushpin:| Changes
 ===================
 
+Version 0.1.1
+-------------
+    
+* Add performance enhancements proposed by :user:`fxcoudert`. See PR :pr:`2, 3`.
+* Fix bug in :mod:`moxel.visualize` where plots didn't render.
+
 Version 0.1.0
 -------------
 

@@ -27,6 +27,7 @@ extensions = [
         'sphinx_copybutton',
         'sphinxarg.ext',
         'sphinx_code_tabs',
+        'sphinx_issues',
         ]
 
 templates_path = ['_templates']
@@ -40,3 +41,16 @@ copybutton_exclude = '.linenos, .gp, .go'
 
 html_theme = 'sphinx_rtd_theme'
 #html_static_path = ['_static']
+
+# Path to GitHub repo {group}/{project}  (note that `group` is the GitHub user or organization)
+issues_github_path = "adosar/moxel"
+
+# which is the equivalent to:
+issues_uri = "https://github.com/{group}/{project}/issues/{issue}"
+issues_prefix = "#"
+issues_pr_uri = "https://github.com/{group}/{project}/pull/{pr}"
+issues_pr_prefix = "#"
+issues_commit_uri = "https://github.com/{group}/{project}/commit/{commit}"
+issues_commit_prefix = "@"
+issues_user_uri = "https://github.com/{user}"
+issues_user_prefix = "@"

@@ -54,13 +54,14 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
     publisher = {Springer Science and Business Media LLC},
     author = {Sarikas,  Antonios P. and Gkagkas,  Konstantinos and Froudakis,  George E.},
     year = {2024},
-    month = jan 
+    month = jan
     }
 
 ## 📇 TODO
-* Improve modeling of interactions
-* Improve voxelization scheme
-* Improve performance
+1. CLI for training [RetNet](https://www.nature.com/articles/s41598-023-50309-8).
+2. Improve performance
+3. Improve voxelization scheme
+4. Improve modeling of interactions
 
 ## 📑 License
 MOXελ is released under the [GNU General Public License v3.0 only](https://spdx.org/licenses/GPL-3.0-only.html).

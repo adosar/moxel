@@ -19,6 +19,20 @@ This module provides helper functions for creating voxels.
 
 .. note::
     Currently, interactions are modelled with the Lennard-Jones (LJ) potential.
+
+.. attention::
+    Consider playing with the ``n_jobs`` parameter to get the best performance
+    for your system::
+
+        from timeit import timeit
+
+        setup = 'from moxel.utils import voxels_from_file'
+        n_jobs = [1, 2, 8, 16]  # Modify this according to your system.
+
+        for n in n_jobs:
+            stmt = f'voxels_from_file("path/to/cif", n_jobs={n})'
+            time = timeit(stmt=stmt, setup=setup, number=1)
+            print(f'Time with {n} jobs: {time:.3f} s')
 """
 
 import os
