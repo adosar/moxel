@@ -28,7 +28,6 @@ extensions = [
         'sphinxarg.ext',
         'sphinx_code_tabs',
         'sphinx_issues',
-        'sphinxcontrib.programoutput',
         ]
 
 templates_path = ['_templates']

@@ -3,18 +3,10 @@
 |:keyboard:| Command Line Interface
 ===================================
 
-There are two available commands: ``[create, clean]``
+There are two available subcommands: ``[create, clean]``
 
-``moxel``
----------
-.. program-output:: moxel --help
+For more information on how to use this commands:
 
-``moxel create``
-----------------
+    .. code-block:: console
 
-.. program-output:: moxel create --help
-
-``moxel clean``
----------------
-
-.. program-output:: moxel clean --help
+        $ moxel <subcommand> --help
