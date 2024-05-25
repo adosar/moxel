@@ -3,29 +3,14 @@
 |:books:| API Documentation
 ---------------------------
 
-moxel package
-=============
-
 .. automodule:: moxel
    :members:
    :undoc-members:
    :show-inheritance:
 
-Submodules
-==========
+.. toctree::
+   :maxdepth: 2
+   :caption: Submodules:
 
-moxel.utils
-===========
-
-.. automodule:: moxel.utils
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-moxel.visualize
-===============
-
-.. automodule:: moxel.visualize
-   :members:
-   :undoc-members:
-   :show-inheritance:
+   utils
+   visualize

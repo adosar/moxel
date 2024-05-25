@@ -14,6 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+r"""
+This module provides the Lennard-Jones parameters from UFF.
+"""
+
 lj_params = {
     "H": [
         22.11417,

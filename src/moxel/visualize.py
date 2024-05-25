@@ -64,7 +64,7 @@ def plot_voxels_mpl(voxels, *, fill_pattern=None, colorbar=True, cmap='viridis',
     >>> plt.show()  # Not needed for Jupyter.
     """
 
-    if np.all(fill_pattern) == None:
+    if np.all(fill_pattern) is None:
         fill_pattern = np.full(voxels.shape, True)
 
     cmap = plt.get_cmap(cmap)

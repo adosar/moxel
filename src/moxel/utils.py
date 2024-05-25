@@ -49,9 +49,9 @@ from . _params import lj_params
 warnings.filterwarnings('ignore')
 
 
-def get_names(fname):
+def load_json(fname):
     r"""
-    Load a list of material names saved in ``.json`` format.
+    Load a ``.json`` file.
 
     Parameters
     ----------
@@ -63,9 +63,9 @@ def get_names(fname):
     names : list
     """
     with open(fname, 'r') as fhand:
-        names = json.load(fhand)
+        data = json.load(fhand)
 
-    return names
+    return data
 
 
 def mic_scale_factors(r, lattice_vectors):
@@ -168,8 +168,8 @@ class Grid:
             The size of the cubic box in Å. Takes effect only
             if ``cubic_box == True``.
         n_jobs : int, optional
-            Number of jobs to run in parallel. If ``None``, all processors are
-            used.
+            Number of jobs to run in parallel. If ``None``, then the number returned
+            by ``os.cpu_count()`` is used.
 
         Returns
         -------
@@ -278,7 +278,8 @@ def voxels_from_file(
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
     n_jobs : int, optional
-        Number of jobs to run in parallel. If ``None``, all processors are used.
+        Number of jobs to run in parallel. If ``None``, then the number returned
+        by ``os.cpu_count()`` is used.
     only_voxels : bool, default=True
         Determines ``out`` type.
         
@@ -301,8 +302,8 @@ def voxels_from_file(
 
     if only_voxels:
         return grid.voxels
-    else:
-        return grid
+
+    return grid
 
 
 def voxels_from_files(
@@ -467,7 +468,7 @@ def batch_clean(batch_dirname):
         If no voxels are missing ``0`` else ``1``.
     """
     # Case 1: no missing voxels.
-    names = get_names(f'{batch_dirname}/names.json')
+    names = load_json(f'{batch_dirname}/names.json')
     voxels = np.load(f'{batch_dirname}/voxels.npy', mmap_mode='r')
 
     missing_idx = [i for i, x in enumerate(voxels) if np.all(x == 0)]

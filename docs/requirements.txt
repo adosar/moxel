@@ -19,3 +19,4 @@ sphinxcontrib-qthelp
 sphinxcontrib-serializinghtml
 sphinxemoji
 sphinx-issues
+sphinxcontrib-programoutput

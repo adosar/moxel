@@ -14,12 +14,19 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+r"""
+This module provides helper functions for the CLI.
+"""
+
 import fire
 from . utils import voxels_from_dir, batch_clean
 
 
 def moxel_fire():
-  fire.Fire({
-      'clean': batch_clean,
-      'create': voxels_from_dir,
-  })
+    r"""
+    Run the CLI.
+    """
+    fire.Fire({
+        'clean': batch_clean,
+        'create': voxels_from_dir,
+    })

@@ -106,7 +106,7 @@ class TestUtils(unittest.TestCase):
             voxels_from_files(cif_files, out_pathname=dir_path, grid_size=grid_size)
 
             voxels = np.load(f'{dir_path}/voxels.npy', mmap_mode='r')
-            stored_names = get_names(f'{dir_path}/names.json')
+            stored_names = load_json(f'{dir_path}/names.json')
 
             self.assertEqual(voxels.shape, (n_files, grid_size, grid_size, grid_size))
             self.assertEqual(names, stored_names)
@@ -126,7 +126,7 @@ class TestUtils(unittest.TestCase):
             voxels_from_dir(cif_dir, dir_path, grid_size=grid_size)
 
             voxels = np.load(f'{dir_path}/voxels.npy', mmap_mode='r')
-            stored_names = get_names(f'{dir_path}/names.json')
+            stored_names = load_json(f'{dir_path}/names.json')
 
             self.assertEqual(voxels.shape, (n_files, grid_size, grid_size, grid_size))
             self.assertEqual(names, stored_names)
@@ -145,10 +145,10 @@ class TestUtils(unittest.TestCase):
             batch_clean(dir_path)
 
             voxels = np.load(f'{dir_path}/voxels.npy', mmap_mode='r')
-            names = get_names(f'{dir_path}/names.json')
+            names = load_json(f'{dir_path}/names.json')
 
             clean_voxels = np.load(f'{dir_path}/clean_voxels.npy', mmap_mode='r')
-            clean_names = get_names(f'{dir_path}/clean_names.json')
+            clean_names = load_json(f'{dir_path}/clean_names.json')
 
             # Get the indices of filled voxels.
             filled_idx = [i for i, x in enumerate(voxels) if not np.all(x == 0)]

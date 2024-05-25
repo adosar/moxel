@@ -5,6 +5,16 @@
 
 There are two available commands: ``[create, clean]``
 
-.. code-block:: console
+``moxel``
+---------
+.. program-output:: moxel --help
 
-       $ moxel <command> --help
+``moxel create``
+----------------
+
+.. program-output:: moxel create --help
+
+``moxel clean``
+---------------
+
+.. program-output:: moxel clean --help
