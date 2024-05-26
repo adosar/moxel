@@ -307,19 +307,19 @@ def voxels_from_file(
 
 
 def voxels_from_files(
-        cif_pathnames, out_pathname, grid_size=25, cutoff=10,
+        cif_pathnames, out_dirname, grid_size=25, cutoff=10,
         epsilon=50, sigma=2.5, cubic_box=False, length=30,
         n_jobs=None,
         ):
     r"""
     Calculate voxels from a list of ``.cif`` files and store them under
-    ``out_pathname`` as :class:`numpy.array` of shape
+    ``out_dirname`` as :class:`numpy.array` of shape
     ``(n_samples, grid_size, grid_size, grid_size)``,
     where ``n_samples == len(cif_pathnames)``.
 
     After processing the following files are created::
 
-        out_pathname
+        out_dirname
             ├──voxels.npy
             └──names.json
 
@@ -330,7 +330,7 @@ def voxels_from_files(
     ----------
     cif_pathnames : list
        List of pathnames to the ``.cif`` files.
-    out_pathname : str
+    out_dirname : str
         Pathname to the directory under which voxels are stored.
     grid_size : int, default=25
         Number of grid points along each dimension.
@@ -357,11 +357,11 @@ def voxels_from_files(
     names = [Path(i).stem for i in cif_pathnames]
 
     # Store the names.
-    with open(f'{out_pathname}/names.json', mode='w') as fhand:
+    with open(f'{out_dirname}/names.json', mode='w') as fhand:
         json.dump(names, fhand, indent=4)
 
     fp = np.lib.format.open_memmap(
-        f'{out_pathname}/voxels.npy', mode='w+',
+        f'{out_dirname}/voxels.npy', mode='w+',
         shape=(n_samples, *(grid_size,)*3),
         dtype=np.float32
         )
@@ -381,19 +381,19 @@ def voxels_from_files(
 
 
 def voxels_from_dir(
-        cif_dirname, out_pathname, grid_size=25, cutoff=10,
+        cif_dirname, out_dirname, grid_size=25, cutoff=10,
         epsilon=50, sigma=2.5, cubic_box=False, length=30,
         n_jobs=None,
         ):
     r"""
     Calculate voxels from a directory of ``.cif`` files and save them under
-    ``out_pathname`` as :class:`numpy.array` of shape
+    ``out_dirname`` as :class:`numpy.array` of shape
     ``(n_samples, grid_size, grid_size, grid_size)``,
     where ``n_samples == len(cif_pathnames)``.
 
     After processing the following files are created::
 
-        out_pathname
+        out_dirname
             ├──voxels.npy
             └──names.json
 
@@ -404,7 +404,7 @@ def voxels_from_dir(
     ----------
     cif_dirname : str
        Pathname to the directory containing the ``.cif`` files.
-    out_pathname : str
+    out_dirname : str
         Pathname to the directory under which voxels are stored.
     grid_size : int, default=25
         Number of grid points along each dimension.
@@ -430,7 +430,7 @@ def voxels_from_dir(
     files = [os.path.join(cif_dirname, f) for f in sorted(os.listdir(cif_dirname))]
 
     voxels_from_files(
-            files, out_pathname,
+            files, out_dirname,
             grid_size=grid_size, cutoff=cutoff,
             epsilon=epsilon, sigma=sigma,
             cubic_box=cubic_box, length=length,

@@ -103,7 +103,7 @@ class TestUtils(unittest.TestCase):
 
         # Check that output files are properly stored.
         with tempfile.TemporaryDirectory() as dir_path:
-            voxels_from_files(cif_files, out_pathname=dir_path, grid_size=grid_size)
+            voxels_from_files(cif_files, out_dirname=dir_path, grid_size=grid_size)
 
             voxels = np.load(f'{dir_path}/voxels.npy', mmap_mode='r')
             stored_names = load_json(f'{dir_path}/names.json')

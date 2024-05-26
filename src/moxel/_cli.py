@@ -20,6 +20,7 @@ This module provides helper functions for the CLI.
 
 import fire
 from . utils import voxels_from_dir, batch_clean
+from . data import prepare_data
 
 
 def moxel_fire():
@@ -29,4 +30,5 @@ def moxel_fire():
     fire.Fire({
         'clean': batch_clean,
         'create': voxels_from_dir,
+        'prepare': prepare_data
     })

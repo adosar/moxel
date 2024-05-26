@@ -93,7 +93,7 @@ MOXελ is released under the `GNU General Public License v3.0 only <https://spd
    tutorial
    cli
    moxel
-   changes
+   changelog
 
 
 Indices and tables
