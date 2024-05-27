@@ -125,11 +125,12 @@ class Grid:
     voxels : array of shape (grid_size,)*3
        Available only after :meth:`Grid.calculate` has been called.
     """
-    def __init__(self, grid_size=25, cutoff=10, epsilon=50, sigma=2.5):
+    def __init__(self, grid_size=25, cutoff=10, epsilon=50, sigma=2.5, sigma_range=None):
         self.grid_size = grid_size
         self.cutoff = cutoff
         self.epsilon = epsilon
         self.sigma = sigma
+        self.sigma_range = sigma_range
 
     def load_structure(self, pathname):
         r"""
@@ -192,20 +193,33 @@ class Grid:
             scale = mic_scale_factors(self.cutoff, self.structure.lattice.matrix)
             self._simulation_box = self.structure * scale
         
+        func = None
         if potential == 'lj':
+            func = self.lj_potential
             # Cache LJ parameters for all atoms in the simulation box.
             self._lj_params = np.array([lj_params[atom.species_string] for atom in self._simulation_box])
+        elif potential == 'multiple_lj':
+            func = self.multiple_lj_potential
+            # Cache LJ parameters for all atoms in the simulation box.
+            self._lj_params = np.array([lj_params[atom.species_string] for atom in self._simulation_box])
+            # Set up the sigma_j array
+            self._sigma_probe = np.linspace(*self.sigma_range)
 
-            # Cache fractional coordinates since this is a slow function in pymatgen.
-            self._frac_coords = self._simulation_box.frac_coords
+        if func is None:
+            raise ValueError(f"invalid potential type: '{potential}'")
 
-            # Embarrassingly parallel.
-            with Pool(processes=n_jobs) as p:
-                energies = p.map(
-                        self.lj_potential, itertools.product(*(probe_coords,)*3)
-                        )
+        # Cache fractional coordinates since this is a slow function in pymatgen.
+        self._frac_coords = self._simulation_box.frac_coords
 
-        self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
+        # Embarrassingly parallel.
+        with Pool(processes=n_jobs) as p:
+            energies = p.map(func, itertools.product(*(probe_coords,)*3))
+
+        if potential == 'multiple_lj':
+            self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size, self.grid_size,
+                                                                        self.grid_size, len(self._sigma_probe)))
+        else:
+            self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
 
         return self.voxels
 
@@ -251,6 +265,49 @@ class Grid:
 
         # This should be changed with clipping in future versions.
         return np.exp(-(1 / 298) * energy)  # For numerical stability.
+
+    def multiple_lj_potential(self, coords):
+        r"""
+        Calculate multiple LJ potentials at cartesian or fractional
+        coordinates, for a series of probe sigma values.
+
+        Parameters
+        ----------
+        coordinates : array_like of shape (3,)
+            If ``cubic_box == True`` cartesian. Else, fractional.
+
+        Returns
+        -------
+        energy : array of float values
+            Energy values for each probe sigma value.
+        """
+        if self.cubic_box:
+            cartesian_coords = coords
+        else:
+            cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
+
+        _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(
+                self._frac_coords, cartesian_coords,
+                self.cutoff, zip_results=False,
+                )
+
+        '''
+        Need to check for length of r_ij because of
+        https://github.com/materialsproject/pymatgen/issues/3794
+        '''
+        if len(r_ij) == 0:  # No neighbor, zero energy.
+            return np.zeros(len(self._sigma_probe))
+
+        if np.any(r_ij < 1e-3):  # Close contact, infinite energy.
+            return np.full(len(self._sigma_probe), np.inf)
+
+        es_j = self._lj_params[indices]
+        e = 4 * np.sqrt(es_j[:, 0])
+        x = (0.5 * (es_j[np.newaxis, :, 1] + self._sigma_probe[:, np.newaxis])) / r_ij[np.newaxis, :]
+        energy = np.sum(e * (x**12 - x**6), axis=1)
+
+        # This should be changed with clipping in future versions.
+        return energy
 
 
 def voxels_from_file(
