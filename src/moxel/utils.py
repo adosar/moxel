@@ -247,7 +247,7 @@ class Grid:
         es_j = self._lj_params[indices]
         x = (0.5 * (es_j[:, 1] + self.sigma)) / r_ij
         e = 4 * np.sqrt(es_j[:, 0] * self.epsilon)
-        energy = sum(e * (x**12 - x**6))
+        energy = np.sum(e * (x**12 - x**6))
 
         # This should be changed with clipping in future versions.
         return np.exp(-(1 / 298) * energy)  # For numerical stability.
