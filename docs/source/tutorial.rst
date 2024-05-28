@@ -113,7 +113,7 @@ processed.
         .. code-tab:: python
 
             >>> from moxel.utils import voxels_from_dir
-            >>> voxels_from_dir('path/to/CIFs/', grid_size=5, out_pathname='path/to/batch')
+            >>> voxels_from_dir('path/to/CIFs/', grid_size=5, out_dirname='path/to/batch')
 
         .. code-tab:: console
             :caption: CLI

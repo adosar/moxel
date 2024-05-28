@@ -19,8 +19,12 @@ import json
 import unittest
 import tempfile
 from itertools import combinations
-from moxel.data import prepare_data
+import numpy as np
+import pandas as pd
+import torch
+from torch.utils.data import DataLoader
 from moxel.utils import load_json
+from moxel.data import prepare_data, VoxelDataset
 
 
 class TestPrepareData(unittest.TestCase):
@@ -64,7 +68,88 @@ class TestPrepareData(unittest.TestCase):
 
 
 class TestVoxelsDataset(unittest.TestCase):
-    ...
+    def setUp(self):
+        # The grid size is 5 and the train size is 4.
+        self.path_to_indices = 'tests/toy_dataset/train.json'
+        self.path_to_X = 'tests/toy_dataset/clean_voxels.npy'
+        self.dummy_tfm_x = lambda x: x + 100
+        self.ds_indices = load_json(self.path_to_indices)
+        self.ds_voxels = np.load(self.path_to_X, mmap_mode='r')[:, None]
+        self.batch_size = 2
+
+        # For labeled dataset (optional).
+        self.path_to_names = 'tests/toy_dataset/clean_names.json'
+        self.path_to_Y = 'tests/toy_dataset/dummy.csv'
+        self.index_col = 'id'
+        self.labels = ['y_1', 'y_3']
+        self.dummy_tfm_y = lambda x: x - 500
+
+    def test_unlabeled_dataset(self):
+        ds = VoxelDataset(
+                path_to_indices=self.path_to_indices,
+                path_to_X=self.path_to_X,
+                transform_x=self.dummy_tfm_x,
+                )
+
+        dl = DataLoader(ds, batch_size=self.batch_size)
+
+        # Check that it has correct size.
+        self.assertEqual(len(ds), 4)
+
+        # Check that it works with the dataloader.
+        for x in dl:
+            self.assertEqual(x.shape, (self.batch_size, 1, 5, 5, 5))  # Shape (B, C, D, H, W).
+            self.assertIs(x.dtype, torch.float)
+
+        # Check that transforms are correctly applied.
+        for i in range(len(ds)):
+            transformed_x = ds[i]
+            raw_x = torch.tensor(self.ds_voxels[self.ds_indices[i]])
+            self.assertTrue(torch.equal(transformed_x, self.dummy_tfm_x(raw_x)))
+
+    def test_labeled_dataset(self):
+        ds = VoxelDataset(
+                path_to_indices=self.path_to_indices,
+                path_to_X=self.path_to_X,
+                path_to_names=self.path_to_names,
+                path_to_Y=self.path_to_Y,
+                index_col=self.index_col,
+                labels=self.labels,
+                transform_x=self.dummy_tfm_x,
+                transform_y=self.dummy_tfm_y,
+                )
+
+        dl = DataLoader(ds, batch_size=self.batch_size)
+
+        material_names = load_json(self.path_to_names)
+
+        df = pd.read_csv(
+                self.path_to_Y,
+                index_col=self.index_col,
+                usecols=[self.index_col, *self.labels],
+                )
+
+        # Check that it has correct size.
+        self.assertEqual(len(ds), 4)
+
+        # Check that it works with the dataloader.
+        for x, y in dl:
+            self.assertEqual(x.shape, (self.batch_size, 1, 5, 5, 5))  # Shape (B, C, D, H, W).
+            self.assertIs(x.dtype, torch.float)
+            self.assertEqual(y.shape, (self.batch_size, len(self.labels)))  # Shape (B, n_out).
+            self.assertIs(y.dtype, torch.float)
+
+        # Check that transforms are correctly applied.
+        for i in range(len(ds)):
+            idx = self.ds_indices[i]
+            name = material_names[idx]
+
+            transformed_x, transformed_y = ds[i]
+            raw_x = torch.tensor(self.ds_voxels[idx])
+            raw_y = torch.tensor(df.loc[name, self.labels].values)
+
+            self.assertTrue(torch.equal(transformed_x, self.dummy_tfm_x(raw_x)))
+            self.assertTrue(torch.equal(transformed_y, self.dummy_tfm_y(raw_y)))
 
 
 if __name__ == '__main__':

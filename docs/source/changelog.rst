@@ -1,6 +1,18 @@
 |:pushpin:| Changelog
 =====================
 
+Version x.x.x
+-------------
+
+.. versionchanged:: x.x.x
+
+   * Parameter ``out_dirname`` replaces ``out_pathname`` in
+     :func:`utils.voxels_from_files` and :func:`utils.voxels_from_dir`.
+
+.. versionadded:: x.x.x
+   
+   * CLI for RetNet
+
 Version 0.1.2
 -------------
 

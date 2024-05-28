@@ -40,6 +40,7 @@ copybutton_exclude = '.linenos, .gp, .go'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
+#html_logo = 'images/moxel_logo.svg'
 #html_static_path = ['_static']
 
 # Path to GitHub repo {group}/{project}  (note that `group` is the GitHub user or organization)

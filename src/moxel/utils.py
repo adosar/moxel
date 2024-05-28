@@ -166,7 +166,7 @@ class Grid:
             If ``True``, the simulation box is cubic.
         length : float, default=30
             The size of the cubic box in Å. Takes effect only
-            if ``cubic_box == True``.
+            if ``cubic_box=True``.
         n_jobs : int, optional
             Number of jobs to run in parallel. If ``None``, then the number returned
             by ``os.cpu_count()`` is used.
@@ -217,7 +217,7 @@ class Grid:
         Parameters
         ----------
         coordinates : array_like of shape (3,)
-            If ``cubic_box == True`` cartesian. Else, fractional.
+            If ``cubic_box=True`` cartesian. Else, fractional.
 
         Returns
         -------
@@ -234,10 +234,8 @@ class Grid:
                 self.cutoff, zip_results=False,
                 )
 
-        '''
-        Need to check for length of r_ij because of
-        https://github.com/materialsproject/pymatgen/issues/3794
-        '''
+        # Need to check for length of r_ij because of
+        # https://github.com/materialsproject/pymatgen/issues/3794
         if len(r_ij) == 0:  # No neighbor, zero energy.
             return 1.
 
@@ -247,7 +245,7 @@ class Grid:
         es_j = self._lj_params[indices]
         x = (0.5 * (es_j[:, 1] + self.sigma)) / r_ij
         e = 4 * np.sqrt(es_j[:, 0] * self.epsilon)
-        energy = sum(e * (x**12 - x**6))
+        energy = np.sum(e * (x**12 - x**6))
 
         # This should be changed with clipping in future versions.
         return np.exp(-(1 / 298) * energy)  # For numerical stability.
@@ -276,7 +274,7 @@ def voxels_from_file(
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
     length : float, default=30
-        The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
+        The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.
@@ -286,7 +284,7 @@ def voxels_from_file(
     Returns
     -------
     out : ``array`` or :class:`Grid`
-        If ``only_voxels == True``, array of shape ``(grid_size,)*3``.
+        If ``only_voxels=True``, array of shape ``(grid_size,)*3``.
         Otherwise, :class:`Grid`.
 
     Notes
@@ -343,7 +341,7 @@ def voxels_from_files(
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
     length : float, default=30
-        The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
+        The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.
@@ -417,7 +415,7 @@ def voxels_from_dir(
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
     length : float, default=30
-        The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
+        The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.
