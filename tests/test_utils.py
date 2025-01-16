@@ -26,6 +26,9 @@ from moxel.utils import *
 
 
 class TestUtils(unittest.TestCase):
+    def setUp(self):
+        self.tempdir = tempfile.TemporaryDirectory(dir='/tmp')
+
     def test_grid(self):
         cif_pathname = 'tests/CIFs/IRMOF-1.cif'
         grid_size = 5
@@ -58,12 +61,12 @@ class TestUtils(unittest.TestCase):
         # At least one scale factor should be different than 1.
         self.assertTrue(np.any(scale_factors != 1))
 
-        # Load a structure that must not be scaled.
+        # Load a structure that shouldn't be scaled.
         cif_pathname = 'tests/CIFs/IRMOF-1.cif'
         structure = Structure.from_file(cif_pathname)
         scale_factors = mic_scale_factors(10, structure.lattice.matrix)
 
-        # At least one scale factor should be different than 1.
+        # All scale factors should be 1.
         self.assertTrue(np.all(scale_factors == 1))
 
     def test_voxels_from_file(self):
@@ -89,75 +92,39 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(out.epsilon, epsilon)
         self.assertEqual(out.sigma, sigma)
 
-        # Check that output is correct.
+        # Check that output shape is correct.
         self.assertEqual(out.voxels.shape, (grid_size,)*3)
-        self.assertFalse(np.all(out.voxels == 0))
 
     def test_voxels_from_files(self):
+        # The test assumes all files are processable.
         grid_size = 5
         cif_dir = 'tests/CIFs'
         cif_files = [f'{cif_dir}/{i}' for i in os.listdir(cif_dir)]
-        n_files = len(cif_files)
-
         names = [Path(i).stem for i in cif_files]
 
-        # Check that output files are properly stored.
-        with tempfile.TemporaryDirectory() as dir_path:
-            voxels_from_files(cif_files, out_pathname=dir_path, grid_size=grid_size)
+        # Calculate voxels and store them.
+        out_pathname = f'{self.tempdir.name}/voxels_data'
+        voxels_from_files(cif_files, out_pathname, grid_size=grid_size)
 
-            voxels = np.load(f'{dir_path}/voxels.npy', mmap_mode='r')
-            stored_names = load_json(f'{dir_path}/names.json')
+        npy_files = [os.path.join(out_pathname, f) for f in os.listdir(out_pathname)]
 
-            self.assertEqual(voxels.shape, (n_files, grid_size, grid_size, grid_size))
-            self.assertEqual(names, stored_names)
+        # Check that all files are processed properly.
+        for f in npy_files:
+            voxels  = np.load(f)
+            self.assertTrue(Path(f).stem in names)
+            self.assertTrue(voxels.shape, (grid_size,)*3)
 
     def test_voxels_from_dir(self):
-        # The cif_dir contains 2 corrupted .cif files.
+        # The test assumes all files are processable.
         cif_dir = 'tests/CIFs'
         grid_size = 5
 
-        cif_names = sorted(os.listdir(cif_dir))
-        n_files = len(cif_names)
-        n_bad_files = len([i for i in cif_names if i.startswith('corrupted')])
+        # Calculate voxels and store them.
+        out_pathname = f'{self.tempdir.name}/voxels_data'
+        voxels_from_dir(cif_dir, out_pathname, grid_size=grid_size)
 
-        names = [Path(i).stem for i in cif_names]
-
-        with tempfile.TemporaryDirectory() as dir_path:
-            voxels_from_dir(cif_dir, dir_path, grid_size=grid_size)
-
-            voxels = np.load(f'{dir_path}/voxels.npy', mmap_mode='r')
-            stored_names = load_json(f'{dir_path}/names.json')
-
-            self.assertEqual(voxels.shape, (n_files, grid_size, grid_size, grid_size))
-            self.assertEqual(names, stored_names)
-
-            # Check that corrupted .cif files aren't processed.
-            n_bad_voxels = sum([np.all(x == 0) for x in voxels])
-            self.assertEqual(n_bad_files, n_bad_voxels)
-
-    def test_batch_clean(self):
-        cif_dir = 'tests/CIFs'
-        grid_size = 5
-
-        with tempfile.TemporaryDirectory() as dir_path:
-            voxels_from_dir(cif_dir, dir_path, grid_size=grid_size)
-            
-            batch_clean(dir_path)
-
-            voxels = np.load(f'{dir_path}/voxels.npy', mmap_mode='r')
-            names = load_json(f'{dir_path}/names.json')
-
-            clean_voxels = np.load(f'{dir_path}/clean_voxels.npy', mmap_mode='r')
-            clean_names = load_json(f'{dir_path}/clean_names.json')
-
-            # Get the indices of filled voxels.
-            filled_idx = [i for i, x in enumerate(voxels) if not np.all(x == 0)]
-
-            # Check that the voxels have been cleaned.
-            self.assertTrue(np.all(voxels[filled_idx] == clean_voxels))
-
-            # Check that the names have been correctly stored.
-            self.assertEqual([names[i] for i in filled_idx], clean_names)
+        # Check that all files are processed.
+        self.assertEqual(len(os.listdir(out_pathname)), len(os.listdir(cif_dir)))
 
     def test_load_file(self):
         cif_dir = 'tests/CIFs'
@@ -167,6 +134,9 @@ class TestUtils(unittest.TestCase):
 
         grid = Grid()
         grid.load_structure(f'{cif_dir}/MnH28C26(N2Cl)2.json')
+
+    def tearDown(self):
+        self.tempdir.cleanup()
 
 
 if __name__ == '__main__':

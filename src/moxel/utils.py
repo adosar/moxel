@@ -294,11 +294,9 @@ def voxels_from_file(
     For structures that can not be processsed, their voxels are filled with zeros.
     """
     grid = Grid(grid_size, cutoff, epsilon, sigma)
-    try:
-        grid.load_structure(cif_pathname)
-        grid.calculate(cubic_box=cubic_box, length=length, n_jobs=n_jobs)
-    except:
-        grid.voxels = np.full(shape=(grid_size,)*3, fill_value=0, dtype=np.float32)
+
+    grid.load_structure(cif_pathname)
+    grid.calculate(cubic_box=cubic_box, length=length, n_jobs=n_jobs)
 
     if only_voxels:
         return grid.voxels
@@ -312,19 +310,9 @@ def voxels_from_files(
         n_jobs=None,
         ):
     r"""
-    Calculate voxels from a list of ``.cif`` files and store them under
-    ``out_pathname`` as :class:`numpy.array` of shape
-    ``(n_samples, grid_size, grid_size, grid_size)``,
-    where ``n_samples == len(cif_pathnames)``.
+    Calculate voxels from a list of ``.cif`` files and store them.
 
-    After processing the following files are created::
-
-        out_pathname
-            ├──voxels.npy
-            └──names.json
-
-    The file ``names.json`` stores the names of the materials as a
-    :class:`list`, which might be useful for later indexing.
+    Voxels are stored under ``out_pathname`` as ``.npy`` files.
 
     Parameters
     ----------
@@ -350,34 +338,28 @@ def voxels_from_files(
 
     Notes
     -----
-    * Samples in output array follow the order in ``cif_pathnames``.
-    * For structures that can not be processsed, their voxels are filled with zeros.
+    Structures that can't be processsed are omitted.
     """
-    n_samples = len(cif_pathnames)
-    names = [Path(i).stem for i in cif_pathnames]
+    os.mkdir(out_pathname)
 
-    # Store the names.
-    with open(f'{out_pathname}/names.json', mode='w') as fhand:
-        json.dump(names, fhand, indent=4)
+    for file in tqdm(cif_pathnames, desc='Creating energy voxels'):
+        try:
+            name = Path(file).stem  # Name of the structure.
+            grid = voxels_from_file(
+                    cif_pathname=file,
+                    grid_size=grid_size,
+                    cutoff=cutoff,
+                    epsilon=epsilon,
+                    sigma=sigma,
+                    cubic_box=cubic_box,
+                    length=length,
+                    n_jobs=n_jobs,
+                    )
 
-    fp = np.lib.format.open_memmap(
-        f'{out_pathname}/voxels.npy', mode='w+',
-        shape=(n_samples, *(grid_size,)*3),
-        dtype=np.float32
-        )
-
-    grids = map(
-            voxels_from_file, cif_pathnames,
-            repeat(grid_size), repeat(cutoff),
-            repeat(epsilon), repeat(sigma),
-            repeat(cubic_box), repeat(length),
-            repeat(n_jobs)
-            )
-
-    for i in tqdm(range(n_samples), desc='Creating voxels'):
-        fp[i] = next(grids)
-
-    fp.flush()
+            pathname = os.path.join(out_pathname, name)
+            np.save(pathname, grid)  # .npy extension is appended by default.
+        except Exception as e:
+            print(e)
 
 
 def voxels_from_dir(
@@ -386,19 +368,9 @@ def voxels_from_dir(
         n_jobs=None,
         ):
     r"""
-    Calculate voxels from a directory of ``.cif`` files and save them under
-    ``out_pathname`` as :class:`numpy.array` of shape
-    ``(n_samples, grid_size, grid_size, grid_size)``,
-    where ``n_samples == len(cif_pathnames)``.
+    Calculate voxels from a directory of ``.cif`` files and store them.
 
-    After processing the following files are created::
-
-        out_pathname
-            ├──voxels.npy
-            └──names.json
-
-    The file ``names.json`` stores the names of the materials as a
-    :class:`list`, which might be useful for later indexing.
+    Voxels are stored under ``out_pathname`` as ``.npy`` files.
 
     Parameters
     ----------
@@ -424,82 +396,17 @@ def voxels_from_dir(
 
     Notes
     -----
-    * Samples in output array follow the order in ``sorted(os.listdir(cif_dirname))``.
-    * For structures that can not be processsed, their voxels are filled with zeros.
+    Structures that can't be processsed are omitted.
     """
-    files = [os.path.join(cif_dirname, f) for f in sorted(os.listdir(cif_dirname))]
+    cif_pathanmes = [os.path.join(cif_dirname, f) for f in os.listdir(cif_dirname)]
 
     voxels_from_files(
-            files, out_pathname,
-            grid_size=grid_size, cutoff=cutoff,
-            epsilon=epsilon, sigma=sigma,
-            cubic_box=cubic_box, length=length,
+            cif_pathanmes, out_pathname,
+            grid_size=grid_size,
+            cutoff=cutoff,
+            epsilon=epsilon,
+            sigma=sigma,
+            cubic_box=cubic_box,
+            length=length,
             n_jobs=n_jobs,
             )
-
-
-def batch_clean(batch_dirname):
-    """
-    Clean a single batch.
-
-    The batch must have the form::
-
-        batch
-        ├──voxels.npy
-        └──names.json
-
-    Cleaning is required since the voxels for some structures might be zero,
-    see :func:`Grid.calculate`. After cleaning, the directory has the form::
-
-        batch
-        ├──voxels.npy
-        ├──names.json
-        ├──clean_voxels.npy
-        └──clean_names.json
-
-    Parameters
-    ----------
-    batch_dirname : str
-        Pathname to the directory which requires cleaning.
-
-    Returns
-    -------
-    exit_status : int
-        If no voxels are missing ``0`` else ``1``.
-    """
-    # Case 1: no missing voxels.
-    names = load_json(f'{batch_dirname}/names.json')
-    voxels = np.load(f'{batch_dirname}/voxels.npy', mmap_mode='r')
-
-    missing_idx = [i for i, x in enumerate(voxels) if np.all(x == 0)]
-
-    if len(missing_idx) == 0:
-        print('No missing voxels found!')
-        return 0
-
-    # Case 2: missing voxels.
-    print('Missing voxels found! Cleaning...')
-
-    clean_size = len(voxels) - len(missing_idx)
-
-    # Create a new array to store the clean voxels.
-    clean_fp = np.lib.format.open_memmap(
-        f'{batch_dirname}/clean_voxels.npy',
-        shape=(clean_size, *voxels.shape[1:]),  # Shape (N, grid, grid, grid).
-        mode='w+', dtype='float32',
-        )
-
-    clean_idx = 0
-    for idx, x in enumerate(voxels):
-        if idx in missing_idx:
-            pass
-        else:
-            clean_fp[clean_idx] = x
-            clean_idx += 1
-
-    clean_names = np.delete(names, missing_idx)
-
-    with open(f'{batch_dirname}/clean_names.json', 'w') as fhand:
-        json.dump(list(clean_names), fhand, indent=4)
-
-    return 1

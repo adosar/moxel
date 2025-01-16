@@ -19,14 +19,11 @@ This module provides helper functions for the CLI.
 """
 
 import fire
-from . utils import voxels_from_dir, batch_clean
+from . utils import voxels_from_dir
 
 
 def moxel_fire():
     r"""
-    Run the CLI.
+    CLI for the moxel package.
     """
-    fire.Fire({
-        'clean': batch_clean,
-        'create': voxels_from_dir,
-    })
+    fire.Fire(voxels_from_dir)
