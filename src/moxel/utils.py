@@ -40,7 +40,6 @@ import json
 import itertools
 from pathlib import Path
 from multiprocessing import Pool
-from itertools import repeat
 import warnings
 import numpy as np
 from tqdm import tqdm
@@ -194,7 +193,9 @@ class Grid:
         
         if potential == 'lj':
             # Cache LJ parameters for all atoms in the simulation box.
-            self._lj_params = np.array([lj_params[atom.species_string] for atom in self._simulation_box])
+            self._lj_params = np.array(
+                    [lj_params[atom.species_string] for atom in self._simulation_box]
+                    )
 
             # Cache fractional coordinates since this is a slow function in pymatgen.
             self._frac_coords = self._simulation_box.frac_coords
@@ -234,10 +235,9 @@ class Grid:
                 self.cutoff, zip_results=False,
                 )
 
-        '''
-        Need to check for length of r_ij because of
-        https://github.com/materialsproject/pymatgen/issues/3794
-        '''
+        # Need to check for length of r_ij because of
+        # https://github.com/materialsproject/pymatgen/issues/3794
+
         if len(r_ij) == 0:  # No neighbor, zero energy.
             return 1.
 
@@ -255,7 +255,7 @@ class Grid:
 
 def voxels_from_file(
         cif_pathname, grid_size=25, cutoff=10,
-        epsilon=50, sigma=2.5, cubic_box=False, length=30, 
+        epsilon=50, sigma=2.5, cubic_box=False, length=30,
         n_jobs=None, only_voxels=True,
         ):
     r"""
