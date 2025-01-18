@@ -1,7 +1,7 @@
 .. highlight:: console
 
-|:gear:| Installation
-===========================
+⚙️  Installation
+================
 
 It is recommended to install MOXελ inside a virtual environment.
 

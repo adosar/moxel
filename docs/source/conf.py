@@ -7,14 +7,14 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 import sys, os
-import subprocess
+from importlib.metadata import version as get_version
 
 sys.path.insert(0, os.path.abspath('../../src'))
 
 project = 'MOXελ'
 copyright = '2023-2024, Antonios P. Sarikas'
 author = 'Antonios P. Sarikas'
-release = f'{subprocess.run(["git", "describe"])}'
+release = get_version('pymoxel')
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -23,9 +23,8 @@ extensions = [
         'sphinx.ext.autodoc',
         'sphinx.ext.viewcode',
         'sphinx.ext.napoleon',
-        'sphinxemoji.sphinxemoji',
+        'sphinx.ext.intersphinx',
         'sphinx_copybutton',
-        'sphinxarg.ext',
         'sphinx_code_tabs',
         'sphinx_issues',
         ]
@@ -35,6 +34,11 @@ exclude_patterns = ['modules.rst']
 
 # Exclude input prompts from copybutton
 copybutton_exclude = '.linenos, .gp, .go'
+
+intersphinx_mapping = {
+        'python': ('https://docs.python.org/3', None),
+        'numpy': ('https://numpy.org/doc/stable/', None),
+        }
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

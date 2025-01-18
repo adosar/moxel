@@ -1,7 +1,7 @@
 .. _cli:
 
-|:keyboard:| Command Line Interface
-===================================
+⌨️  Command Line Interface
+==========================
 
 There are two available subcommands: ``[create, clean]``
 

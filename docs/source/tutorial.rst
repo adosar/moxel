@@ -1,11 +1,11 @@
 .. highlight:: python
 
-|:rocket:| Tutorial
-===================
+🚀 Tutorial
+===========
 
 As stated in :ref:`advantages`, all you need is a ``.cif`` file!
 
-If you don't have one |:point_right:| :download:`IRMOF-1.cif<down/IRMOF-1.cif>`.
+If you don't have one 👉 :download:`IRMOF-1.cif<down/IRMOF-1.cif>`.
 
 Note that in the following examples, ``path/to/`` can be an absolute or relative pathname.
 
@@ -88,7 +88,7 @@ Preparing voxels for a ML pipeline
 Here, we examine how to prepare clean ML inputs from a database, that can be
 later used to train a ML algorithm (e.g. a CNN).
 
-If you don't have a database |:point_right:| :download:`CIFs.zip<down/CIFs.zip>`.
+If you don't have a database 👉 :download:`CIFs.zip<down/CIFs.zip>`.
 
 .. code-block:: console
 

@@ -1,5 +1,5 @@
-moxel.utils
-===========
+``moxel.utils``
+===============
 
 .. automodule:: moxel.utils
    :members:
