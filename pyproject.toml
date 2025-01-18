@@ -28,7 +28,7 @@ classifiers = [
 ]
 
 dependencies = [
-	"numpy",
+	"numpy==1.26.4",  # To avoid potential dependency conflicts.
 	"fire",
 	"pymatgen",
 	"tqdm",
