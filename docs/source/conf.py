@@ -45,7 +45,10 @@ copybutton_exclude = '.linenos, .gp, .go'
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_rtd_theme'
-#html_static_path = ['_static']
+html_logo = 'images/moxel_logo.svg'
+html_theme_options = {'logo_only': True}
+html_static_path = ['_static']
+html_css_files = ['custom.css']
 
 # Path to GitHub repo {group}/{project}  (note that `group` is the GitHub user or organization)
 issues_github_path = "adosar/moxel"

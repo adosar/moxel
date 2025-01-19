@@ -1,22 +1,37 @@
 📌 Changelog
 ============
 
+Version 0.2.0
+-------------
+
+.. versionchanged:: 0.2.0
+
+   * Storing scheme for energy voxels. They are now stored as (individual) plain
+     ``.npy`` files (:issue:`8`).
+    
+.. versionremoved:: 0.2.0
+
+   * :mod:`moxel.visualize` since PyVista already provides a simple way to
+     visualize voxels (:issue:`9`).
+   * :mod:`moxel.utils.batch_clean` since it is no longer necessary to "clean"
+     voxels due to new storing scheme.
+
 Version 0.1.2
 -------------
 
 .. versionadded:: 0.1.2
 
-   * :func:`moxel.utils.load_json`
-   * Documentation for the CLI.
+    * :func:`moxel.utils.load_json`
+    * Documentation for the CLI.
 
 .. versionremoved:: 0.1.2
 
-   * :func:`moxel.utils.get_names`
+    * :func:`moxel.utils.get_names`
 
 Version 0.1.1
 -------------
     
-* Add performance enhancements proposed by :user:`fxcoudert`. See PR :pr:`2, 3`.
+* Performance enhancements proposed by :user:`fxcoudert`. See PR :pr:`2, 3`.
 * Fix bug in :mod:`moxel.visualize` where plots didn't render.
 
 Version 0.1.0
