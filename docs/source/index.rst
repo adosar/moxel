@@ -75,15 +75,13 @@ If you use ΜΟΧελ in your research, please consider citing the following wor
 TODO
 ----
 
-1. CLI for training `RetNet <https://www.nature.com/articles/s41598-023-50309-8>`_
-2. Improve performance
-3. Improve voxelization scheme
-4. Improve modeling of interactions
+1. Improve performance
+2. Improve voxelization scheme
+3. Improve modeling of interactions
 
 License
 -------
 MOXελ is released under the `GNU General Public License v3.0 only <https://spdx.org/licenses/GPL-3.0-only.html>`_.
-
 
 .. toctree::
    :maxdepth: 1
@@ -91,10 +89,8 @@ MOXελ is released under the `GNU General Public License v3.0 only <https://spd
 
    installation
    tutorial
-   cli
    moxel
    changes
-
 
 Indices and tables
 ------------------

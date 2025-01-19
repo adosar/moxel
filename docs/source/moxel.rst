@@ -8,9 +8,7 @@
    :undoc-members:
    :show-inheritance:
 
-.. toctree::
-   :maxdepth: 2
-   :caption: Submodules:
-
-   utils
-   visualize
+moxel.utils
+-----------
+.. automodule:: moxel.utils
+   :members:

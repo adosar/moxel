@@ -165,7 +165,7 @@ class Grid:
             If ``True``, the simulation box is cubic.
         length : float, default=30
             The size of the cubic box in Å. Takes effect only
-            if ``cubic_box == True``.
+            if ``cubic_box=True``.
         n_jobs : int, optional
             Number of jobs to run in parallel. If ``None``, then the number returned
             by ``os.cpu_count()`` is used.
@@ -218,7 +218,7 @@ class Grid:
         Parameters
         ----------
         coordinates : array_like of shape (3,)
-            If ``cubic_box == True`` cartesian. Else, fractional.
+            If ``cubic_box=True`` cartesian. Else, fractional.
 
         Returns
         -------
@@ -276,7 +276,7 @@ def voxels_from_file(
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
     length : float, default=30
-        The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
+        The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.
@@ -285,13 +285,8 @@ def voxels_from_file(
         
     Returns
     -------
-    out : ``array`` or :class:`Grid`
-        If ``only_voxels == True``, array of shape ``(grid_size,)*3``.
-        Otherwise, :class:`Grid`.
-
-    Notes
-    -----
-    For structures that can not be processsed, their voxels are filled with zeros.
+    out : array or :class:`Grid`
+        If ``only_voxels=True`` array, else :class:`Grid`.
     """
     grid = Grid(grid_size, cutoff, epsilon, sigma)
 
@@ -320,21 +315,11 @@ def voxels_from_files(
        List of pathnames to the ``.cif`` files.
     out_pathname : str
         Pathname to the directory under which voxels are stored.
-    grid_size : int, default=25
-        Number of grid points along each dimension.
-    cutoff : float, default=10
-        Cutoff radius (Å) for the LJ potential.
-    epsilon : float, default=50
-        Epsilon value (ε/K) of the probe atom.
-    sigma : float, default=25
-        Sigma value (σ/Å) of the probe atom.
-    cubic_box : bool, default=False
-        If ``True``, the simulation box is cubic.
-    length : float, default=30
-        The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
-    n_jobs : int, optional
-        Number of jobs to run in parallel. If ``None``, then the number returned
-        by ``os.cpu_count()`` is used.
+
+    See Also
+    --------
+    :func:`voxels_from_file`
+        For a description of the parameters.
 
     Notes
     -----
@@ -389,7 +374,7 @@ def voxels_from_dir(
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
     length : float, default=30
-        The size of the cubic box in Å. Takes effect only if ``cubic_box == True``.
+        The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.

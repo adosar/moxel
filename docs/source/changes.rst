@@ -7,7 +7,7 @@ Version 0.1.2
 .. versionadded:: 0.1.2
 
    * :func:`moxel.utils.load_json`
-   * Documentation for the :ref:`cli`.
+   * Documentation for the CLI.
 
 .. versionremoved:: 0.1.2
 

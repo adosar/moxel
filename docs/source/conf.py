@@ -29,16 +29,17 @@ extensions = [
         'sphinx_issues',
         ]
 
-templates_path = ['_templates']
-exclude_patterns = ['modules.rst']
+#templates_path = ['_templates']
+#exclude_patterns = ['modules.rst']
 
 # Exclude input prompts from copybutton
 copybutton_exclude = '.linenos, .gp, .go'
 
-intersphinx_mapping = {
-        'python': ('https://docs.python.org/3', None),
-        'numpy': ('https://numpy.org/doc/stable/', None),
-        }
+# The package is too small.
+#intersphinx_mapping = {
+#        'python': ('https://docs.python.org/3', None),
+#        'numpy': ('https://numpy.org/doc/stable/', None),
+#        }
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
