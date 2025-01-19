@@ -32,8 +32,6 @@ dependencies = [
 	"fire",
 	"pymatgen",
 	"tqdm",
-	"matplotlib",
-	"pyvista",
 ]
 
 [project.urls]
@@ -43,3 +41,12 @@ Changelog = "https://moxel.readthedocs.io/en/stable/changelog.html"
 
 [project.scripts]
 moxel = "moxel._cli:moxel_fire"
+
+[project.optional-dependencies]
+docs = [
+    "sphinx==7.3.7",
+    "sphinx-code-tabs",
+    "sphinx-copybutton",
+    "sphinx-rtd-theme",
+    "sphinx-issues",
+]
