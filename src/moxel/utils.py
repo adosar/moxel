@@ -175,10 +175,6 @@ class Grid:
         voxels : array of shape (grid_size,)*3
             The energy voxels as :math:`e^{-\beta \mathcal{V}}`, to ensure
             numerical stability.
-        Notes
-        -----
-        For structures that can not be processsed, their voxels are filled with
-        zeros.
         """
         self.cubic_box = cubic_box
 
