@@ -51,7 +51,7 @@ materials. In this case, check:
 
 In all cases, :func:`moxel.utils.Grid.calculate` is used under the hood to calculate the
 voxels (all other functions are just wrappers). To better understand how to use
-them: :ref:`documentation`.
+them refer to :ref:`documentation`.
 
 .. attention::
     Consider playing with the ``n_jobs`` parameter to get the best performance
