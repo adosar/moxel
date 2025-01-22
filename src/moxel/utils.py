@@ -36,7 +36,6 @@ This module provides helper functions for creating voxels.
 """
 
 import os
-import json
 import itertools
 from pathlib import Path
 from multiprocessing import Pool
@@ -46,25 +45,6 @@ from tqdm import tqdm
 from pymatgen.core import Structure
 from . _params import lj_params
 warnings.filterwarnings('ignore')
-
-
-def load_json(fname):
-    r"""
-    Load a ``.json`` file.
-
-    Parameters
-    ----------
-    fname : str
-        Pathname to the ``.json`` file.
-
-    Returns
-    -------
-    names : list
-    """
-    with open(fname, 'r') as fhand:
-        data = json.load(fhand)
-
-    return data
 
 
 def mic_scale_factors(r, lattice_vectors):
@@ -186,7 +166,7 @@ class Grid:
             probe_coords = np.linspace(0, 1, self.grid_size)  # Fractional.
             scale = mic_scale_factors(self.cutoff, self.structure.lattice.matrix)
             self._simulation_box = self.structure * scale
-        
+
         if potential == 'lj':
             # Cache LJ parameters for all atoms in the simulation box.
             self._lj_params = np.array(

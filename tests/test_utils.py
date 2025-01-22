@@ -15,14 +15,15 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import os
-import sys
-import json
 import unittest
 import tempfile
 from pathlib import Path
 import numpy as np
 from pymatgen.core import Structure
-from moxel.utils import *
+from moxel.utils import (
+        Grid, mic_scale_factors, voxels_from_file,
+        voxels_from_files, voxels_from_dir
+        )
 
 
 class TestUtils(unittest.TestCase):

@@ -13,7 +13,8 @@ Version 0.2.0
 
    * :mod:`moxel.visualize` since PyVista already provides a simple way to
      visualize voxels (:issue:`9`).
-   * :mod:`moxel.utils.batch_clean` since it is no longer necessary to "clean"
+   * :func:`~moxel.utils.load_json` which was needed by :func:`~moxel.utils.batch_clean`.
+   * :func:`~moxel.utils.batch_clean` since it is no longer necessary to "clean"
      voxels due to new storing scheme.
 
 Version 0.1.2
