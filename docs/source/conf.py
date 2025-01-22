@@ -46,7 +46,7 @@ copybutton_exclude = '.linenos, .gp, .go'
 
 html_theme = 'sphinx_rtd_theme'
 html_logo = 'images/moxel_logo.svg'
-html_theme_options = {'logo_only': True}
+html_theme_options = {'logo_only': True, 'version_selector': False}
 html_static_path = ['_static']
 html_css_files = ['custom.css']
 
