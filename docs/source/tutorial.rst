@@ -30,7 +30,7 @@ Calculation for single material
 .. code-block::
 
     >>> import numpy as np
-    >>> np.array_equal(voxels == grid.voxels)  # A sanity check.
+    >>> np.array_equal(voxels, grid.voxels)  # A sanity check.
     True
 
 .. tip::
