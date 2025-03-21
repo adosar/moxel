@@ -18,6 +18,7 @@ import os
 import unittest
 import tempfile
 from pathlib import Path
+
 import numpy as np
 from pymatgen.core import Structure
 from moxel.utils import (
@@ -36,10 +37,12 @@ class TestUtils(unittest.TestCase):
         epsilon = 40
         sigma = 5
         cutoff = 12
+        cubic_box = True
+        clip = 4
 
         grid = Grid(grid_size=grid_size, epsilon=epsilon, cutoff=cutoff, sigma=sigma)
         grid.load_structure(cif_pathname)
-        grid.calculate(cubic_box=True)
+        grid.calculate(cubic_box=cubic_box, clip=clip)
 
         # Check that the name of the structure is correct.
         self.assertEqual(grid.structure_name, 'IRMOF-1')
@@ -52,6 +55,11 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(grid.epsilon, epsilon)
         self.assertEqual(grid.sigma, sigma)
         self.assertEqual(grid.cutoff, cutoff)
+        self.assertEqual(grid.cubic_box, cubic_box)
+
+        # Check that values are clipped.
+        self.assertEqual(grid.voxels.min(), -clip)
+        self.assertEqual(grid.voxels.max(), clip)
 
     def test_mic_scale_factors(self):
         # Load a structure that must be scaled.
@@ -77,6 +85,7 @@ class TestUtils(unittest.TestCase):
         epsilon = 49
         sigma = 2
         cubic_box = True
+        clip = 1
         length = 22
 
         out = voxels_from_file(
@@ -92,6 +101,7 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(out.cutoff, cutoff)
         self.assertEqual(out.epsilon, epsilon)
         self.assertEqual(out.sigma, sigma)
+        self.assertEqual(out.cubic_box, cubic_box)
 
         # Check that output shape is correct.
         self.assertEqual(out.voxels.shape, (grid_size,)*3)

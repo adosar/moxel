@@ -40,11 +40,22 @@ import itertools
 from pathlib import Path
 from multiprocessing import Pool
 import warnings
+
 import numpy as np
 from tqdm import tqdm
 from pymatgen.core import Structure
+
 from . _params import lj_params
+
 warnings.filterwarnings('ignore')
+GRID_SIZE = 25
+CUTOFF = 10
+EPSILON = 50
+SIGMA = 2.5
+CUBIC_BOX = False
+LENGTH = 30
+CLIP = None
+N_JOBS = None
 
 
 def mic_scale_factors(r, lattice_vectors):
@@ -104,7 +115,14 @@ class Grid:
     voxels : array of shape (grid_size,)*3
        Available only after :meth:`Grid.calculate` has been called.
     """
-    def __init__(self, grid_size=25, cutoff=10, epsilon=50, sigma=2.5):
+    def __init__(
+            self,
+            grid_size=GRID_SIZE,
+            *,
+            cutoff=CUTOFF,
+            epsilon=EPSILON,
+            sigma=SIGMA
+            ):
         self.grid_size = grid_size
         self.cutoff = cutoff
         self.epsilon = epsilon
@@ -123,7 +141,14 @@ class Grid:
         self.structure = Structure.from_file(pathname)
         self.structure_name = Path(pathname).stem
 
-    def calculate(self, cubic_box=False, length=30, potential='lj', n_jobs=None):
+    def calculate(
+            self,
+            cubic_box=CUBIC_BOX,
+            length=LENGTH,
+            potential='lj',
+            clip=CLIP,
+            n_jobs=N_JOBS,
+            ):
         r"""
         Iterate over the grid and return voxels.
 
@@ -146,6 +171,9 @@ class Grid:
         length : float, default=30
             The size of the cubic box in Å. Takes effect only
             if ``cubic_box=True``.
+        clip : int or float, optional
+            If specified, voxels are filled with energy values clipped within ``(-clip, clip)``.
+            Otherwise, voxels are filled with the Boltzmann factor.
         n_jobs : int, optional
             Number of jobs to run in parallel. If ``None``, then the number returned
             by ``os.cpu_count()`` is used.
@@ -153,8 +181,6 @@ class Grid:
         Returns
         -------
         voxels : array of shape (grid_size,)*3
-            The energy voxels as :math:`e^{-\beta \mathcal{V}}`, to ensure
-            numerical stability.
         """
         self.cubic_box = cubic_box
 
@@ -182,7 +208,12 @@ class Grid:
                         self.lj_potential, itertools.product(*(probe_coords,)*3)
                         )
 
-        self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
+        voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
+
+        if clip is not None:
+            self.voxels = np.clip(voxels, -clip, clip)
+        else:
+            self.voxels = np.exp(-(1 / 298) * voxels)
 
         return self.voxels
 
@@ -199,7 +230,6 @@ class Grid:
         Returns
         -------
         energy : float
-            Energy as :math:`e^{-\beta \mathcal{V}}`, to ensure numerical stability.
         """
         if self.cubic_box:
             cartesian_coords = coords
@@ -223,16 +253,22 @@ class Grid:
         es_j = self._lj_params[indices]
         x = (0.5 * (es_j[:, 1] + self.sigma)) / r_ij
         e = 4 * np.sqrt(es_j[:, 0] * self.epsilon)
-        energy = sum(e * (x**12 - x**6))
 
-        # This should be changed with clipping in future versions.
-        return np.exp(-(1 / 298) * energy)  # For numerical stability.
+        return np.sum(e * (x**12 - x**6))
 
 
 def voxels_from_file(
-        cif_pathname, grid_size=25, cutoff=10,
-        epsilon=50, sigma=2.5, cubic_box=False, length=30,
-        n_jobs=None, only_voxels=True,
+        cif_pathname,
+        grid_size=GRID_SIZE,
+        *,
+        cutoff=CUTOFF,
+        epsilon=EPSILON,
+        sigma=SIGMA,
+        cubic_box=CUBIC_BOX,
+        length=LENGTH,
+        clip=CLIP,
+        n_jobs=N_JOBS,
+        only_voxels=True,
         ):
     r"""
     Return voxels from ``.cif`` file.
@@ -241,21 +277,6 @@ def voxels_from_file(
     ----------
     cif_pathname : str
        Pathname to the ``.cif`` file.
-    grid_size : int, default=25
-        Number of grid points along each dimension.
-    cutoff : float, default=10
-        Cutoff radius (Å) for the LJ potential.
-    epsilon : float, default=50
-        Epsilon value (ε/K) of the probe atom.
-    sigma : float, default=25
-        Sigma value (σ/Å) of the probe atom.
-    cubic_box : bool, default=False
-        If ``True``, the simulation box is cubic.
-    length : float, default=30
-        The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
-    n_jobs : int, optional
-        Number of jobs to run in parallel. If ``None``, then the number returned
-        by ``os.cpu_count()`` is used.
     only_voxels : bool, default=True
         Determines ``out`` type.
         
@@ -263,11 +284,16 @@ def voxels_from_file(
     -------
     out : array or :class:`Grid`
         If ``only_voxels=True`` array, else :class:`Grid`.
+
+    See Also
+    --------
+    :func:`voxels_from_dir`
+        For a description of the parameters.
     """
-    grid = Grid(grid_size, cutoff, epsilon, sigma)
+    grid = Grid(grid_size, cutoff=cutoff, epsilon=epsilon, sigma=sigma)
 
     grid.load_structure(cif_pathname)
-    grid.calculate(cubic_box=cubic_box, length=length, n_jobs=n_jobs)
+    grid.calculate(cubic_box=cubic_box, length=length, clip=clip, n_jobs=n_jobs)
 
     if only_voxels:
         return grid.voxels
@@ -276,9 +302,17 @@ def voxels_from_file(
 
 
 def voxels_from_files(
-        cif_pathnames, out_pathname, grid_size=25, cutoff=10,
-        epsilon=50, sigma=2.5, cubic_box=False, length=30,
-        n_jobs=None,
+        cif_pathnames,
+        out_pathname,
+        grid_size=GRID_SIZE,
+        *,
+        cutoff=CUTOFF,
+        epsilon=EPSILON,
+        sigma=SIGMA,
+        cubic_box=CUBIC_BOX,
+        length=LENGTH,
+        clip=CLIP,
+        n_jobs=N_JOBS,
         ):
     r"""
     Calculate voxels from a list of ``.cif`` files and store them.
@@ -294,7 +328,7 @@ def voxels_from_files(
 
     See Also
     --------
-    :func:`voxels_from_file`
+    :func:`voxels_from_dir`
         For a description of the parameters.
 
     Notes
@@ -314,6 +348,7 @@ def voxels_from_files(
                     sigma=sigma,
                     cubic_box=cubic_box,
                     length=length,
+                    clip=clip,
                     n_jobs=n_jobs,
                     )
 
@@ -324,9 +359,17 @@ def voxels_from_files(
 
 
 def voxels_from_dir(
-        cif_dirname, out_pathname, grid_size=25, cutoff=10,
-        epsilon=50, sigma=2.5, cubic_box=False, length=30,
-        n_jobs=None,
+        cif_dirname,
+        out_pathname,
+        grid_size=GRID_SIZE,
+        *,
+        cutoff=CUTOFF,
+        epsilon=EPSILON,
+        sigma=SIGMA,
+        cubic_box=CUBIC_BOX,
+        length=LENGTH,
+        clip=CLIP,
+        n_jobs=N_JOBS,
         ):
     r"""
     Calculate voxels from a directory of ``.cif`` files and store them.
@@ -351,6 +394,9 @@ def voxels_from_dir(
         If ``True``, the simulation box is cubic.
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
+    clip : int or float, optional
+        If specified, voxels are filled with energy values clipped within ``(-clip, clip)``.
+        Otherwise, voxels are filled with the Boltzmann factor.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.
@@ -369,5 +415,6 @@ def voxels_from_dir(
             sigma=sigma,
             cubic_box=cubic_box,
             length=length,
+            clip=clip,
             n_jobs=n_jobs,
             )
