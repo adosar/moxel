@@ -29,7 +29,7 @@ classifiers = [
 
 dependencies = [
 	"numpy==1.26.4",  # To avoid potential dependency conflicts.
-	"fire",
+	"jsonargparse[signatures]",
 	"pymatgen",
 	"tqdm",
 ]
@@ -40,7 +40,7 @@ Documentation = "https://moxel.readthedocs.io"
 Changelog = "https://moxel.readthedocs.io/en/stable/changelog.html"
 
 [project.scripts]
-moxel = "moxel._cli:moxel_fire"
+moxel = "moxel._cli:moxel_cli"
 
 [project.optional-dependencies]
 docs = [

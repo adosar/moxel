@@ -48,14 +48,16 @@ from pymatgen.core import Structure
 from . _params import lj_params
 
 warnings.filterwarnings('ignore')
-GRID_SIZE = 25
-CUTOFF = 10
-EPSILON = 50
-SIGMA = 2.5
-CUBIC_BOX = False
-LENGTH = 30
-CLIP = None
-N_JOBS = None
+
+# Default values for voxels calculation.
+GRID_SIZE: int = 25
+CUTOFF: float = 10.
+EPSILON: float= 50.
+SIGMA: float = 2.5
+CUBIC_BOX: bool = False
+LENGTH: float = 30.
+CLIP: float | None = None
+N_JOBS: int | None = None
 
 
 def mic_scale_factors(r, lattice_vectors):
@@ -171,7 +173,7 @@ class Grid:
         length : float, default=30
             The size of the cubic box in Å. Takes effect only
             if ``cubic_box=True``.
-        clip : int or float, optional
+        clip : float, optional
             If specified, voxels are filled with energy values clipped within ``(-clip, clip)``.
             Otherwise, voxels are filled with the Boltzmann factor.
         n_jobs : int, optional
@@ -359,8 +361,8 @@ def voxels_from_files(
 
 
 def voxels_from_dir(
-        cif_dirname,
-        out_pathname,
+        cif_dirname: str,
+        out_pathname: str,
         grid_size=GRID_SIZE,
         *,
         cutoff=CUTOFF,
@@ -394,7 +396,7 @@ def voxels_from_dir(
         If ``True``, the simulation box is cubic.
     length : float, default=30
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
-    clip : int or float, optional
+    clip : float, optional
         If specified, voxels are filled with energy values clipped within ``(-clip, clip)``.
         Otherwise, voxels are filled with the Boltzmann factor.
     n_jobs : int, optional

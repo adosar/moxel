@@ -18,12 +18,14 @@ r"""
 This module provides helper functions for the CLI.
 """
 
-import fire
-from . utils import voxels_from_dir
+from jsonargparse import auto_cli
+
+from .utils import voxels_from_dir
 
 
-def moxel_fire():
-    r"""
-    CLI for the moxel package.
-    """
-    fire.Fire(voxels_from_dir)
+def moxel_cli():
+    r"""CLI for the moxel package."""
+    auto_cli(
+            voxels_from_dir,
+            epilog='For more information 👉 https://github.com/adosar/moxel',
+            )
