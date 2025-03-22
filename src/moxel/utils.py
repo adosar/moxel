@@ -21,7 +21,7 @@ This module provides helper functions for creating voxels.
     Currently, interactions are modelled with the Lennard-Jones (LJ) potential.
 
 .. attention::
-    Consider playing with the ``n_jobs`` parameter to get the best performance
+    Consider tuning the ``n_jobs`` parameter to get the best performance
     for your system::
 
         from timeit import timeit
@@ -99,9 +99,9 @@ class Grid:
     ----------
     grid_size : int, default=25
         Number of grid points along each dimension.
-    cutoff : float, default=10
+    cutoff : float, default=10.0
         Cutoff radius (Å) for the LJ potential.
-    epsilon : float, default=50
+    epsilon : float, default=50.0
         Epsilon value (ε/K) of the probe atom.
     sigma : float, default=2.5
         Sigma value (σ/Å) of the probe atom.
@@ -170,7 +170,7 @@ class Grid:
             LJ potential is supported.
         cubic_box : bool, default=False
             If ``True``, the simulation box is cubic.
-        length : float, default=30
+        length : float, default=30.0
             The size of the cubic box in Å. Takes effect only
             if ``cubic_box=True``.
         clip : float, optional
@@ -386,15 +386,15 @@ def voxels_from_dir(
         Pathname to the directory under which voxels are stored.
     grid_size : int, default=25
         Number of grid points along each dimension.
-    cutoff : float, default=10
+    cutoff : float, default=10.0
         Cutoff radius (Å) for the LJ potential.
-    epsilon : float, default=50
+    epsilon : float, default=50.0
         Epsilon value (ε/K) of the probe atom.
-    sigma : float, default=25
+    sigma : float, default=2.5
         Sigma value (σ/Å) of the probe atom.
     cubic_box : bool, default=False
         If ``True``, the simulation box is cubic.
-    length : float, default=30
+    length : float, default=30.0
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     clip : float, optional
         If specified, voxels are filled with energy values clipped within ``(-clip, clip)``.

@@ -25,12 +25,13 @@ extensions = [
         'sphinx.ext.napoleon',
         'sphinx.ext.intersphinx',
         'sphinx_copybutton',
-        'sphinx_code_tabs',
+        'sphinx_design',
         'sphinx_issues',
         ]
 
 #templates_path = ['_templates']
 #exclude_patterns = ['modules.rst']
+autodoc_typehints = 'none'
 
 # Exclude input prompts from copybutton
 copybutton_exclude = '.linenos, .gp, .go'

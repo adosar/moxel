@@ -45,7 +45,7 @@ moxel = "moxel._cli:moxel_cli"
 [project.optional-dependencies]
 docs = [
     "sphinx==7.3.7",
-    "sphinx-code-tabs",
+    "sphinx-design",
     "sphinx-copybutton",
     "sphinx-rtd-theme",
     "sphinx-issues",

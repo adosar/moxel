@@ -49,12 +49,12 @@ materials. In this case, check:
 * :func:`moxel.utils.voxels_from_files`
 * :func:`moxel.utils.voxels_from_dir`
 
-In all cases, :func:`moxel.utils.Grid.calculate` is used under the hood to calculate the
+In all cases, :meth:`.Grid.calculate` is used under the hood to calculate the
 voxels (all other functions are just wrappers). To better understand how to use
 them refer to :ref:`documentation`.
 
 .. attention::
-    Consider playing with the ``n_jobs`` parameter to get the best performance
+    Consider tuning the ``n_jobs`` parameter to get the best performance
     for your system::
 
         from timeit import timeit
@@ -89,18 +89,39 @@ If you don't have a database 👉 :download:`CIFs.zip<down/CIFs.zip>`.
 
 2. Calculate voxels and store them:
 
-    .. tabs::
+    .. tab-set::
 
-        .. code-tab:: python
+        .. tab-item:: Python
 
             >>> from moxel.utils import voxels_from_dir
-            >>> voxels_from_dir('path/to/CIFs/', grid_size=5, out_pathname='path/to/voxels_data')
+            >>> voxels_from_dir('path/to/CIFs/', 'path/to/voxels_data', grid_size=5)
 
-        .. code-tab:: console
-            :caption: CLI
+        .. tab-item:: CLI
 
-            $ moxel -g 5 path/to/CIFs path/to/voxels_data/
-            $ moxel --help  # For more information
+            .. code-block:: console
+
+                $ moxel path/to/CIFs path/to/voxels_data/ --grid_size=5
+
+            For reproducibility, it is recommended to use a configuration file::
+
+                $ moxel --config=path/to/config.yaml
+
+            You can generate and start customizing one as following::
+
+                $ moxel --print_config > config.yaml
+
+            You can also `override <https://jsonargparse.readthedocs.io/en/v4.37.0/#override-order>`_
+            the values defined in the config::
+
+                $ moxel --config=config.yaml --epsilon=100
+
+            For more information: ``moxel --help``
+
+        .. tab-item:: config.yaml
+
+            .. literalinclude:: ../../tests/config.yaml
+                :language: yaml
+
 
 The voxels are stored as plain ``.npy`` files under ``path/to/voxels_data``:
 
