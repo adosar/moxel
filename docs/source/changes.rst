@@ -1,6 +1,14 @@
 📌 Changelog
 ============
 
+Version 0.3.0
+-------------
+
+.. versionadded:: 0.3.0
+
+   * Support for configuration files in CLI (:issue:`11`).
+   * Support for clipping energy values (:issue:`10`).
+
 Version 0.2.0
 -------------
 
