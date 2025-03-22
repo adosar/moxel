@@ -23,6 +23,10 @@ MOXελ aims to provide a **simple and fast interface to generate energy voxels 
 a ML-ready format**, minimizing as much as possible the time spent on these
 preprocessing steps.
 
+<p align="center">
+  <img alt="Voxels" src="https://raw.githubusercontent.com/adosar/moxel/master/docs/source/images/voxels.gif" width="25%"/>
+</p>
+
 ## ⚙️  Installation
 It is strongly recommended to **perform the installation inside a virtual environment**.
 
@@ -33,12 +37,20 @@ Assuming an activated virtual environment:
 pip install pymoxel
 ```
 
-## 📖 Usage
-Check the [tutorial](https://moxel.readthedocs.io/en/stable/tutorial.html).
+## 🚀 Usage
 
-<p align="center">
-  <img alt="Voxels" src="https://raw.githubusercontent.com/adosar/moxel/master/docs/source/images/voxels.gif" width="25%"/>
-</p>
+```
+moxel path/to/CIFs path/to/voxels_data/ --grid_size=5
+```
+
+You can also use a configuration file:
+
+```
+moxel --config=path/to/config.yaml
+```
+
+> [!NOTE]
+> For more information, please refer to the [📚 Documentation](https://moxel.readthedocs.io/en/stable/index.html).
 
 ## 📰 Citing MOXελ
 If you use ΜΟΧελ in your research, please consider citing the following work:
