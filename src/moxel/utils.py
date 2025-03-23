@@ -237,7 +237,7 @@ class Grid:
         if self.cubic_box:
             cartesian_coords = coords
         else:
-            cartesian_coords = self._simulation_box.lattice.get_cartesian_coords(coords)
+            cartesian_coords = self._simulation_box._lattice.get_cartesian_coords(coords)
 
         _, r_ij, indices, _ = self._simulation_box._lattice.get_points_in_sphere(
                 self._frac_coords, cartesian_coords,
@@ -248,10 +248,10 @@ class Grid:
         # https://github.com/materialsproject/pymatgen/issues/3794
 
         if len(r_ij) == 0:  # No neighbor, zero energy.
-            return 1.
+            return 0.
 
         if np.any(r_ij < 1e-3):  # Close contact, infinite energy.
-            return 0.
+            return np.inf
 
         es_j = self._lj_params[indices]
         x = (0.5 * (es_j[:, 1] + self.sigma)) / r_ij
