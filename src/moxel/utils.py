@@ -274,7 +274,7 @@ def voxels_from_file(
         only_voxels=True,
         ):
     r"""
-    Return voxels from ``.cif`` file.
+    Calculate and return voxels from ``.cif`` file.
 
     Parameters
     ----------
