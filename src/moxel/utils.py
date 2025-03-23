@@ -174,7 +174,8 @@ class Grid:
             The size of the cubic box in Å. Takes effect only
             if ``cubic_box=True``.
         clip : float, optional
-            If specified, voxels are filled with energy values clipped within ``(-clip, clip)``.
+            If specified, voxels are filled with energy values clipped within
+            ``[-clip, clip]``.
             Otherwise, voxels are filled with the Boltzmann factor.
         n_jobs : int, optional
             Number of jobs to run in parallel. If ``None``, then the number returned
@@ -397,7 +398,8 @@ def voxels_from_dir(
     length : float, default=30.0
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
     clip : float, optional
-        If specified, voxels are filled with energy values clipped within ``(-clip, clip)``.
+        If specified, voxels are filled with energy values clipped within
+        ``[-clip, clip]``.
         Otherwise, voxels are filled with the Boltzmann factor.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
