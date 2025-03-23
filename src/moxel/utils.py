@@ -88,7 +88,7 @@ def mic_scale_factors(r, lattice_vectors):
     w_b = volume/np.linalg.norm(np.cross(a, c))
     w_c = volume/np.linalg.norm(np.cross(a, b))
 
-    return np.ceil(2*r/np.array([w_a, w_b, w_c]))
+    return np.ceil(2 * r / np.array([w_a, w_b, w_c]))
 
 
 class Grid:
@@ -189,10 +189,10 @@ class Grid:
 
         if cubic_box:
             d = length / 2
-            probe_coords = np.linspace(0-d, 0+d, self.grid_size)  # Cartesian.
+            probe_coords = np.linspace(0 - d, 0 + d, self.grid_size, endpoint=False)  # Cartesian
             self._simulation_box = self.structure
         else:
-            probe_coords = np.linspace(0, 1, self.grid_size)  # Fractional.
+            probe_coords = np.linspace(0, 1, self.grid_size, endpoint=False)  # Fractional
             scale = mic_scale_factors(self.cutoff, self.structure.lattice.matrix)
             self._simulation_box = self.structure * scale
 

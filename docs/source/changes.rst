@@ -4,6 +4,10 @@
 Version 0.3.0
 -------------
 
+*Fixed in version 0.3.0:*
+
+* Grid overlap leading to incorrect PBC (:pr:`4`).
+
 .. versionadded:: 0.3.0
 
    * Support for configuration files in CLI (:issue:`11`).
