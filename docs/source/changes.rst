@@ -1,6 +1,20 @@
 📌 Changelog
 ============
 
+Version 0.4.0
+-------------
+
+.. versionchanged:: 0.4.0
+
+    * .. attention::
+
+        The voxels are no longer filled with the Boltzmann factor or clipped energy
+        values. Instead, *they are now filled with the raw energy values* (:issue:`10`).
+
+.. versionremoved:: 0.4.0
+
+   * ``clip`` parameter which was used for clipping energy values.
+
 Version 0.3.0
 -------------
 
@@ -11,7 +25,7 @@ Version 0.3.0
 .. versionadded:: 0.3.0
 
    * Support for configuration files in CLI (:issue:`11`).
-   * Support for clipping energy values (:issue:`10`).
+   * Support for clipping energy values.
 
 Version 0.2.0
 -------------

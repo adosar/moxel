@@ -35,14 +35,13 @@ class TestUtils(unittest.TestCase):
         cif_pathname = 'tests/CIFs/IRMOF-1.cif'
         grid_size = 5
         epsilon = 40
-        sigma = 5
+        sigma = 1e4  # For repulsive energies to go inf.
         cutoff = 12
         cubic_box = True
-        clip = 4
 
         grid = Grid(grid_size=grid_size, epsilon=epsilon, cutoff=cutoff, sigma=sigma)
         grid.load_structure(cif_pathname)
-        grid.calculate(cubic_box=cubic_box, clip=clip)
+        grid.calculate(cubic_box=cubic_box)
 
         # Check that the name of the structure is correct.
         self.assertEqual(grid.structure_name, 'IRMOF-1')
@@ -57,9 +56,8 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(grid.cutoff, cutoff)
         self.assertEqual(grid.cubic_box, cubic_box)
 
-        # Check that values are clipped.
-        self.assertEqual(grid.voxels.min(), -clip)
-        self.assertEqual(grid.voxels.max(), clip)
+        # Check that values are filled properly.
+        self.assertEqual(grid.voxels.max(), np.inf)
 
     def test_mic_scale_factors(self):
         # Load a structure that must be scaled.
@@ -85,7 +83,6 @@ class TestUtils(unittest.TestCase):
         epsilon = 49
         sigma = 2
         cubic_box = True
-        clip = 1
         length = 22
 
         out = voxels_from_file(

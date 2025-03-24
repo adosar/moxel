@@ -56,7 +56,6 @@ EPSILON: float = 50.
 SIGMA: float = 2.5
 CUBIC_BOX: bool = False
 LENGTH: float = 30.
-CLIP: float | None = None
 N_JOBS: int | None = None
 
 
@@ -148,7 +147,6 @@ class Grid:
             cubic_box=CUBIC_BOX,
             length=LENGTH,
             potential='lj',
-            clip=CLIP,
             n_jobs=N_JOBS,
             ):
         r"""
@@ -173,10 +171,6 @@ class Grid:
         length : float, default=30.0
             The size of the cubic box in Å. Takes effect only
             if ``cubic_box=True``.
-        clip : float, optional
-            If specified, voxels are filled with energy values clipped within
-            ``[-clip, clip]``.
-            Otherwise, voxels are filled with the Boltzmann factor.
         n_jobs : int, optional
             Number of jobs to run in parallel. If ``None``, then the number returned
             by ``os.cpu_count()`` is used.
@@ -211,12 +205,7 @@ class Grid:
                         self.lj_potential, itertools.product(*(probe_coords,)*3)
                         )
 
-        voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
-
-        if clip is not None:
-            self.voxels = np.clip(voxels, -clip, clip)
-        else:
-            self.voxels = np.exp(-(1 / 298) * voxels)
+        self.voxels = np.array(energies, dtype=np.float32).reshape((self.grid_size,)*3)
 
         return self.voxels
 
@@ -269,7 +258,6 @@ def voxels_from_file(
         sigma=SIGMA,
         cubic_box=CUBIC_BOX,
         length=LENGTH,
-        clip=CLIP,
         n_jobs=N_JOBS,
         only_voxels=True,
         ):
@@ -296,7 +284,7 @@ def voxels_from_file(
     grid = Grid(grid_size, cutoff=cutoff, epsilon=epsilon, sigma=sigma)
 
     grid.load_structure(cif_pathname)
-    grid.calculate(cubic_box=cubic_box, length=length, clip=clip, n_jobs=n_jobs)
+    grid.calculate(cubic_box=cubic_box, length=length, n_jobs=n_jobs)
 
     if only_voxels:
         return grid.voxels
@@ -314,7 +302,6 @@ def voxels_from_files(
         sigma=SIGMA,
         cubic_box=CUBIC_BOX,
         length=LENGTH,
-        clip=CLIP,
         n_jobs=N_JOBS,
         ):
     r"""
@@ -351,7 +338,6 @@ def voxels_from_files(
                     sigma=sigma,
                     cubic_box=cubic_box,
                     length=length,
-                    clip=clip,
                     n_jobs=n_jobs,
                     )
 
@@ -371,7 +357,6 @@ def voxels_from_dir(
         sigma=SIGMA,
         cubic_box=CUBIC_BOX,
         length=LENGTH,
-        clip=CLIP,
         n_jobs=N_JOBS,
         ):
     r"""
@@ -397,10 +382,6 @@ def voxels_from_dir(
         If ``True``, the simulation box is cubic.
     length : float, default=30.0
         The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
-    clip : float, optional
-        If specified, voxels are filled with energy values clipped within
-        ``[-clip, clip]``.
-        Otherwise, voxels are filled with the Boltzmann factor.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.
@@ -419,6 +400,5 @@ def voxels_from_dir(
             sigma=sigma,
             cubic_box=cubic_box,
             length=length,
-            clip=clip,
             n_jobs=n_jobs,
             )
