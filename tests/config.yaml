@@ -4,5 +4,5 @@ grid_size: 25
 cutoff: 10.0
 epsilon: 50.0
 sigma: 2.5
-cubic_box: false
-length: 30.0
+cubic_box: null
+n_jobs: null

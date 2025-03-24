@@ -10,10 +10,14 @@ Version 0.4.0
 
         The voxels are no longer filled with the Boltzmann factor or clipped energy
         values. Instead, *they are now filled with the raw energy values* (:issue:`10`).
+    * Setting ``cubic_box`` to a float now controls the size of the cubic box.
 
 .. versionremoved:: 0.4.0
 
-   * ``clip`` parameter which was used for clipping energy values.
+    * ``length`` parameter determing the size of the cubic box. Use
+      ``cubic_box`` instead.
+    * ``clip`` parameter determing  whether to fill voxels with clipped values
+      or Boltzmann factor.
 
 Version 0.3.0
 -------------

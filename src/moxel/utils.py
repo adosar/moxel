@@ -50,13 +50,12 @@ from . _params import lj_params
 warnings.filterwarnings('ignore')
 
 # Default values for voxels calculation.
-GRID_SIZE: int = 25
-CUTOFF: float = 10.
-EPSILON: float = 50.
-SIGMA: float = 2.5
-CUBIC_BOX: bool = False
-LENGTH: float = 30.
-N_JOBS: int | None = None
+GRID_SIZE = 25
+CUTOFF = 10.
+EPSILON = 50.
+SIGMA = 2.5
+CUBIC_BOX = None
+N_JOBS = None
 
 
 def mic_scale_factors(r, lattice_vectors):
@@ -111,7 +110,7 @@ class Grid:
         Available only after :meth:`Grid.load_structure` has been called.
     structure_name : str
         Available only after :meth:`Grid.load_structure` has been called.
-    cubic_box : bool
+    cubic_box : float or None
         Available only after :meth:`Grid.calculate` has been called.
     voxels : array of shape (grid_size,)*3
        Available only after :meth:`Grid.calculate` has been called.
@@ -145,7 +144,6 @@ class Grid:
     def calculate(
             self,
             cubic_box=CUBIC_BOX,
-            length=LENGTH,
             potential='lj',
             n_jobs=N_JOBS,
             ):
@@ -157,20 +155,18 @@ class Grid:
         according to MIC, see :func:`mic_scale_factors`.
 
         If lattice angles are significantly different than 90°, to avoid
-        distortions set ``cubic_box`` to ``True``. In this case, the grid is
-        overlayed over a cubic box of size ``length`` centered at the origin but
-        periodicity is no longer guaranteed.
+        distortions set ``cubic_box``. In this case, the grid is overlayed over
+        a cubic box of size ``cubic_box`` centered at the origin but periodicity
+        is no longer guaranteed.
 
         Parameters
         ----------
         potential : str, default='lj'
             The potential used to calculate voxels. Currently, only the
             LJ potential is supported.
-        cubic_box : bool, default=False
-            If ``True``, the simulation box is cubic.
-        length : float, default=30.0
-            The size of the cubic box in Å. Takes effect only
-            if ``cubic_box=True``.
+        cubic_box : float or None, default=None
+            If ``None``, the simulation box is a supercell scaled according to
+            MIC. Otherwise, cubic box of size ``cubic_box``.
         n_jobs : int, optional
             Number of jobs to run in parallel. If ``None``, then the number returned
             by ``os.cpu_count()`` is used.
@@ -181,8 +177,8 @@ class Grid:
         """
         self.cubic_box = cubic_box
 
-        if cubic_box:
-            d = length / 2
+        if cubic_box is not None:
+            d = cubic_box / 2
             probe_coords = np.linspace(0 - d, 0 + d, self.grid_size, endpoint=False)  # Cartesian
             self._simulation_box = self.structure
         else:
@@ -217,13 +213,13 @@ class Grid:
         Parameters
         ----------
         coordinates : array_like of shape (3,)
-            If ``cubic_box=True`` cartesian. Else, fractional.
+            If ``cubic_box=None`` fractional, else cartesian.
 
         Returns
         -------
         energy : float
         """
-        if self.cubic_box:
+        if self.cubic_box is not None:
             cartesian_coords = coords
         else:
             cartesian_coords = self._simulation_box._lattice.get_cartesian_coords(coords)
@@ -257,7 +253,6 @@ def voxels_from_file(
         epsilon=EPSILON,
         sigma=SIGMA,
         cubic_box=CUBIC_BOX,
-        length=LENGTH,
         n_jobs=N_JOBS,
         only_voxels=True,
         ):
@@ -284,7 +279,7 @@ def voxels_from_file(
     grid = Grid(grid_size, cutoff=cutoff, epsilon=epsilon, sigma=sigma)
 
     grid.load_structure(cif_pathname)
-    grid.calculate(cubic_box=cubic_box, length=length, n_jobs=n_jobs)
+    grid.calculate(cubic_box=cubic_box, n_jobs=n_jobs)
 
     if only_voxels:
         return grid.voxels
@@ -301,7 +296,6 @@ def voxels_from_files(
         epsilon=EPSILON,
         sigma=SIGMA,
         cubic_box=CUBIC_BOX,
-        length=LENGTH,
         n_jobs=N_JOBS,
         ):
     r"""
@@ -337,7 +331,6 @@ def voxels_from_files(
                     epsilon=epsilon,
                     sigma=sigma,
                     cubic_box=cubic_box,
-                    length=length,
                     n_jobs=n_jobs,
                     )
 
@@ -350,14 +343,13 @@ def voxels_from_files(
 def voxels_from_dir(
         cif_dirname: str,
         out_pathname: str,
-        grid_size=GRID_SIZE,
+        grid_size: int = GRID_SIZE,
         *,
-        cutoff=CUTOFF,
-        epsilon=EPSILON,
-        sigma=SIGMA,
-        cubic_box=CUBIC_BOX,
-        length=LENGTH,
-        n_jobs=N_JOBS,
+        cutoff: float = CUTOFF,
+        epsilon: float = EPSILON,
+        sigma: float = SIGMA,
+        cubic_box: float | None = CUBIC_BOX,
+        n_jobs: int | None = N_JOBS,
         ):
     r"""
     Calculate voxels from a directory of ``.cif`` files and store them.
@@ -378,10 +370,9 @@ def voxels_from_dir(
         Epsilon value (ε/K) of the probe atom.
     sigma : float, default=2.5
         Sigma value (σ/Å) of the probe atom.
-    cubic_box : bool, default=False
-        If ``True``, the simulation box is cubic.
-    length : float, default=30.0
-        The size of the cubic box in Å. Takes effect only if ``cubic_box=True``.
+    cubic_box : float or None, default=None
+        If ``None``, the simulation box is a supercell scaled according to
+        MIC. Otherwise, cubic box of size ``cubic_box``.
     n_jobs : int, optional
         Number of jobs to run in parallel. If ``None``, then the number returned
         by ``os.cpu_count()`` is used.
@@ -399,6 +390,5 @@ def voxels_from_dir(
             epsilon=epsilon,
             sigma=sigma,
             cubic_box=cubic_box,
-            length=length,
             n_jobs=n_jobs,
             )

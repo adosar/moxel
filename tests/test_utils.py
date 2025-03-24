@@ -37,7 +37,7 @@ class TestUtils(unittest.TestCase):
         epsilon = 40
         sigma = 1e4  # For repulsive energies to go inf.
         cutoff = 12
-        cubic_box = True
+        cubic_box = 35
 
         grid = Grid(grid_size=grid_size, epsilon=epsilon, cutoff=cutoff, sigma=sigma)
         grid.load_structure(cif_pathname)
@@ -82,14 +82,13 @@ class TestUtils(unittest.TestCase):
         cutoff = 9
         epsilon = 49
         sigma = 2
-        cubic_box = True
-        length = 22
+        cubic_box = 25
 
         out = voxels_from_file(
                 cif_pathname, grid_size=grid_size,
                 cutoff=cutoff, epsilon=epsilon,
                 sigma=sigma, cubic_box=cubic_box,
-                length=length, only_voxels=False
+                only_voxels=False
                 )
 
         # Check that arguments are properly passed.
