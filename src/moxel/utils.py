@@ -52,7 +52,7 @@ warnings.filterwarnings('ignore')
 # Default values for voxels calculation.
 GRID_SIZE: int = 25
 CUTOFF: float = 10.
-EPSILON: float= 50.
+EPSILON: float = 50.
 SIGMA: float = 2.5
 CUBIC_BOX: bool = False
 LENGTH: float = 30.
