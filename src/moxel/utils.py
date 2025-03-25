@@ -45,7 +45,7 @@ import numpy as np
 from tqdm import tqdm
 from pymatgen.core import Structure
 
-from . _params import lj_params
+from ._params import lj_params
 
 warnings.filterwarnings('ignore')
 
