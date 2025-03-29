@@ -1,7 +1,7 @@
 .. _documentation:
 
-📚 API Documentation
-====================
+📚 API Reference
+================
 
 .. automodule:: moxel
    :members:
