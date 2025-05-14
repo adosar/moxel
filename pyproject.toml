@@ -37,7 +37,7 @@ dependencies = [
 [project.urls]
 Homepage = "https://github.com/adosar/moxel"
 Documentation = "https://moxel.readthedocs.io"
-Changelog = "https://moxel.readthedocs.io/en/stable/changelog.html"
+Changelog = "https://moxel.readthedocs.io/en/stable/changes.html"
 
 [project.scripts]
 moxel = "moxel._cli:moxel_cli"
