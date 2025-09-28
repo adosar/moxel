@@ -1,8 +1,8 @@
 cif_dirname: null
 out_pathname: null
-grid_size: 25
+grid_size: 32
 cutoff: 10.0
 epsilon: 50.0
 sigma: 2.5
-cubic_box: null
+cubic_box: 30
 n_jobs: null

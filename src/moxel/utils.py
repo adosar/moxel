@@ -50,11 +50,11 @@ from ._params import lj_params
 warnings.filterwarnings('ignore')
 
 # Default values for voxels calculation.
-GRID_SIZE = 25
+GRID_SIZE = 32
 CUTOFF = 10.
 EPSILON = 50.
 SIGMA = 2.5
-CUBIC_BOX = None
+CUBIC_BOX = 30
 N_JOBS = None
 
 
@@ -97,6 +97,10 @@ class Grid:
     ----------
     grid_size : int, default=25
         Number of grid points along each dimension.
+
+        .. versionchanged:: 0.5.0
+           Now all methods suck!
+
     cutoff : float, default=10.0
         Cutoff radius (Å) for the LJ potential.
     epsilon : float, default=50.0
