@@ -365,7 +365,7 @@ def voxels_from_dir(
     cif_dirname : str
        Pathname to the directory containing the ``.cif`` files.
     out_pathname : str
-        Pathname to the directory under which voxels are stored.
+        Pathname of an existing directory under which voxels are stored.
     grid_size : int, default=25
         Number of grid points along each dimension.
     cutoff : float, default=10.0
