@@ -1,4 +1,4 @@
-name: Build and run unit tests
+name: Build, install and run unit tests
 
 on: [push, pull_request]
 
@@ -14,7 +14,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -U pip build
-      - run: python -m build
-      - run: |
-          pip install dist/*.whl
-          python -m unittest
+      - name: Build
+        run: python -m build
+      - name: Install
+        run: pip install dist/*.whl
+      - name: Test
+        run: python -m unittest
