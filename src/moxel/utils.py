@@ -54,7 +54,7 @@ GRID_SIZE = 32
 CUTOFF = 10.
 EPSILON = 50.
 SIGMA = 2.5
-CUBIC_BOX = 30
+CUBIC_BOX = 30.
 N_JOBS = None
 
 
@@ -95,12 +95,8 @@ class Grid:
 
     Parameters
     ----------
-    grid_size : int, default=25
+    grid_size : int, default=32
         Number of grid points along each dimension.
-
-        .. versionchanged:: 0.5.0
-           Now all methods suck!
-
     cutoff : float, default=10.0
         Cutoff radius (Å) for the LJ potential.
     epsilon : float, default=50.0
@@ -168,7 +164,7 @@ class Grid:
         potential : str, default='lj'
             The potential used to calculate voxels. Currently, only the
             LJ potential is supported.
-        cubic_box : float or None, default=None
+        cubic_box : float or None, default=30.0
             If ``None``, the simulation box is a supercell scaled according to
             MIC. Otherwise, cubic box of size ``cubic_box``.
         n_jobs : int, optional
@@ -366,7 +362,7 @@ def voxels_from_dir(
        Pathname to the directory containing the ``.cif`` files.
     out_pathname : str
         Pathname of an existing directory under which voxels are stored.
-    grid_size : int, default=25
+    grid_size : int, default=32
         Number of grid points along each dimension.
     cutoff : float, default=10.0
         Cutoff radius (Å) for the LJ potential.
@@ -374,7 +370,7 @@ def voxels_from_dir(
         Epsilon value (ε/K) of the probe atom.
     sigma : float, default=2.5
         Sigma value (σ/Å) of the probe atom.
-    cubic_box : float or None, default=None
+    cubic_box : float or None, default=30
         If ``None``, the simulation box is a supercell scaled according to
         MIC. Otherwise, cubic box of size ``cubic_box``.
     n_jobs : int, optional

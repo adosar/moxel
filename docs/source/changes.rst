@@ -9,7 +9,7 @@ Version 0.5.0
     * .. attention::
 
         The default values for voxels calculation are now ``grid_size=32`` and
-        ``cubic_box=30``, following the RetNeXt paper.
+        ``cubic_box=30.0``, following the `RetNeXt paper <https://doi.org/10.1021/acs.jcim.5c02698>`_.
 
 Version 0.4.0
 -------------
