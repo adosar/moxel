@@ -191,6 +191,9 @@ class Grid:
             self._lj_params = np.array(
                     [lj_params[atom.species_string] for atom in self._simulation_box]
                     )
+            # Cache mixed constants for the probe-framework LJ interactions.
+            self._lj_sigma_mix = 0.5 * (self._lj_params[:, 1] + self.sigma)
+            self._lj_epsilon_mix4 = 4 * np.sqrt(self._lj_params[:, 0] * self.epsilon)
 
             # Cache fractional coordinates since this is a slow function in pymatgen.
             self._frac_coords = self._simulation_box.frac_coords
@@ -238,9 +241,8 @@ class Grid:
         if np.any(r_ij < 1e-3):  # Close contact, infinite energy.
             return np.inf
 
-        es_j = self._lj_params[indices]
-        x = (0.5 * (es_j[:, 1] + self.sigma)) / r_ij
-        e = 4 * np.sqrt(es_j[:, 0] * self.epsilon)
+        x = self._lj_sigma_mix[indices] / r_ij
+        e = self._lj_epsilon_mix4[indices]
 
         return np.sum(e * (x**12 - x**6))
 
