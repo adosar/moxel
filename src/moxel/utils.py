@@ -212,7 +212,7 @@ class Grid:
 
         Parameters
         ----------
-        coordinates : array_like of shape (3,)
+        coords : array_like of shape (3,)
             If ``cubic_box=None`` fractional, else cartesian.
 
         Returns
