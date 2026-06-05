@@ -321,7 +321,7 @@ def voxels_from_files(
     """
     os.mkdir(out_pathname)
 
-    for file in tqdm(cif_pathnames, desc='Creating energy voxels'):
+    for file in tqdm(cif_pathnames, desc='\033[32;1mCreating energy voxels\033[0m'):
         try:
             name = Path(file).stem  # Name of the structure.
             grid = voxels_from_file(
