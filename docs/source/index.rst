@@ -56,7 +56,7 @@ voxels with other values or employ a different featurization scheme, check
 Citing MOXελ
 ------------
 
-If you use ΜΟΧελ in your research, please consider citing the following work::
+If you use ΜΟΧελ in your research, please cite the following work::
     
     @article{Sarikas2024,
     title = {Gas adsorption meets deep learning: voxelizing the potential energy surface of metal-organic frameworks},

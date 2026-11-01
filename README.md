@@ -53,7 +53,7 @@ moxel --config=path/to/config.yaml
 > For more information, please refer to the [📚 Documentation](https://moxel.readthedocs.io/en/stable/index.html).
 
 ## 📰 Citing MOXελ
-If you use ΜΟΧελ in your research, please consider citing the following work:
+If you use ΜΟΧελ in your research, please cite the following work:
 
     @article{Sarikas2024,
     title = {Gas adsorption meets deep learning: voxelizing the potential energy surface of metal-organic frameworks},
